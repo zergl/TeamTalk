@@ -4,18 +4,38 @@
 1. Windows下编译通过;
 
     - base -- 编译成功
+    - db_proxy_server
+    - file_server
+    - http_msg_server
     - login_server -- 编译通过
+    - msfs
     - msg_server -- 调整中
+    - push_server
+    - route_server
     - ...
 
 
-2. 调整工程组织，使得看上去舒服点；
+2. 调整工程组织，使得看上去舒服点、编译也变得愉快点；
 
-    - 第三方组件统一目录；
-    - 协议目录梳理；
-    - makefile文件重构；
+    - 第三方组件统一目录；-- DONE (server/3rdparty)
+    - 协议目录梳理；      -- DONE (proto)
+    - makefile文件重构；  -- DOING (cmake很强大，学习中)
+      - 希望能梳理成一个编译框架
     - …
-    
+
+3. 测试
+
+   - 性能剖析
+   - 压力测试
+   - …
+   
+4. 文档梳理
+
+   - 部署结构图
+   - 交互协议梳理
+   - 代码走读
+ 
+ 
 ----------------------------------------------
 
 # TeamTalk
