@@ -28,4 +28,4 @@ LINK_DIRECTORIES(../base ${COMMON_LIB_DIR})
 #ADD_LIBRARY(${PROJECTNAME} SHARED/STATIC ${SRC_LIST})
 ADD_EXECUTABLE(${CURRENT_DIRNAME} ${SRC_LIST} ${SRC_LIST2})
 
-TARGET_LINK_LIBRARIES(${CURRENT_DIRNAME} base protobuf-lite pthread log4cxx jsoncpp ssl) 
+TARGET_LINK_LIBRARIES(${CURRENT_DIRNAME} base protobuf-lite pthread apr-1 aprutil-1 log4cxx jsoncpp ssl) 
