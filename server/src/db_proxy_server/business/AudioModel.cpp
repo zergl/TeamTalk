@@ -10,7 +10,7 @@
  ================================================================*/
 
 #include "../DBPool.h"
-#include "../HttpClient.h"
+#include "HttpClient.h"
 #include "AudioModel.h"
 
 using namespace std;

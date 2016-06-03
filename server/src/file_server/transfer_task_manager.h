@@ -9,9 +9,9 @@
 #ifndef FILE_SERVER_TRANSFER_TASK_MANAGER_H_
 #define FILE_SERVER_TRANSFER_TASK_MANAGER_H_
 
-#include "base/singleton.h"
+#include "singleton.h"
 
-#include "file_server/transfer_task.h"
+#include "transfer_task.h"
 
 class TransferTaskManager : public Singleton<TransferTaskManager> {
 public:

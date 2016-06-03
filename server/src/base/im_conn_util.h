@@ -9,7 +9,7 @@
 #ifndef BASE_IM_CONN_UTIL_H_
 #define BASE_IM_CONN_UTIL_H_
 
-#include "base/ostype.h"
+#include "ostype.h"
 
 namespace google { namespace protobuf {
     class MessageLite;

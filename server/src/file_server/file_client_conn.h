@@ -9,8 +9,8 @@
 #ifndef FILE_SERVER_FILE_CLIENT_CONN_H_
 #define FILE_SERVER_FILE_CLIENT_CONN_H_
 
-#include "base/imconn.h"
-#include "file_server/transfer_task.h"
+#include "imconn.h"
+#include "transfer_task.h"
 
 // TODO
 // 异常情况处理

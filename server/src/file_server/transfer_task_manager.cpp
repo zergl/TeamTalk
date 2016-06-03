@@ -6,13 +6,13 @@
 //  Copyright (c) 2015年 benqi. All rights reserved.
 //
 
-#include "file_server/transfer_task_manager.h"
+#include "transfer_task_manager.h"
 
-#include "base/pb/protocol/IM.BaseDefine.pb.h"
-#include "base/util.h"
+#include "IM.BaseDefine.pb.h"
+#include "util.h"
 
-#include "file_server/config_util.h"
-#include "file_server/file_client_conn.h"
+#include "config_util.h"
+#include "file_client_conn.h"
 
 using namespace IM::BaseDefine;
 

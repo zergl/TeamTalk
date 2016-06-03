@@ -11,8 +11,8 @@
 
 #include <list>
 
-#include "base/singleton.h"
-#include "base/pb/protocol/IM.BaseDefine.pb.h"
+#include "singleton.h"
+#include "IM.BaseDefine.pb.h"
 
 class ConfigUtil : public Singleton<ConfigUtil> {
 public:

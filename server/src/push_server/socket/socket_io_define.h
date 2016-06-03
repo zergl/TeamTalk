@@ -2,7 +2,7 @@
 #define _SOCKET_IO_DEFINE_H
 //
 #include "stdio.h"
-#include "../slog/slog_api.h"
+#include "slog_api.h"
 #define SOCKET_IO_RESULT_OK                 0x0000  //
 #define SOCKET_IO_TCP_RECV_FAILED			0x0001	//tcp recv failed
 #define SOCKET_IO_TCP_SEND_FAILED			0x0002  //tcp send failed

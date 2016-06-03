@@ -6,16 +6,16 @@
 //  Copyright (c) 2015年 benqi. All rights reserved.
 //
 
-#include "file_server/file_msg_server_conn.h"
+#include "file_msg_server_conn.h"
 
-#include "base/pb/protocol/IM.Server.pb.h"
-#include "base/pb/protocol/IM.Other.pb.h"
+#include "IM.Server.pb.h"
+#include "IM.Other.pb.h"
 
-#include "base/im_conn_util.h"
+#include "im_conn_util.h"
 
-#include "file_server/config_util.h"
-#include "file_server/transfer_task.h"
-#include "file_server/transfer_task_manager.h"
+#include "config_util.h"
+#include "transfer_task.h"
+#include "transfer_task_manager.h"
 
 using namespace IM::BaseDefine;
 

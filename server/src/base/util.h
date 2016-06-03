@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "slog/slog_api.h"
+#include "slog_api.h"
 #ifndef _WIN32
 #include <strings.h>
 #endif

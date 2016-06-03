@@ -9,9 +9,9 @@
 #ifndef FILE_SERVER_TRANSFER_TASK_H_
 #define FILE_SERVER_TRANSFER_TASK_H_
 
-#include "base/util.h"
+#include "util.h"
 
-#include "file_server/offline_file_util.h"
+#include "offline_file_util.h"
 
 class CImConn;
 

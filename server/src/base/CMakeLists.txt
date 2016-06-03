@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 2.6)
-PROJECT(Base)
+STRING( REGEX REPLACE ".*/(.*)" "\\1" CURRENT_DIRNAME ${CMAKE_CURRENT_SOURCE_DIR} )
+PROJECT(${CURRENT_DIRNAME})
+message(STATUS "PROJECT: ${CURRENT_DIRNAME}")
 
 AUX_SOURCE_DIRECTORY(./ SRC_LIST1)
 AUX_SOURCE_DIRECTORY(../../../proto/gen/cpp SRC_LIST2)
-AUX_SOURCE_DIRECTORY(./jsoncpp SRC_LIST3)
 
 if(APPLE)
     SET(PB_LIB_DIR ./pb/lib/mac)
@@ -16,12 +17,15 @@ SET(LIBRARY_OUTPUT_PATH ./)
 
 ADD_DEFINITIONS( -g -W -Wall -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
 -DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL
--DAC_HAS_DEBUG -DLINUX_DAEMON)
+-DAC_HAS_DEBUG -DLINUX_DAEMON
+-Wno-sign-compare -Wno-deprecated -Wno-unused-parameter
+-Wno-missing-field-initializers -Wno-missing-field-initializers)
 
-INCLUDE_DIRECTORIES(./ ../ ./jsoncpp ../../../proto/gen/cpp)
-LINK_DIRECTORIES(./ ${PB_LIB_DIR} ./slog/lib)
+SET(IMPORT_HEADER_DIR ../../3rdparty/include/)
+INCLUDE_DIRECTORIES(./ ../ ${IMPORT_HEADER_DIR} ../../../proto/gen/cpp)
+LINK_DIRECTORIES(./ ${PB_LIB_DIR})
 
-ADD_LIBRARY(base STATIC ${SRC_LIST1} ${SRC_LIST2} ${SRC_LIST3})
+ADD_LIBRARY(base STATIC ${SRC_LIST1} ${SRC_LIST2})
 
 #ADD_XXXX必须在TARGET_LINK_LIBRARIES前面，否则会报错
 #ADD_LIBRARY(${PROJECTNAME} SHARED ${SRC_LIST})
@@ -40,9 +44,10 @@ else()
     Please use a different C++ compiler.")
 endif()
 
-message("CC: ${CMAKE_C_COMPILER}")
-message("CXX: ${CMAKE_CXX_COMPILER}")
+message(STATUS " CC: ${CMAKE_C_COMPILER}")
+message(STATUS "CXX: ${CMAKE_CXX_COMPILER}")
 message(STATUS "CXX11 : ${COMPILER_SUPPORTS_CXX11} ")
 message(STATUS "CXX0X : ${COMPILER_SUPPORTS_CXX0X} ")
 
-TARGET_LINK_LIBRARIES(base pthread slog crypto)
+TARGET_LINK_LIBRARIES(base pthread crypto protobuf-lite)
+
