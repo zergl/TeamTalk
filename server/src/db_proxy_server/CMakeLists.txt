@@ -28,5 +28,4 @@ LINK_DIRECTORIES(./ ../base ${PB_LIB_DIR} ../slog/)
 #ADD_LIBRARY(${PROJECTNAME} SHARED/STATIC ${SRC_LIST})
 ADD_EXECUTABLE(${CURRENT_DIRNAME} ${SRC_LIST} ${SRC_LIST2})
 
-TARGET_LINK_LIBRARIES(${CURRENT_DIRNAME} base protobuf-lite pthread log4cxx
-jsoncpp crypt curl mysqlclient hiredis) 
+TARGET_LINK_LIBRARIES(${CURRENT_DIRNAME} base protobuf-lite pthread apr-1 aprutil-1 log4cxx jsoncpp crypt curl mysqlclient hiredis)
