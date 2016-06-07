@@ -9,7 +9,8 @@
 #include "IM.Server.pb.h"
 #include "IM.Other.pb.h"
 #include "IM.Login.pb.h"
-#include "public_define.h"
+#include "base/public_define.h"
+
 using namespace IM::BaseDefine;
 static ConnMap_t g_client_conn_map;
 static ConnMap_t g_msg_serv_conn_map;

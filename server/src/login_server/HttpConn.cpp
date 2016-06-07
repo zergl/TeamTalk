@@ -8,7 +8,7 @@
 #include "HttpConn.h"
 #include "json/json.h"
 #include "LoginConn.h"
-#include "HttpParserWrapper.h"
+#include "base/HttpParserWrapper.h"
 #include "ipparser.h"
 
 static HttpConnMap_t g_http_conn_map;

@@ -8,7 +8,7 @@
 #ifndef LOGINCONN_H_
 #define LOGINCONN_H_
 
-#include "imconn.h"
+#include "base/imconn.h"
 
 enum {
 	LOGIN_CONN_TYPE_CLIENT = 1,

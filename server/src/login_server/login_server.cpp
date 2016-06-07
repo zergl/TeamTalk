@@ -6,9 +6,9 @@
  */
 
 #include "LoginConn.h"
-#include "netlib.h"
-#include "ConfigFileReader.h"
-#include "version.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
+#include "base/version.h"
 #include "HttpConn.h"
 #include "ipparser.h"
 
