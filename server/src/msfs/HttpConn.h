@@ -12,7 +12,7 @@
 #ifndef __HTTP_CONN_H__
 #define __HTTP_CONN_H__
 
-#include "util.h"
+#include "base/util.h"
 #if (MSFS_LINUX)
 #include <sys/sendfile.h>
 #elif (MSFS_BSD)
@@ -21,11 +21,11 @@
  #include <sys/uio.h>
 #endif
 #include <pthread.h>
-#include "netlib.h"
+#include "base/netlib.h"
+#include "base/HttpParserWrapper.h"
+#include "base/ConfigFileReader.h"
+#include "base/ThreadPool.h"
 #include "FileManager.h"
-#include "ConfigFileReader.h"
-#include "ThreadPool.h"
-#include "HttpParserWrapper.h"
 
 #define HTTP_CONN_TIMEOUT            30000
 #define HTTP_UPLOAD_MAX                 0xA00000     //10M

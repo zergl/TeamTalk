@@ -15,8 +15,8 @@
 #include "FileManager.h"
 #include "FileLin.h"
 #include "StringUtils.h"
-#include "util.h"
-#include "Base64.h"
+#include "base/util.h"
+#include "base/Base64.h"
 
 using namespace std;
 

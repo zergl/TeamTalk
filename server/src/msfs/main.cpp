@@ -12,11 +12,11 @@
 
 #include <iostream>
 #include <signal.h>
-#include "netlib.h"
-#include "ConfigFileReader.h"
+#include "base/netlib.h"
+#include "base/ThreadPool.h"
+#include "base/ConfigFileReader.h"
 #include "HttpConn.h"
 #include "FileManager.h"
-#include "ThreadPool.h"
 
 using namespace std;
 using namespace msfs;
