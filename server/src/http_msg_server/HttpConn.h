@@ -8,9 +8,9 @@
 #ifndef __HTTP_CONN_H__
 #define __HTTP_CONN_H__
 
-#include "netlib.h"
-#include "util.h"
-#include "HttpParserWrapper.h"
+#include "base/netlib.h"
+#include "base/util.h"
+#include "base/HttpParserWrapper.h"
 
 #define HTTP_CONN_TIMEOUT			60000
 

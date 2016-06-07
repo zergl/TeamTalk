@@ -8,7 +8,7 @@
 #ifndef ATTACHDATA_H_
 #define ATTACHDATA_H_
 
-#include "util.h"
+#include "base/util.h"
 
 enum {
     ATTACH_TYPE_PDU_FOR_XIAOT = 1,

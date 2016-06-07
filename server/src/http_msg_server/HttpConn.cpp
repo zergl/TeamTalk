@@ -6,7 +6,7 @@
  */
 
 #include "HttpConn.h"
-#include "HttpParserWrapper.h"
+#include "base/HttpParserWrapper.h"
 #include "HttpQuery.h"
 
 static HttpConnMap_t g_http_conn_map;

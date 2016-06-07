@@ -7,7 +7,7 @@
 
 #include "DBServConn.h"
 #include "RouteServConn.h"
-#include "public_define.h"
+#include "base/public_define.h"
 #include "AttachData.h"
 #include "HttpConn.h"
 #include "HttpPdu.h"

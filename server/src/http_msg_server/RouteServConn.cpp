@@ -11,7 +11,8 @@
 #include "HttpPdu.h"
 #include "IM.Server.pb.h"
 #include "IM.Other.pb.h"
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
+
 namespace HTTP {
 
 static ConnMap_t g_route_server_conn_map;

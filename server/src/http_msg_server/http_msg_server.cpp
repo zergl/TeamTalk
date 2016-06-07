@@ -6,15 +6,15 @@
 //  Copyright (c) 2013年 ziteng. All rights reserved.
 //
 
-#include "netlib.h"
-#include "ConfigFileReader.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
+#include "base/version.h"
+#include "base/util.h"
+#include "base/ServInfo.h"
 #include "RouteServConn.h"
 #include "DBServConn.h"
-#include "version.h"
-#include "ServInfo.h"
 #include "HttpConn.h"
 #include "HttpQuery.h"
-#include "util.h"
 
 #define DEFAULT_CONCURRENT_DB_CONN_CNT  2
 

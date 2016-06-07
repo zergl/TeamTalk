@@ -8,8 +8,8 @@
 #ifndef ROUTESERVCONN_H_
 #define ROUTESERVCONN_H_
 
-#include "imconn.h"
-#include "ServInfo.h"
+#include "base/imconn.h"
+#include "base/ServInfo.h"
 
 namespace HTTP {
 

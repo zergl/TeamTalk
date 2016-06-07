@@ -9,7 +9,7 @@
 #define HTTPQUERY_H_
 #include "json/json.h"
 #include "HttpConn.h"
-#include "public_define.h"
+#include "base/public_define.h"
 
 typedef enum {
     HTTP_ERROR_SUCCESS = 0,

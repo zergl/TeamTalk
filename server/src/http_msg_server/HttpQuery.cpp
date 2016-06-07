@@ -10,7 +10,7 @@
 #include "RouteServConn.h"
 #include "DBServConn.h"
 #include "HttpPdu.h"
-#include "public_define.h"
+#include "base/public_define.h"
 #include "AttachData.h"
 #include "IM.Message.pb.h"
 #include "IM.Buddy.pb.h"
