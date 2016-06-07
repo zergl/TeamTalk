@@ -11,7 +11,7 @@
 #include "IM.Server.pb.h"
 #include "IM.Other.pb.h"
 
-#include "im_conn_util.h"
+#include "base/im_conn_util.h"
 
 #include "config_util.h"
 #include "transfer_task.h"

@@ -9,7 +9,7 @@
 #ifndef FILE_SERVER_FILE_MSG_SERVER_CONN_H_
 #define FILE_SERVER_FILE_MSG_SERVER_CONN_H_
 
-#include "imconn.h"
+#include "base/imconn.h"
 #include "file_server_util.h"
 
 typedef map<std::string, transfer_task_t*> TaskMap_t; // on client connect

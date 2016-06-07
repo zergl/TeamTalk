@@ -10,7 +10,7 @@
 
 #include <uuid/uuid.h>
 
-#include "util.h"
+#include "base/util.h"
 #include "IM.BaseDefine.pb.h"
 
 // static char g_current_save_path[BUFSIZ];

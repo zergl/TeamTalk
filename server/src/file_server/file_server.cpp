@@ -7,9 +7,9 @@
 
 // #include "FileConn.h"
 
-#include "netlib.h"
-#include "ConfigFileReader.h"
-#include "version.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
+#include "base/version.h"
 #include "IM.BaseDefine.pb.h"
 
 #include "config_util.h"

@@ -9,7 +9,7 @@
 #ifndef FILE_SERVER_TRANSFER_TASK_MANAGER_H_
 #define FILE_SERVER_TRANSFER_TASK_MANAGER_H_
 
-#include "singleton.h"
+#include "base/singleton.h"
 
 #include "transfer_task.h"
 

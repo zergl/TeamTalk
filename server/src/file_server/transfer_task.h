@@ -9,7 +9,7 @@
 #ifndef FILE_SERVER_TRANSFER_TASK_H_
 #define FILE_SERVER_TRANSFER_TASK_H_
 
-#include "util.h"
+#include "base/util.h"
 
 #include "offline_file_util.h"
 

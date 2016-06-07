@@ -9,7 +9,7 @@
 #ifndef FILE_SERVER_FILE_CLIENT_CONN_H_
 #define FILE_SERVER_FILE_CLIENT_CONN_H_
 
-#include "imconn.h"
+#include "base/imconn.h"
 #include "transfer_task.h"
 
 // TODO

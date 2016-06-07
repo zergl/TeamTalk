@@ -11,7 +11,7 @@
 #include "IM.Other.pb.h"
 #include "IM.File.pb.h"
 
-#include "im_conn_util.h"
+#include "base/im_conn_util.h"
 
 #include "config_util.h"
 #include "transfer_task_manager.h"
