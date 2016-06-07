@@ -15,7 +15,7 @@
 #include "../ProxyConn.h"
 #include "../DBPool.h"
 #include "../SyncCenter.h"
-#include "public_define.h"
+#include "base/public_define.h"
 #include "UserModel.h"
 #include "IM.Login.pb.h"
 #include "IM.Buddy.pb.h"

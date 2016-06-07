@@ -17,7 +17,7 @@
 #include "GroupMessageModel.h"
 #include "Common.h"
 #include "GroupModel.h"
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
 #include "IM.Message.pb.h"
 #include "SessionModel.h"
 #include "RelationModel.h"

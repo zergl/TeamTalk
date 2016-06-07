@@ -13,12 +13,12 @@
 #include "../CachePool.h"
 
 #include "GroupModel.h"
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
+#include "base/public_define.h"
 #include "Common.h"
 #include "AudioModel.h"
 #include "UserModel.h"
 #include "GroupMessageModel.h"
-#include "public_define.h"
 #include "SessionModel.h"
 
 CGroupModel* CGroupModel::m_pInstance = NULL;

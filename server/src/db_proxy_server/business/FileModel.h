@@ -12,7 +12,7 @@
 #ifndef __FILEMODEL_H__
 #define __FILEMODEL_H__
 #include "IM.File.pb.h"
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
 
 class CFileModel
 {

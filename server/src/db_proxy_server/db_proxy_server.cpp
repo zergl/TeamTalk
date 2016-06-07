@@ -5,15 +5,15 @@
  *      Author: ziteng
  */
 
-#include "netlib.h"
-#include "ConfigFileReader.h"
-#include "version.h"
-#include "ThreadPool.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
+#include "base/version.h"
+#include "base/ThreadPool.h"
+#include "base/HttpClient.h"
+#include "base/EncDec.h"
 #include "DBPool.h"
 #include "CachePool.h"
 #include "ProxyConn.h"
-#include "HttpClient.h"
-#include "EncDec.h"
 #include "business/AudioModel.h"
 #include "business/MessageModel.h"
 #include "business/SessionModel.h"

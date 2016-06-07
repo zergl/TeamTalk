@@ -15,8 +15,8 @@
 
 #include <list>
 #include <map>
-#include "public_define.h"
-#include "util.h"
+#include "base/public_define.h"
+#include "base/util.h"
 #include "IM.BaseDefine.pb.h"
 
 using namespace std;

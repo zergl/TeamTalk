@@ -13,7 +13,7 @@
  */
 
 #include "CachePool.h"
-#include "ConfigFileReader.h"
+#include "base/ConfigFileReader.h"
 
 #define MIN_CACHE_CONN_CNT	2
 

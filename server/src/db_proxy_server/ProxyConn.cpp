@@ -8,11 +8,11 @@
 #include "ProxyConn.h"
 #include "ProxyTask.h"
 #include "HandlerMap.h"
-#include "atomic.h"
+#include "base/atomic.h"
+#include "base/ThreadPool.h"
 #include "IM.Other.pb.h"
 #include "IM.BaseDefine.pb.h"
 #include "IM.Server.pb.h"
-#include "ThreadPool.h"
 #include "SyncCenter.h"
 static ConnMap_t g_proxy_conn_map;
 static UserMap_t g_uuid_conn_map;

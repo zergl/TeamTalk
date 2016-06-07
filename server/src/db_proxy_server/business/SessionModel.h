@@ -12,7 +12,7 @@
 #ifndef __SESSIONMODEL_H__
 #define __SESSIONMODEL_H__
 
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
 #include "IM.BaseDefine.pb.h"
 
 class CSessionModel

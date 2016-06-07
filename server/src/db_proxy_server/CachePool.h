@@ -12,9 +12,9 @@
 #define CACHEPOOL_H_
 
 #include <vector>
-#include "../base/util.h"
-#include "ThreadPool.h"
-#include "hiredis.h"
+#include "base/util.h"
+#include "base/ThreadPool.h"
+#include "hiredis/hiredis.h"
 
 class CachePool;
 

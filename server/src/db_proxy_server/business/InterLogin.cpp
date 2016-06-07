@@ -10,7 +10,7 @@
 ================================================================*/
 #include "InterLogin.h"
 #include "../DBPool.h"
-#include "EncDec.h"
+#include "base/EncDec.h"
 
 bool CInterLoginStrategy::doLogin(const std::string &strName, const std::string &strPass, IM::BaseDefine::UserInfo& user)
 {

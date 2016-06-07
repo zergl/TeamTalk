@@ -15,11 +15,11 @@
 #include <list>
 #include <map>
 
-#include "ostype.h"
-#include "Lock.h"
-#include "Condition.h"
-#include "ImPduBase.h"
-#include "public_define.h"
+#include "base/ostype.h"
+#include "base/Lock.h"
+#include "base/Condition.h"
+#include "base/ImPduBase.h"
+#include "base/public_define.h"
 #include "IM.BaseDefine.pb.h"
 
 class CSyncCenter

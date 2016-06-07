@@ -12,7 +12,7 @@
 #ifndef FRIEND_SHIP_H_
 #define FRIEND_SHIP_H_
 
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
 
 namespace DB_PROXY {
 

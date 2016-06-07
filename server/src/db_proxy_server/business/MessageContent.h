@@ -12,7 +12,7 @@
 #ifndef MESSAGECOUTENT_H_
 #define MESSAGECOUTENT_H_
 
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
 
 namespace DB_PROXY {
 

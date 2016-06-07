@@ -12,7 +12,7 @@
 
 
 #include "DBPool.h"
-#include "ConfigFileReader.h"
+#include "base/ConfigFileReader.h"
 
 #define MIN_DB_CONN_CNT		2
 

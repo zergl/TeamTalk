@@ -12,7 +12,7 @@
 #ifndef __DEPARTMODEL_H__
 #define __DEPARTMODEL_H__
 
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
 #include "IM.BaseDefine.pb.h"
 
 class CDepartModel {

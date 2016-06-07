@@ -10,8 +10,8 @@
 #define PROXYCONN_H_
 
 #include <curl/curl.h>
-#include "../base/util.h"
-#include "imconn.h"
+#include "base/util.h"
+#include "base/imconn.h"
 
 typedef struct {
 	uint32_t	conn_uuid;

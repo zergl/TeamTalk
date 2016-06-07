@@ -14,7 +14,7 @@
 #include "GroupModel.h"
 #include "IM.Group.pb.h"
 #include "IM.BaseDefine.pb.h"
-#include "public_define.h"
+#include "base/public_define.h"
 #include "IM.Server.pb.h"
 
 namespace DB_PROXY {

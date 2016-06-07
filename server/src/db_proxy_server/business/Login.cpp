@@ -11,15 +11,15 @@
 
 #include <list>
 #include "../ProxyConn.h"
-#include "HttpClient.h"
+#include "base/HttpClient.h"
 #include "../SyncCenter.h"
 #include "Login.h"
 #include "UserModel.h"
-#include "TokenValidator.h"
+#include "base/TokenValidator.h"
+#include "base/Base64.h"
 #include "json/json.h"
 #include "Common.h"
 #include "IM.Server.pb.h"
-#include "Base64.h"
 #include "InterLogin.h"
 #include "ExterLogin.h"
 

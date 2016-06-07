@@ -11,8 +11,8 @@
 #include <stdlib.h>
 #include <sys/signal.h>
 #include "SyncCenter.h"
-#include "Lock.h"
-#include "HttpClient.h"
+#include "base/Lock.h"
+#include "base/HttpClient.h"
 #include "json/json.h"
 #include "DBPool.h"
 #include "CachePool.h"
