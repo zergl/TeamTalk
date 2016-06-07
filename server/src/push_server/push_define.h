@@ -9,7 +9,7 @@
 #ifndef my_push_server_push_define_h
 #define my_push_server_push_define_h
 
-#include "slog_api.h"
+#include "base/slog_api.h"
 #define PDU_VERSION     1
 
 #define PUSH_TYPE_NORMAL        1
