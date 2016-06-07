@@ -27,4 +27,4 @@ LINK_DIRECTORIES(../base ${COMMON_LIB_DIR})
 #ADD_LIBRARY(${PROJECTNAME} SHARED/STATIC ${SRC_LIST})
 ADD_EXECUTABLE(${CURRENT_DIRNAME} ${SRC_LIST})
 
-TARGET_LINK_LIBRARIES(${CURRENT_DIRNAME} base protobuf-lite pthread apr-1 aprutil-1 log4cxx jsoncpp) 
+TARGET_LINK_LIBRARIES(${CURRENT_DIRNAME} base protobuf-lite pthread apr-1 aprutil-1 log4cxx jsoncpp uuid) 
