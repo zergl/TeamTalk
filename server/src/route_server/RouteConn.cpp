@@ -5,7 +5,8 @@
  *      Author: ziteng@mogujie.com
  */
 
-#include "netlib.h"
+#include "base/netlib.h"
+#include "base/public_define.h"
 #include "RouteConn.h"
 #include "UserInfo.h"
 #include "IM.Buddy.pb.h"
@@ -14,7 +15,7 @@
 #include "IM.Other.pb.h"
 #include "IM.Server.pb.h"
 #include "IM.SwitchService.pb.h"
-#include "public_define.h"
+
 using namespace IM::BaseDefine;
 
 //typedef hash_map<uint32_t /* user_id */, UserStat_t> UserStatMap_t;

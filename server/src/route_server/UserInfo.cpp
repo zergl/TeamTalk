@@ -7,10 +7,11 @@
 //
 
 #include "UserInfo.h"
-#include "ImPduBase.h"
-#include "public_define.h"
+#include "base/ImPduBase.h"
+#include "base/public_define.h"
 #include "IM.BaseDefine.pb.h"
 using namespace IM::BaseDefine;
+
 CUserInfo::CUserInfo()
 {}
 

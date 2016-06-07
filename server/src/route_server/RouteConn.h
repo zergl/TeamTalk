@@ -8,7 +8,7 @@
 #ifndef ROUTECONN_H_
 #define ROUTECONN_H_
 
-#include "imconn.h"
+#include "base/imconn.h"
 
 class CRouteConn : public CImConn
 {
