@@ -35,51 +35,52 @@ CHttpConn* FindHttpConnByHandle(uint32_t conn_handle)
 
 void httpconn_callback(void* callback_data, uint8_t msg, uint32_t handle, uint32_t uParam, void* pParam)
 {
-	NOTUSED_ARG(uParam);
-	NOTUSED_ARG(pParam);
+    NOTUSED_ARG(uParam);
+    NOTUSED_ARG(pParam);
 
-	// convert void* to uint32_t, oops
-	uint32_t conn_handle = *((uint32_t*)(&callback_data));
+    // convert void* to uint32_t, oops
+    uint32_t conn_handle = *((uint32_t*)(&callback_data));
     CHttpConn* pConn = FindHttpConnByHandle(conn_handle);
     if (!pConn) {
         return;
     }
 
-	switch (msg)
-	{
-	case NETLIB_MSG_READ:
-		pConn->OnRead();
-		break;
-	case NETLIB_MSG_WRITE:
-		pConn->OnWrite();
-		break;
-	case NETLIB_MSG_CLOSE:
-		pConn->OnClose();
-		break;
-	default:
-		log("!!!httpconn_callback error msg: %d ", msg);
-		break;
-	}
+    switch (msg)
+    {
+    case NETLIB_MSG_READ:
+        pConn->OnRead();
+        break;
+    case NETLIB_MSG_WRITE:
+        pConn->OnWrite();
+        break;
+    case NETLIB_MSG_CLOSE:
+        pConn->OnClose();
+        break;
+    default:
+        log("!!!httpconn_callback error msg: %d ", msg);
+        break;
+    }
 }
 
 void http_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	CHttpConn* pConn = NULL;
-	HttpConnMap_t::iterator it, it_old;
-	uint64_t cur_time = get_tick_count();
+    CHttpConn* pConn = NULL;
+    HttpConnMap_t::iterator it, it_old;
+    uint64_t cur_time = get_tick_count();
 
-	for (it = g_http_conn_map.begin(); it != g_http_conn_map.end(); ) {
-		it_old = it;
-		it++;
+    for (it = g_http_conn_map.begin(); it != g_http_conn_map.end(); ) 
+    {
+        it_old = it;
+        it++;
 
-		pConn = it_old->second;
-		pConn->OnTimer(cur_time);
-	}
+        pConn = it_old->second;
+        pConn->OnTimer(cur_time);
+    }
 }
 
 void init_http_conn()
 {
-	netlib_register_timer(http_conn_timer_callback, NULL, 1000);
+    netlib_register_timer(http_conn_timer_callback, NULL, 1000);
 }
 
 //////////////////////////
