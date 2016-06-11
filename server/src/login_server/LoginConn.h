@@ -44,7 +44,7 @@ private:
 	void _HandleMsgServRequest(CImPdu* pPdu);
 
 private:
-	int	m_conn_type;
+    int m_conn_type;
 };
 
 void init_login_conn();

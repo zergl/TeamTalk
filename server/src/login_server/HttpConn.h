@@ -31,13 +31,13 @@ enum {
 class CHttpConn : public CRefObject
 {
 public:
-	CHttpConn();
-	virtual ~CHttpConn();
+    CHttpConn();
+    virtual ~CHttpConn();
 
-	uint32_t GetConnHandle() { return m_conn_handle; }
-	char* GetPeerIP() { return (char*)m_peer_ip.c_str(); }
+    uint32_t GetConnHandle() { return m_conn_handle; }
+    char* GetPeerIP() { return (char*)m_peer_ip.c_str(); }
 
-	int Send(void* data, int len);
+    int Send(void* data, int len);
 
     void Close();
     void OnConnect(net_handle_t handle);
@@ -50,18 +50,18 @@ private:
     void _HandleMsgServRequest(string& url, string& post_data);
 
 protected:
-	net_handle_t	m_sock_handle;
-	uint32_t		m_conn_handle;
-	bool			m_busy;
+    net_handle_t m_sock_handle;
+    uint32_t m_conn_handle;
+    bool m_busy;
 
     uint32_t        m_state;
-	std::string		m_peer_ip;
-	uint16_t		m_peer_port;
-	CSimpleBuffer	m_in_buf;
-	CSimpleBuffer	m_out_buf;
+    std::string     m_peer_ip;
+    uint16_t        m_peer_port;
+    CSimpleBuffer   m_in_buf;
+    CSimpleBuffer   m_out_buf;
 
-	uint64_t		m_last_send_tick;
-	uint64_t		m_last_recv_tick;
+    uint64_t        m_last_send_tick;
+    uint64_t        m_last_recv_tick;
     
     CHttpParserWrapper m_cHttpParser;
 };
