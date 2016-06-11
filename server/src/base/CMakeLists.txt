@@ -49,5 +49,5 @@ message(STATUS "CXX: ${CMAKE_CXX_COMPILER}")
 message(STATUS "CXX11 : ${COMPILER_SUPPORTS_CXX11} ")
 message(STATUS "CXX0X : ${COMPILER_SUPPORTS_CXX0X} ")
 
-TARGET_LINK_LIBRARIES(base pthread crypto protobuf-lite)
+TARGET_LINK_LIBRARIES(base pthread ssl crypto protobuf-lite)
 
