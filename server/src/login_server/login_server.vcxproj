@@ -76,6 +76,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="HttpConn.cpp" />
+    <ClCompile Include="ipparser.cpp" />
+    <ClCompile Include="LoginConn.cpp" />
+    <ClCompile Include="login_server.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="HttpConn.h" />
+    <ClInclude Include="ipparser.h" />
+    <ClInclude Include="LoginConn.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

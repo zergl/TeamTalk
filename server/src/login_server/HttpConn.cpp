@@ -11,7 +11,10 @@
 #include "base/HttpParserWrapper.h"
 #include "ipparser.h"
 
+//保存所有连进来的http连接
 static HttpConnMap_t g_http_conn_map;
+// conn_handle 从0开始递增，可以防止因socket handle重用引起的一些冲突
+static uint32_t g_conn_handle_generator = 0;
 
 extern map<uint32_t, msg_serv_info_t*>  g_msg_serv_info;
 
@@ -19,8 +22,6 @@ extern IpParser* pIpParser;
 extern string strMsfsUrl;
 extern string strDiscovery;
 
-// conn_handle 从0开始递增，可以防止因socket handle重用引起的一些冲突
-static uint32_t g_conn_handle_generator = 0;
 
 CHttpConn* FindHttpConnByHandle(uint32_t conn_handle)
 {
@@ -90,13 +91,13 @@ CHttpConn::CHttpConn()
 	m_sock_handle = NETLIB_INVALID_HANDLE;
     m_state = CONN_STATE_IDLE;
     
-	m_last_send_tick = m_last_recv_tick = get_tick_count();
-	m_conn_handle = ++g_conn_handle_generator;
-	if (m_conn_handle == 0) {
-		m_conn_handle = ++g_conn_handle_generator;
-	}
+    m_last_send_tick = m_last_recv_tick = get_tick_count();
+    m_conn_handle = ++g_conn_handle_generator;
+    if (m_conn_handle == 0) {
+        m_conn_handle = ++g_conn_handle_generator;
+    }
 
-	//log("CHttpConn, handle=%u\n", m_conn_handle);
+    //log("CHttpConn, handle=%u\n", m_conn_handle);
 }
 
 CHttpConn::~CHttpConn()
@@ -106,30 +107,30 @@ CHttpConn::~CHttpConn()
 
 int CHttpConn::Send(void* data, int len)
 {
-	m_last_send_tick = get_tick_count();
+    m_last_send_tick = get_tick_count();
 
-	if (m_busy)
-	{
-		m_out_buf.Write(data, len);
-		return len;
-	}
+    if (m_busy)
+    {
+        m_out_buf.Write(data, len);
+        return len;
+    }
 
-	int ret = netlib_send(m_sock_handle, data, len);
-	if (ret < 0)
-		ret = 0;
+    int ret = netlib_send(m_sock_handle, data, len);
+    if (ret < 0)
+        ret = 0;
 
-	if (ret < len)
-	{
-		m_out_buf.Write((char*)data + ret, len - ret);
-		m_busy = true;
-		//log("not send all, remain=%d\n", m_out_buf.GetWriteOffset());
-	}
+    if (ret < len)
+    {
+        m_out_buf.Write((char*)data + ret, len - ret);
+        m_busy = true;
+        //log("not send all, remain=%d\n", m_out_buf.GetWriteOffset());
+    }
     else
     {
         OnWriteComlete();
     }
 
-	return len;
+    return len;
 }
 
 void CHttpConn::Close()
@@ -151,6 +152,7 @@ void CHttpConn::OnConnect(net_handle_t handle)
     
     netlib_option(handle, NETLIB_OPT_SET_CALLBACK, (void*)httpconn_callback);
     netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, reinterpret_cast<void *>(m_conn_handle) );
+
     netlib_option(handle, NETLIB_OPT_GET_REMOTE_IP, (void*)&m_peer_ip);
 }
 
