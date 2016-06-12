@@ -41,7 +41,7 @@ public:
     }
     
 protected:
-    Singleton()	{
+    Singleton() {
         Singleton::s_instance = static_cast<T*>(this);
     }
     

@@ -27,21 +27,22 @@
 #include <sys/time.h>
 #endif
 
-#define NOTUSED_ARG(v) ((void)v)		// used this to remove warning C4100, unreferenced parameter
+#define NOTUSED_ARG(v) ((void)v)    // used this to remove warning C4100, unreferenced parameter
 
 /// yunfan modify end 
 class CRefObject
 {
 public:
-	CRefObject();
-	virtual ~CRefObject();
+    CRefObject();
+    virtual ~CRefObject();
 
-	void SetLock(CLock* lock) { m_lock = lock; }
-	void AddRef();
-	void ReleaseRef();
+    void SetLock(CLock* lock) { m_lock = lock; }
+    void AddRef();
+    void ReleaseRef();
+
 private:
-	int				m_refCount;
-	CLock*	m_lock;
+    int     m_refCount;
+    CLock*  m_lock;
 };
 
 #define LOG_MODULE_IM         "IM"

@@ -13,8 +13,8 @@
 class CConfigFileReader
 {
 public:
-	CConfigFileReader(const char* filename);
-	~CConfigFileReader();
+    CConfigFileReader(const char* filename);
+    ~CConfigFileReader();
 
     char* GetConfigName(const char* name);
     int SetConfigValue(const char* name, const char*  value);

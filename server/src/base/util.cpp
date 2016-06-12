@@ -191,11 +191,11 @@ void replace_mark(string& str, uint32_t new_value, uint32_t& begin_pos)
 
 void writePid()
 {
-	uint32_t curPid;
+    uint32_t curPid;
 #ifdef _WIN32
-	curPid = (uint32_t) GetCurrentProcess();
+    curPid = (uint32_t) GetCurrentProcess();
 #else
-	curPid = (uint32_t) getpid();
+    curPid = (uint32_t) getpid();
 #endif
     FILE* f = fopen("server.pid", "w");
     assert(f);
