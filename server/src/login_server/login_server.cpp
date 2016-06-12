@@ -58,6 +58,8 @@ int main(int argc, char* argv[])
 
     signal(SIGPIPE, SIG_IGN);
 
+    //todo:
+    //ret = load_config();
     CConfigFileReader config_file("loginserver.conf");
 
     char* http_listen_ip = config_file.GetConfigName("HttpListenIP");
@@ -103,8 +105,15 @@ int main(int argc, char* argv[])
             return ret;
     }
     
+    fprintf(stdout,
+        "server start listen on:\n"
+        "For MsgServer: %s:%d\n"
+        "For http:%s:%d\n", 
+        msg_server_listen_ip, 
+        msg_server_port, 
+        http_listen_ip, 
+        http_port);
 
-    printf("server start listen on:\nFor MsgServer: %s:%d\nFor http:%s:%d\n", msg_server_listen_ip, msg_server_port, http_listen_ip, http_port);
     init_login_conn();
     init_http_conn();
 
@@ -113,6 +122,8 @@ int main(int argc, char* argv[])
     writePid();
 
     netlib_eventloop();
+
+    //todo: 直接deamonize不好么
 
     return 0;
 }
