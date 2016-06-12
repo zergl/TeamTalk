@@ -29,8 +29,7 @@ CBaseSocket* FindBaseSocket(net_handle_t fd)
 
 //////////////////////////////
 
-CBaseSocket::CBaseSocket(uint8_t state = SOCKET_STATE_IDLE)
-    : m_state(state)
+CBaseSocket::CBaseSocket(uint8_t state) : m_state(state)
 {
     m_socket = INVALID_SOCKET;
 }

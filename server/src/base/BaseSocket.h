@@ -20,11 +20,7 @@ enum
 class CBaseSocket : public CRefObject
 {
 public:
-    CBaseSocket(uint8_t state = SOCKET_STATE_IDLE) : 
-        m_state(state) 
-    { 
-        m_socket = INVALID_SOCKET; 
-    };
+    CBaseSocket(uint8_t state = SOCKET_STATE_IDLE); 
 
     virtual ~CBaseSocket();
 
