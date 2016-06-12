@@ -62,25 +62,25 @@ net_handle_t netlib_connect(
 
 int netlib_send(net_handle_t handle, void* buf, int len)
 {
-	CBaseSocket* pSocket = FindBaseSocket(handle);
-	if (!pSocket)
-	{
-		return NETLIB_ERROR;
-	}
-	int ret = pSocket->Send(buf, len);
-	pSocket->ReleaseRef();
-	return ret;
+    CBaseSocket* pSocket = FindBaseSocket(handle);
+    if (!pSocket)
+    {
+        return NETLIB_ERROR;
+    }
+    int ret = pSocket->Send(buf, len);
+    pSocket->ReleaseRef();
+    return ret;
 }
 
 int netlib_recv(net_handle_t handle, void* buf, int len)
 {
-	CBaseSocket* pSocket = FindBaseSocket(handle);
-	if (!pSocket)
-		return NETLIB_ERROR;
+    CBaseSocket* pSocket = FindBaseSocket(handle);
+    if (!pSocket)
+        return NETLIB_ERROR;
 
-	int ret = pSocket->Recv(buf, len);
-	pSocket->ReleaseRef();
-	return ret;
+    int ret = pSocket->Recv(buf, len);
+    pSocket->ReleaseRef();
+    return ret;
 }
 
 int netlib_close(net_handle_t handle)

@@ -31,27 +31,27 @@ CSimpleBuffer::~CSimpleBuffer()
 
 void CSimpleBuffer::Extend(uint32_t len)
 {
-	m_alloc_size = m_write_offset + len;
-	m_alloc_size += m_alloc_size >> 2;	// increase by 1/4 allocate size
-	uchar_t* new_buf = (uchar_t*)realloc(m_buffer, m_alloc_size);
-	m_buffer = new_buf;
+    m_alloc_size = m_write_offset + len;
+    m_alloc_size += m_alloc_size >> 2;  // increase by 1/4 allocate size
+    uchar_t* new_buf = (uchar_t*)realloc(m_buffer, m_alloc_size);
+    m_buffer = new_buf;
 }
 
 uint32_t CSimpleBuffer::Write(void* buf, uint32_t len)
 {
-	if (m_write_offset + len > m_alloc_size)
-	{
-		Extend(len);
-	}
+    if (m_write_offset + len > m_alloc_size)
+    {
+        Extend(len);
+    }
 
-	if (buf)
-	{
-		memcpy(m_buffer + m_write_offset, buf, len);
-	}
+    if (buf)
+    {
+        memcpy(m_buffer + m_write_offset, buf, len);
+    }
 
-	m_write_offset += len;
+    m_write_offset += len;
 
-	return len;
+    return len;
 }
 
 uint32_t CSimpleBuffer::Read(void* buf, uint32_t len)

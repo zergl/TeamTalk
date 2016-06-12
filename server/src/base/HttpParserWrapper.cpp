@@ -19,14 +19,14 @@ CHttpParserWrapper::CHttpParserWrapper()
 
 void CHttpParserWrapper::ParseHttpContent(const char* buf, uint32_t len)
 {
-	http_parser_init(&m_http_parser, HTTP_REQUEST);
-	memset(&m_settings, 0, sizeof(m_settings));
-	m_settings.on_url = OnUrl;
-	m_settings.on_header_field = OnHeaderField;
-	m_settings.on_header_value = OnHeaderValue;
-	m_settings.on_headers_complete = OnHeadersComplete;
-	m_settings.on_body = OnBody;
-	m_settings.on_message_complete = OnMessageComplete;
+    http_parser_init(&m_http_parser, HTTP_REQUEST);
+    memset(&m_settings, 0, sizeof(m_settings));
+    m_settings.on_url = OnUrl;
+    m_settings.on_header_field = OnHeaderField;
+    m_settings.on_header_value = OnHeaderValue;
+    m_settings.on_headers_complete = OnHeadersComplete;
+    m_settings.on_body = OnBody;
+    m_settings.on_message_complete = OnMessageComplete;
     m_settings.object = this;
 
     m_read_all = false;

@@ -79,115 +79,121 @@ CImConn::~CImConn()
 
 int CImConn::Send(void* data, int len)
 {
-	m_last_send_tick = get_tick_count();
-//	++g_send_pkt_cnt;
+    m_last_send_tick = get_tick_count();
+//  ++g_send_pkt_cnt;
 
-	if (m_busy)
-	{
-		m_out_buf.Write(data, len);
-		return len;
-	}
+    if (m_busy)
+    {
+        m_out_buf.Write(data, len);
+        return len;
+    }
 
-	int offset = 0;
-	int remain = len;
-	while (remain > 0) {
-		int send_size = remain;
-		if (send_size > NETLIB_MAX_SOCKET_BUF_SIZE) {
-			send_size = NETLIB_MAX_SOCKET_BUF_SIZE;
-		}
+    int offset = 0;
+    int remain = len;
+    while (remain > 0) 
+    {
+        int send_size = send_size < NETLIB_MAX_SOCKET_BUF_SIZE ? remain : NETLIB_MAX_SOCKET_BUF_SIZE;
+        int ret = netlib_send(m_handle, (char*)data + offset , send_size);
+        if (ret <= 0) 
+        {
+            ret = 0;
+            break;
+        }
 
-		int ret = netlib_send(m_handle, (char*)data + offset , send_size);
-		if (ret <= 0) {
-			ret = 0;
-			break;
-		}
+        offset += ret;
+        remain -= ret;
+    }
 
-		offset += ret;
-		remain -= ret;
-	}
-
-	if (remain > 0)
-	{
-		m_out_buf.Write((char*)data + offset, remain);
-		m_busy = true;
-		log("send busy, remain=%d ", m_out_buf.GetWriteOffset());
-	}
+    if (remain > 0)
+    {
+        m_out_buf.Write((char*)data + offset, remain);
+        m_busy = true;
+        log("send busy, remain=%d ", m_out_buf.GetWriteOffset());
+    }
     else
     {
         OnWriteCompelete();
     }
 
-	return len;
+    return len;
 }
 
 void CImConn::OnRead()
 {
-	for (;;)
-	{
-		uint32_t free_buf_len = m_in_buf.GetAllocSize() - m_in_buf.GetWriteOffset();
-		if (free_buf_len < READ_BUF_SIZE)
-			m_in_buf.Extend(READ_BUF_SIZE);
+    for (;;)
+    {
+        uint32_t free_buf_len = m_in_buf.GetAllocSize() - m_in_buf.GetWriteOffset();
+        if (free_buf_len < READ_BUF_SIZE)
+            m_in_buf.Extend(READ_BUF_SIZE);
 
-		int ret = netlib_recv(m_handle, m_in_buf.GetBuffer() + m_in_buf.GetWriteOffset(), READ_BUF_SIZE);
-		if (ret <= 0)
-			break;
+        int ret = netlib_recv(m_handle, m_in_buf.GetBuffer() + m_in_buf.GetWriteOffset(), READ_BUF_SIZE);
+        if (ret <= 0)
+            break;
 
-		m_recv_bytes += ret;
-		m_in_buf.IncWriteOffset(ret);
+        m_recv_bytes += ret;
+        m_in_buf.IncWriteOffset(ret);
 
-		m_last_recv_tick = get_tick_count();
-	}
+        m_last_recv_tick = get_tick_count();
+    }
 
     CImPdu* pPdu = NULL;
-	try
+    try
     {
-		while ( ( pPdu = CImPdu::ReadPdu(m_in_buf.GetBuffer(), m_in_buf.GetWriteOffset()) ) )
-		{
+        while ( ( pPdu = CImPdu::ReadPdu(m_in_buf.GetBuffer(), m_in_buf.GetWriteOffset()) ) )
+        {
             uint32_t pdu_len = pPdu->GetLength();
-            
-			HandlePdu(pPdu);
+            HandlePdu(pPdu);
 
-			m_in_buf.Read(NULL, pdu_len);
-			delete pPdu;
+            m_in_buf.Read(NULL, pdu_len);
+            delete pPdu;
             pPdu = NULL;
-//			++g_recv_pkt_cnt;
-		}
-	} catch (CPduException& ex) {
-		log("!!!catch exception, sid=%u, cid=%u, err_code=%u, err_msg=%s, close the connection ",
-				ex.GetServiceId(), ex.GetCommandId(), ex.GetErrorCode(), ex.GetErrorMsg());
-        if (pPdu) {
+            //++g_recv_pkt_cnt;
+        }
+    } 
+    catch (CPduException& ex) 
+    {
+        log("!!!catch exception, sid=%u, cid=%u, err_code=%u, err_msg=%s, close the connection ",
+            ex.GetServiceId(), ex.GetCommandId(), ex.GetErrorCode(), ex.GetErrorMsg());
+        
+        if (pPdu) 
+        {
             delete pPdu;
             pPdu = NULL;
         }
+        
         OnClose();
-	}
+    }
 }
 
 void CImConn::OnWrite()
 {
-	if (!m_busy)
-		return;
+    if (!m_busy)
+        return;
 
-	while (m_out_buf.GetWriteOffset() > 0) {
-		int send_size = m_out_buf.GetWriteOffset();
-		if (send_size > NETLIB_MAX_SOCKET_BUF_SIZE) {
-			send_size = NETLIB_MAX_SOCKET_BUF_SIZE;
-		}
+    while (m_out_buf.GetWriteOffset() > 0) 
+    {
+        int send_size = m_out_buf.GetWriteOffset();
+        if (send_size > NETLIB_MAX_SOCKET_BUF_SIZE) 
+        {
+            send_size = NETLIB_MAX_SOCKET_BUF_SIZE;
+        }
 
-		int ret = netlib_send(m_handle, m_out_buf.GetBuffer(), send_size);
-		if (ret <= 0) {
-			ret = 0;
-			break;
-		}
+        int ret = netlib_send(m_handle, m_out_buf.GetBuffer(), send_size);
+        if (ret <= 0) 
+        {
+            ret = 0;
+            break;
+        }
 
-		m_out_buf.Read(NULL, ret);
-	}
+        m_out_buf.Read(NULL, ret);
+    }
 
-	if (m_out_buf.GetWriteOffset() == 0) {
-		m_busy = false;
-	}
+    if (m_out_buf.GetWriteOffset() == 0) 
+    {
+        m_busy = false;
+    }
 
-	log("onWrite, remain=%d ", m_out_buf.GetWriteOffset());
+    log("onWrite, remain=%d ", m_out_buf.GetWriteOffset());
 }
 
 
