@@ -79,69 +79,63 @@ void init_http_conn();
 class HttpConnMgr
 {
 public:
-	static HttpConnMgr * instance()
-	{
-		if(_inst == NULL)
-		{
-			_inst = new HttpConnMgr();
-		}
+    static HttpConnMgr * instance()
+    {
+        if(_inst == NULL)
+        {
+            _inst = new HttpConnMgr();
+        }
 
-		return _inst;
-	};
+        return _inst;
+    };
 
-	static void clean_instance()
-	{
-		if(_inst)
-		{
-			delete _inst;
-			_inst = NULL;
-		}
-	}
+    static void clean_instance()
+    {
+        if(_inst)
+        {
+            delete _inst;
+            _inst = NULL;
+        }
+    }
 
-	
-	const uint32_t get_conn_num() 
-	{
-		return (++conn_num_);
-	}
 
-	HttpConnMap_t get_conn_map() 
-	{
-		return conn_map_;
-	}
+    const uint32_t get_conn_num() 
+    {
+        return (++conn_num_);
+    }
 
-	CHttpConn *find_handle(const uint32_t s) 
-	{
-		CHttpConn *pconn = NULL;
-		HttpConnMap_t::iterator it = conn_map_.find(s);
-		if(it != conn_map_.end())
-		{
-			pconn = it->second;
-		}
+    HttpConnMap_t get_conn_map() 
+    {
+        return conn_map_;
+    }
 
-		return pconn;
-	}
+    CHttpConn *find_handle(const uint32_t s) 
+    {
+        HttpConnMap_t::iterator it = conn_map_.find(s);
+        return it != conn_map_.end() ? it->second : NULL;
+    }
 
-	void erase_handle(const uint32_t s)
-	{
-		conn_map_.erase(s);
-	}
+    void erase_handle(const uint32_t s)
+    {
+        conn_map_.erase(s);
+    }
 
-	void register_handle(uint32_t socket_handle, CHttpConn *conn_handle)
-	{
-		conn_map_.insert(make_pair(socket_handle, conn_handle));
-	}
+    void register_handle(uint32_t socket_handle, CHttpConn *conn_handle)
+    {
+        conn_map_.insert(make_pair(socket_handle, conn_handle));
+    }
 
-	
-private:
-	static HttpConnMgr *_inst;
-
-	uint32_t conn_num_;
-
-	HttpConnMap_t conn_map_;
 
 private:
-	HttpConnMgr(){ conn_num_ = 0;};
-	~HttpConnMgr(){};
+    static HttpConnMgr *_inst;
+
+    uint32_t conn_num_;
+
+    HttpConnMap_t conn_map_;
+
+private:
+    HttpConnMgr(){ conn_num_ = 0;};
+    ~HttpConnMgr(){};
 };
 
 #endif /* HttpCONN_H_ */
