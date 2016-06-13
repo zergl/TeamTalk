@@ -120,56 +120,40 @@ CMsgConn::~CMsgConn()
 
 void CMsgConn::SendUserStatusUpdate(uint32_t user_status)
 {
-    if (!m_bOpen) {
-		return;
-	}
+    if (!m_bOpen)
+        return;
     
     CImUser* pImUser = CImUserManager::GetInstance()->GetImUserById(GetUserId());
     if (!pImUser) {
         return;
     }
-    
+
+    if (user_status != ::IM::BaseDefine::USER_STATUS_ONLINE
+        || user_status != ::IM::BaseDefine::USER_STATUS_OFFLINE)
+        return;
+
     // 只有上下线通知才通知LoginServer
-    if (user_status == ::IM::BaseDefine::USER_STATUS_ONLINE) {
-        IM::Server::IMUserCntUpdate msg;
-        msg.set_user_action(USER_CNT_INC);
-        msg.set_user_id(pImUser->GetUserId());
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_OTHER);
-        pdu.SetCommandId(CID_OTHER_USER_CNT_UPDATE);
-        send_to_all_login_server(&pdu);
-        
-        IM::Server::IMUserStatusUpdate msg2;
-        msg2.set_user_status(::IM::BaseDefine::USER_STATUS_ONLINE);
-        msg2.set_user_id(pImUser->GetUserId());
-        msg2.set_client_type((::IM::BaseDefine::ClientType)m_client_type);
-        CImPdu pdu2;
-        pdu2.SetPBMsg(&msg2);
-        pdu2.SetServiceId(SID_OTHER);
-        pdu2.SetCommandId(CID_OTHER_USER_STATUS_UPDATE);
-        
-        send_to_all_route_server(&pdu2);
-    } else if (user_status == ::IM::BaseDefine::USER_STATUS_OFFLINE) {
-        IM::Server::IMUserCntUpdate msg;
-        msg.set_user_action(USER_CNT_DEC);
-        msg.set_user_id(pImUser->GetUserId());
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_OTHER);
-        pdu.SetCommandId(CID_OTHER_USER_CNT_UPDATE);
-        send_to_all_login_server(&pdu);
-        
-        IM::Server::IMUserStatusUpdate msg2;
-        msg2.set_user_status(::IM::BaseDefine::USER_STATUS_OFFLINE);
-        msg2.set_user_id(pImUser->GetUserId());
-        msg2.set_client_type((::IM::BaseDefine::ClientType)m_client_type);
-        CImPdu pdu2;
-        pdu2.SetPBMsg(&msg2);
-        pdu2.SetServiceId(SID_OTHER);
-        pdu2.SetCommandId(CID_OTHER_USER_STATUS_UPDATE);
-        send_to_all_route_server(&pdu2);
-    }
+    IM::Server::IMUserCntUpdate msg;
+    msg.set_user_action(user_status == ::IM::BaseDefine::USER_STATUS_ONLINE ? USER_CNT_INC : USER_CNT_DEC);
+    msg.set_user_id(pImUser->GetUserId());
+    
+    CImPdu pdu;
+    pdu.SetPBMsg(&msg);
+    pdu.SetServiceId(SID_OTHER);
+    pdu.SetCommandId(CID_OTHER_USER_CNT_UPDATE);
+    send_to_all_login_server(&pdu);
+    
+    IM::Server::IMUserStatusUpdate msg2;
+    msg2.set_user_status(::IM::BaseDefine::USER_STATUS_ONLINE);
+    msg2.set_user_id(pImUser->GetUserId());
+    msg2.set_client_type((::IM::BaseDefine::ClientType)m_client_type);
+    
+    CImPdu pdu2;
+    pdu2.SetPBMsg(&msg2);
+    pdu2.SetServiceId(SID_OTHER);
+    pdu2.SetCommandId(CID_OTHER_USER_STATUS_UPDATE);
+    
+    send_to_all_route_server(&pdu2);
 }
 
 void CMsgConn::Close(bool kick_user)
