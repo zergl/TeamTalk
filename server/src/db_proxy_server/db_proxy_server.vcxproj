@@ -11,10 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{2BDE4250-E3AF-43E3-90D2-0A7777BFBC2C}</ProjectGuid>
+    <ProjectGuid>{13B01B5D-0DBD-43A3-9359-E47AB1A27812}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ttserver</RootNamespace>
-    <ProjectName>base</ProjectName>
+    <RootNamespace>db_proxy_server</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -77,80 +76,69 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="atomic.h" />
-    <ClInclude Include="Base64.h" />
-    <ClInclude Include="BaseSocket.h" />
-    <ClInclude Include="Condition.h" />
-    <ClInclude Include="ConfigFileReader.h" />
-    <ClInclude Include="EncDec.h" />
-    <ClInclude Include="EventDispatch.h" />
-    <ClInclude Include="HttpClient.h" />
-    <ClInclude Include="HttpParserWrapper.h" />
-    <ClInclude Include="http_parser.h" />
-    <ClInclude Include="imconn.h" />
-    <ClInclude Include="impdu.h" />
-    <ClInclude Include="ImPduBase.h" />
-    <ClInclude Include="im_conn_util.h" />
-    <ClInclude Include="jsoncpp\json\autolink.h" />
-    <ClInclude Include="jsoncpp\json\config.h" />
-    <ClInclude Include="jsoncpp\json\features.h" />
-    <ClInclude Include="jsoncpp\json\forwards.h" />
-    <ClInclude Include="jsoncpp\json\json.h" />
-    <ClInclude Include="jsoncpp\json\reader.h" />
-    <ClInclude Include="jsoncpp\json\value.h" />
-    <ClInclude Include="jsoncpp\json\writer.h" />
-    <ClInclude Include="jsoncpp\json_batchallocator.h" />
-    <ClInclude Include="jsoncpp\json_tool.h" />
-    <ClInclude Include="Lock.h" />
-    <ClInclude Include="log4z.h" />
-    <ClInclude Include="netlib.h" />
-    <ClInclude Include="ostype.h" />
-    <ClInclude Include="public_define.h" />
-    <ClInclude Include="security\security.h" />
-    <ClInclude Include="ServInfo.h" />
-    <ClInclude Include="singleton.h" />
-    <ClInclude Include="slog\slog_api.h" />
-    <ClInclude Include="Task.h" />
-    <ClInclude Include="Thread.h" />
-    <ClInclude Include="ThreadPool.h" />
-    <ClInclude Include="TokenValidator.h" />
-    <ClInclude Include="util.h" />
-    <ClInclude Include="UtilPdu.h" />
-    <ClInclude Include="version.h" />
+    <ClInclude Include="async.h" />
+    <ClInclude Include="AutoPool.h" />
+    <ClInclude Include="business\AudioModel.h" />
+    <ClInclude Include="business\Common.h" />
+    <ClInclude Include="business\DepartAction.h" />
+    <ClInclude Include="business\DepartModel.h" />
+    <ClInclude Include="business\ExterLogin.h" />
+    <ClInclude Include="business\FileAction.h" />
+    <ClInclude Include="business\FileModel.h" />
+    <ClInclude Include="business\GroupAction.h" />
+    <ClInclude Include="business\GroupMessageModel.h" />
+    <ClInclude Include="business\GroupModel.h" />
+    <ClInclude Include="business\InterLogin.h" />
+    <ClInclude Include="business\Login.h" />
+    <ClInclude Include="business\LoginStrategy.h" />
+    <ClInclude Include="business\MessageContent.h" />
+    <ClInclude Include="business\MessageCounter.h" />
+    <ClInclude Include="business\MessageModel.h" />
+    <ClInclude Include="business\RecentSession.h" />
+    <ClInclude Include="business\RelationModel.h" />
+    <ClInclude Include="business\SessionModel.h" />
+    <ClInclude Include="business\UserAction.h" />
+    <ClInclude Include="business\UserModel.h" />
+    <ClInclude Include="CachePool.h" />
+    <ClInclude Include="DBPool.h" />
+    <ClInclude Include="HandlerMap.h" />
+    <ClInclude Include="ProxyConn.h" />
+    <ClInclude Include="ProxyTask.h" />
+    <ClInclude Include="read.h" />
+    <ClInclude Include="sds.h" />
+    <ClInclude Include="SyncCenter.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Base64.cpp" />
-    <ClCompile Include="BaseSocket.cpp" />
-    <ClCompile Include="Condition.cpp" />
-    <ClCompile Include="ConfigFileReader.cpp" />
-    <ClCompile Include="EncDec.cpp" />
-    <ClCompile Include="EventDispatch.cpp" />
-    <ClCompile Include="HttpClient.cpp" />
-    <ClCompile Include="HttpParserWrapper.cpp" />
-    <ClCompile Include="http_parser.cpp" />
-    <ClCompile Include="imconn.cpp" />
-    <ClCompile Include="ImPduBase.cpp" />
-    <ClCompile Include="im_conn_util.cpp" />
-    <ClCompile Include="jsoncpp\json_reader.cpp" />
-    <ClCompile Include="jsoncpp\json_value.cpp" />
-    <ClCompile Include="jsoncpp\json_writer.cpp" />
-    <ClCompile Include="Lock.cpp" />
-    <ClCompile Include="log4z.cpp" />
-    <ClCompile Include="netlib.cpp" />
-    <ClCompile Include="ServInfo.cpp" />
-    <ClCompile Include="Thread.cpp" />
-    <ClCompile Include="ThreadPool.cpp" />
-    <ClCompile Include="TokenValidator.cpp" />
-    <ClCompile Include="util.cpp" />
-    <ClCompile Include="UtilPdu.cpp" />
+    <ClCompile Include="AutoPool.cpp" />
+    <ClCompile Include="business\AudioModel.cpp" />
+    <ClCompile Include="business\DepartAction.cpp" />
+    <ClCompile Include="business\DepartModel.cpp" />
+    <ClCompile Include="business\ExterLogin.cpp" />
+    <ClCompile Include="business\FileAction.cpp" />
+    <ClCompile Include="business\FileModel.cpp" />
+    <ClCompile Include="business\GroupAction.cpp" />
+    <ClCompile Include="business\GroupMessageModel.cpp" />
+    <ClCompile Include="business\GroupModel.cpp" />
+    <ClCompile Include="business\InterLogin.cpp" />
+    <ClCompile Include="business\Login.cpp" />
+    <ClCompile Include="business\MessageContent.cpp" />
+    <ClCompile Include="business\MessageCounter.cpp" />
+    <ClCompile Include="business\MessageModel.cpp" />
+    <ClCompile Include="business\RecentSession.cpp" />
+    <ClCompile Include="business\RelationModel.cpp" />
+    <ClCompile Include="business\SessionModel.cpp" />
+    <ClCompile Include="business\UserAction.cpp" />
+    <ClCompile Include="business\UserModel.cpp" />
+    <ClCompile Include="CachePool.cpp" />
+    <ClCompile Include="DBPool.cpp" />
+    <ClCompile Include="db_proxy_server.cpp" />
+    <ClCompile Include="HandlerMap.cpp" />
+    <ClCompile Include="ProxyConn.cpp" />
+    <ClCompile Include="ProxyTask.cpp" />
+    <ClCompile Include="SyncCenter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="jsoncpp\json_internalarray.inl" />
-    <None Include="jsoncpp\json_internalmap.inl" />
-    <None Include="jsoncpp\json_valueiterator.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
