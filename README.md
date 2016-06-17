@@ -3,15 +3,15 @@
 
 - [1] Windows下编译通过;
 
-    - [x] base &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- 编译成功
-    - [x] db_proxy_server &nbsp;&nbsp;&nbsp; -- 
-    - [ ] file_server &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- 
-    - [ ] http_msg_server &nbsp;&nbsp;&nbsp; -- 
-    - [x] login_server &nbsp;&nbsp;&nbsp;&nbsp; -- 编译通过
-    - [ ] msfs &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- 
-    - [ ] msg_server &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- 调整中
-    - [ ] push_server &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -- 
-    - [ ] route_server &nbsp;&nbsp;&nbsp;&nbsp; -- 
+    - [x] base -- 编译成功
+    - [x] db_proxy_server
+    - [ ] file_server
+    - [ ] http_msg_server
+    - [x] login_server -- 编译通过
+    - [ ] msfs
+    - [ ] msg_server -- 调整中
+    - [ ] push_server
+    - [ ] route_server
 
 
 - [2] 调整工程组织，使得看上去舒服点、编译也变得愉快点；
