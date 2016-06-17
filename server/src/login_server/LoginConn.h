@@ -11,8 +11,8 @@
 #include "base/imconn.h"
 
 enum {
-    LOGIN_CONN_TYPE_CLIENT = 1,
-    LOGIN_CONN_TYPE_MSG_SERV
+    LOGIN_CONN_TYPE_CLIENT = 1, //客户端连进来的（tcp协议）
+    LOGIN_CONN_TYPE_MSG_SERV    //msg_server过来的信息
 };
 
 typedef struct  {
