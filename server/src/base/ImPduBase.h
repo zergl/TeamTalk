@@ -84,6 +84,7 @@ public:
     int ReadPduHeader(uchar_t* buf, uint32_t len);
     void SetPBMsg(const google::protobuf::MessageLite* msg);
     
+	int Decode(google::protobuf::MessageLite &msg);
 protected:
     CSimpleBuffer	m_buf;
     PduHeader_t		m_pdu_header;

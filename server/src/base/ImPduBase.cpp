@@ -174,3 +174,7 @@ void CImPdu::SetPBMsg(const google::protobuf::MessageLite* msg)
     WriteHeader();
 }
 
+int CImPdu::Decode(google::protobuf::MessageLite &msg)
+{
+	return msg.ParseFromArray(this->GetBodyData(), this->GetBodyLength());
+}

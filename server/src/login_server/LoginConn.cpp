@@ -183,20 +183,29 @@ void CLoginConn::_HandleMsgServInfo(CImPdu* pPdu)
 void CLoginConn::_HandleUserCntUpdate(CImPdu* pPdu)
 {
     map<uint32_t, msg_serv_info_t*>::iterator it = g_msg_serv_info.find(m_handle);
-    if (it != g_msg_serv_info.end()) 
-    {
-        msg_serv_info_t* pMsgServInfo = it->second;
-        IM::Server::IMUserCntUpdate msg;
-        msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength());
+	if (it == g_msg_serv_info.end())
+	{
+		//error log or alertmsg
+		log("socket %d not found.", m_handle);
+		return;
+	}
 
-		//@zergl: 每个用户上线、下线都来个通知信息~ 这思路…打脸啪啪啪~~~
-		uint32_t incr_num = (msg.user_action() == USER_CNT_INC) ? 1 : -1;
-		pMsgServInfo->cur_conn_cnt += incr_num;
-		g_total_online_user_cnt += incr_num;
+    IM::Server::IMUserCntUpdate msg;
+	if (!pPdu->Decode(msg))
+	{
+		//decode fail
+		log("decode fail.");
+		return;
+	}
 
-        log("%s:%d, cur_cnt=%u, total_cnt=%u ", pMsgServInfo->hostname.c_str(),
-            pMsgServInfo->port, pMsgServInfo->cur_conn_cnt, g_total_online_user_cnt);
-    }
+	msg_serv_info_t* pMsgServInfo = it->second;
+	//@zergl: 每个用户上线、下线都来个通知信息~ 这思路…打脸啪啪啪~~~
+	uint32_t incr_num = (msg.user_action() == USER_CNT_INC) ? 1 : -1;
+	pMsgServInfo->cur_conn_cnt += incr_num;
+	g_total_online_user_cnt += incr_num;
+
+    log("%s:%d, cur_cnt=%u, total_cnt=%u ", pMsgServInfo->hostname.c_str(),
+		pMsgServInfo->port, pMsgServInfo->cur_conn_cnt, g_total_online_user_cnt);
 }
 
 void CLoginConn::_HandleMsgServRequest(CImPdu* pPdu)
