@@ -208,72 +208,41 @@ void CLoginConn::_HandleUserCntUpdate(CImPdu* pPdu)
 		pMsgServInfo->port, pMsgServInfo->cur_conn_cnt, g_total_online_user_cnt);
 }
 
+//处理客户端来的请求信息，这个是TCP协议（HttpConn里同名接口处理的是http协议）
 void CLoginConn::_HandleMsgServRequest(CImPdu* pPdu)
 {
+	log("HandleMsgServReq. ");
+
     IM::Login::IMMsgServReq msg;
-    msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength());
+	if (!pPdu->Decode(msg))
+	{
+		log("decode failed.");
+		return;
+	}
 
-    log("HandleMsgServReq. ");
+	//回包
+	IM::Login::IMMsgServRsp msg;
+	
+	if (g_msg_serv_info.size() == 0)
+	{
+		msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NO_MSG_SERVER);
+	}
+	else
+	{
+		// 找到负载最低的服务器
+		msg_serv_info_t* ms = _FindMinLoadMsgSever();
+		if (ms == NULL)
+		{
+			msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_MSG_SERVER_FULL);
+		} else {
+			msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NONE);
+			msg.set_prior_ip(ms->ip_addr1);
+			msg.set_backip_ip(ms->ip_addr2);
+			msg.set_port(ms->port);
+		}
+	}
 
-    // no MessageServer available
-    if (g_msg_serv_info.size() == 0) 
-    {
-        IM::Login::IMMsgServRsp msg;
-        msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NO_MSG_SERVER);
-        
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_LOGIN);
-        pdu.SetCommandId(CID_LOGIN_RES_MSGSERVER);
-        pdu.SetSeqNum(pPdu->GetSeqNum());
-        SendPdu(&pdu);
-        Close();
-        return;
-    }
-
-    // return a message server with minimum concurrent connection count
-    msg_serv_info_t* pMsgServInfo;
-    uint32_t min_user_cnt = (uint32_t)-1;
-    map<uint32_t, msg_serv_info_t*>::iterator it_min_conn = g_msg_serv_info.end(),it;
-
-    for (it = g_msg_serv_info.begin() ; it != g_msg_serv_info.end(); it++) 
-    {
-        pMsgServInfo = it->second;
-        if ( (pMsgServInfo->cur_conn_cnt < pMsgServInfo->max_conn_cnt) &&
-            (pMsgServInfo->cur_conn_cnt < min_user_cnt))
-        {
-            it_min_conn = it;
-            min_user_cnt = pMsgServInfo->cur_conn_cnt;
-        }
-    }
-
-    if (it_min_conn == g_msg_serv_info.end()) 
-    {
-        log("All TCP MsgServer are full ");
-        IM::Login::IMMsgServRsp msg;
-        msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_MSG_SERVER_FULL);
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_LOGIN);
-        pdu.SetCommandId(CID_LOGIN_RES_MSGSERVER);
-        pdu.SetSeqNum(pPdu->GetSeqNum());
-        SendPdu(&pdu);
-    }
-    else
-    {
-        IM::Login::IMMsgServRsp msg;
-        msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NONE);
-        msg.set_prior_ip(it_min_conn->second->ip_addr1);
-        msg.set_backip_ip(it_min_conn->second->ip_addr2);
-        msg.set_port(it_min_conn->second->port);
-        
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_LOGIN);
-        pdu.SetCommandId(CID_LOGIN_RES_MSGSERVER);
-        pdu.SetSeqNum(pPdu->GetSeqNum());
-        SendPdu(&pdu);
-    }
+	SendPdu(SID_OTHER, CID_LOGIN_RES_MSGSERVER, msg);
 
     Close();    // after send MsgServResponse, active close the connection
 }

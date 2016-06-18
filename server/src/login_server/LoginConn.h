@@ -44,6 +44,26 @@ private:
     void _HandleUserCntUpdate(CImPdu* pPdu);
     void _HandleMsgServRequest(CImPdu* pPdu);
 
+	msg_serv_info_t* _FindMinLoadMsgSever()
+	{
+		msg_serv_info_t* pMsgServInfo;
+		uint32_t min_user_cnt = 0; //最低在线
+		map<uint32_t, msg_serv_info_t*>::iterator it_min_conn = g_msg_serv_info.end(), it;
+
+		for (it = g_msg_serv_info.begin(); it != g_msg_serv_info.end(); it++)
+		{
+			pMsgServInfo = it->second;
+			if ((pMsgServInfo->cur_conn_cnt < pMsgServInfo->max_conn_cnt) &&
+				(pMsgServInfo->cur_conn_cnt < min_user_cnt))
+			{
+				it_min_conn = it;
+				min_user_cnt = pMsgServInfo->cur_conn_cnt;
+			}
+		}
+
+		return it_min_conn == g_msg_serv_info.end() ? NULL : it_min_conn->second;
+	}
+
 private:
     int m_conn_type;
 };
