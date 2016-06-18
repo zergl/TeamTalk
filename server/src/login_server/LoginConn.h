@@ -24,6 +24,7 @@ typedef struct  {
     string      hostname;   // 消息服务器的主机名
 } msg_serv_info_t;
 
+static map<uint32_t, msg_serv_info_t*> g_msg_serv_info;
 
 class CLoginConn : public CImConn
 {
@@ -47,8 +48,10 @@ private:
 	msg_serv_info_t* _FindMinLoadMsgSever()
 	{
 		msg_serv_info_t* pMsgServInfo;
+		msg_serv_info_t* min_ms;
+
 		uint32_t min_user_cnt = 0; //最低在线
-		map<uint32_t, msg_serv_info_t*>::iterator it_min_conn = g_msg_serv_info.end(), it;
+		map<uint32_t, msg_serv_info_t*>::iterator it;
 
 		for (it = g_msg_serv_info.begin(); it != g_msg_serv_info.end(); it++)
 		{
@@ -56,12 +59,12 @@ private:
 			if ((pMsgServInfo->cur_conn_cnt < pMsgServInfo->max_conn_cnt) &&
 				(pMsgServInfo->cur_conn_cnt < min_user_cnt))
 			{
-				it_min_conn = it;
 				min_user_cnt = pMsgServInfo->cur_conn_cnt;
+				min_ms = pMsgServInfo;
 			}
 		}
 
-		return it_min_conn == g_msg_serv_info.end() ? NULL : it_min_conn->second;
+		return min_ms;
 	}
 
 private:
@@ -69,5 +72,6 @@ private:
 };
 
 void init_login_conn();
+
 
 #endif /* LOGINCONN_H_ */

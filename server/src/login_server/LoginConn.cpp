@@ -15,7 +15,6 @@ using namespace IM::BaseDefine;
 static ConnMap_t g_client_conn_map;
 static ConnMap_t g_msg_serv_conn_map;
 static uint32_t g_total_online_user_cnt = 0;    // 并发在线总人数
-map<uint32_t, msg_serv_info_t*> g_msg_serv_info;
 
 void login_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
@@ -221,11 +220,11 @@ void CLoginConn::_HandleMsgServRequest(CImPdu* pPdu)
 	}
 
 	//回包
-	IM::Login::IMMsgServRsp msg;
+	IM::Login::IMMsgServRsp rsp_msg;
 	
 	if (g_msg_serv_info.size() == 0)
 	{
-		msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NO_MSG_SERVER);
+		rsp_msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NO_MSG_SERVER);
 	}
 	else
 	{
@@ -233,16 +232,16 @@ void CLoginConn::_HandleMsgServRequest(CImPdu* pPdu)
 		msg_serv_info_t* ms = _FindMinLoadMsgSever();
 		if (ms == NULL)
 		{
-			msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_MSG_SERVER_FULL);
+			rsp_msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_MSG_SERVER_FULL);
 		} else {
-			msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NONE);
-			msg.set_prior_ip(ms->ip_addr1);
-			msg.set_backip_ip(ms->ip_addr2);
-			msg.set_port(ms->port);
+			rsp_msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NONE);
+			rsp_msg.set_prior_ip(ms->ip_addr1);
+			rsp_msg.set_backip_ip(ms->ip_addr2);
+			rsp_msg.set_port(ms->port);
 		}
 	}
 
-	SendPdu(SID_OTHER, CID_LOGIN_RES_MSGSERVER, msg);
+	SendPdu(SID_OTHER, CID_LOGIN_RES_MSGSERVER, rsp_msg);
 
     Close();    // after send MsgServResponse, active close the connection
 }
