@@ -27,7 +27,18 @@ public:
 
     bool IsBusy() { return m_busy; }
     int SendPdu(CImPdu* pPdu) { return Send(pPdu->GetBuffer(), pPdu->GetLength()); }
-    int Send(void* data, int len);
+    
+	//add by @zergl
+	int SendPdu(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg)
+	{
+		CImPdu pdu;
+		pdu.SetPBMsg(&msg);
+		pdu.SetServiceId(service_id);
+		pdu.SetCommandId(command_id);
+		SendPdu(&pdu);
+	}
+
+	int Send(void* data, int len);
 
     virtual void OnConnect(net_handle_t handle) { m_handle = handle; }
     virtual void OnConfirm() {}
