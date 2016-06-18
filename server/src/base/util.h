@@ -55,7 +55,7 @@ extern CSLog g_imlog;
 #if defined(_WIN32) || defined(_WIN64)
 #define log(fmt, ...)  g_imlog.Info("<%s>\t<%d>\t<%s>,"fmt, __FILENAME__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
 #else
-#define log(fmt, args...)  g_imlog.Info("<%s>|<%d>|<%s>," fmt, __FILENAME__, __LINE__, __FUNCTION__, ##args)
+#define log(fmt, args...)  g_imlog.Info("[%s:%d:%s] " fmt, __FILENAME__, __LINE__, __FUNCTION__, ##args)
 #endif
 //#define log(fmt, ...)  g_imlog.Info("<%s>\t<%d>\t<%s>,"+fmt, __FILENAME__, __LINE__, __FUNCTION__, ##__VA_ARGS__)
 
