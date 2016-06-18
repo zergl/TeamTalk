@@ -26,6 +26,7 @@ void msg_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void* 
     {
         CLoginConn* pConn = new CLoginConn();
         pConn->OnConnect2(handle, LOGIN_CONN_TYPE_MSG_SERV);
+        //为了适配第二个参数，硬是造出了一个OnConnect2接口~~ 对比基类OnConnect是有些别扭~~
     }
     else
     {
@@ -114,8 +115,12 @@ int main(int argc, char* argv[])
         http_listen_ip, 
         http_port);
 
+    //register timer's callback handler
     init_login_conn();
     init_http_conn();
+
+    //todo：其实可以在Connect类中抽象出一个OnTimeout()接口、并由继承类去重载定义即可（默认空实现）。
+
 
     printf("now enter the event loop...\n");
     

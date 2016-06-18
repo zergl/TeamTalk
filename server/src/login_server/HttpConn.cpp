@@ -32,7 +32,7 @@ void httpconn_callback(void* callback_data, uint8_t msg, uint32_t handle, uint32
 
     // convert void* to uint32_t, oops
     uint32_t conn_handle = *((uint32_t*)(&callback_data));
-    CHttpConn* pConn = FindHttpConnByHandle(conn_handle);
+    CHttpConn* pConn = HttpConnMgr::instance()->find_handle(conn_handle);
     if (!pConn) {
         return;
     }
