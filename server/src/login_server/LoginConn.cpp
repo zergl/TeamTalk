@@ -20,7 +20,13 @@ map<uint32_t, msg_serv_info_t*> g_msg_serv_info;
 void login_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
     uint64_t cur_time = get_tick_count();
-    for (ConnMap_t::iterator it = g_client_conn_map.begin(); it != g_client_conn_map.end(); ) 
+	/*
+	log("cur_time: %lu g_client_conn_map: %u g_msg_serv_conn_map: %u", 
+		cur_time, 
+		g_client_conn_map.size(),
+		g_msg_serv_conn_map.size());
+	*/
+	for (ConnMap_t::iterator it = g_client_conn_map.begin(); it != g_client_conn_map.end(); ) 
     {
         ConnMap_t::iterator it_old = it;
         it++;
@@ -118,11 +124,7 @@ void CLoginConn::OnTimer(uint64_t curr_tick)
         if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) 
         {
             IM::Other::IMHeartBeat msg;
-            CImPdu pdu;
-            pdu.SetPBMsg(&msg);
-            pdu.SetServiceId(SID_OTHER);
-            pdu.SetCommandId(CID_OTHER_HEARTBEAT);
-            SendPdu(&pdu);
+            SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
         }
 
         if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) 
