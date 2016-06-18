@@ -20,13 +20,7 @@ map<uint32_t, msg_serv_info_t*> g_msg_serv_info;
 void login_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
     uint64_t cur_time = get_tick_count();
-	/*
-	log("cur_time: %lu g_client_conn_map: %u g_msg_serv_conn_map: %u", 
-		cur_time, 
-		g_client_conn_map.size(),
-		g_msg_serv_conn_map.size());
-	*/
-	for (ConnMap_t::iterator it = g_client_conn_map.begin(); it != g_client_conn_map.end(); ) 
+    for (ConnMap_t::iterator it = g_client_conn_map.begin(); it != g_client_conn_map.end(); ) 
     {
         ConnMap_t::iterator it_old = it;
         it++;
@@ -114,6 +108,7 @@ void CLoginConn::OnTimer(uint64_t curr_tick)
 {
     if (m_conn_type == LOGIN_CONN_TYPE_CLIENT) 
     {
+		//客户端连接，超时则断开
         if (curr_tick > m_last_recv_tick + CLIENT_TIMEOUT) 
         {
             Close();
@@ -121,10 +116,17 @@ void CLoginConn::OnTimer(uint64_t curr_tick)
     } 
     else 
     {
+		//定时发送心跳包给msg_server
         if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) 
         {
             IM::Other::IMHeartBeat msg;
-            SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
+            CImPdu pdu;
+            pdu.SetPBMsg(&msg);
+            pdu.SetServiceId(SID_OTHER);
+            pdu.SetCommandId(CID_OTHER_HEARTBEAT);
+            SendPdu(&pdu);
+
+			SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
         }
 
         if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) 
@@ -187,17 +189,10 @@ void CLoginConn::_HandleUserCntUpdate(CImPdu* pPdu)
         IM::Server::IMUserCntUpdate msg;
         msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength());
 
-        uint32_t action = msg.user_action();
-        if (action == USER_CNT_INC) 
-        {
-            pMsgServInfo->cur_conn_cnt++;
-            g_total_online_user_cnt++;
-        } 
-        else 
-        {
-            pMsgServInfo->cur_conn_cnt--;
-            g_total_online_user_cnt--;
-        }
+		//@zergl: 每个用户上线、下线都来个通知信息~ 这思路…打脸啪啪啪~~~
+		uint32_t incr_num = (msg.user_action() == USER_CNT_INC) ? 1 : -1;
+		pMsgServInfo->cur_conn_cnt += incr_num;
+		g_total_online_user_cnt += incr_num;
 
         log("%s:%d, cur_cnt=%u, total_cnt=%u ", pMsgServInfo->hostname.c_str(),
             pMsgServInfo->port, pMsgServInfo->cur_conn_cnt, g_total_online_user_cnt);
