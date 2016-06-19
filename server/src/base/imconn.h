@@ -35,7 +35,7 @@ public:
 		pdu.SetPBMsg(&msg);
 		pdu.SetServiceId(service_id);
 		pdu.SetCommandId(command_id);
-		pdu.SetSeqNum(pPdu.GetSeqNum());
+		pdu.SetSeqNum(pdu.GetSeqNum());
 		return SendPdu(&pdu);
 	}
 
