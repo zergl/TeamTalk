@@ -88,6 +88,18 @@ void send_to_all_route_server(CImPdu* pPdu)
 	}
 }
 
+void send_to_all_route_server(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg)
+{
+	CRouteServConn* pConn = NULL;
+
+	for (uint32_t i = 0; i < g_route_server_count; i++) {
+		pConn = (CRouteServConn*)g_route_server_list[i].serv_conn;
+		if (pConn && pConn->IsOpen()) {
+			pConn->SendPdu(service_id, command_id, msg);
+		}
+	}
+}
+
 // get the oldest route server connection
 CRouteServConn* get_route_serv_conn()
 {

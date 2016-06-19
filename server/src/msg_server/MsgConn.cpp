@@ -96,7 +96,10 @@ void init_msg_conn()
 	signal(SIGUSR1, signal_handler_usr1);
 	signal(SIGUSR2, signal_handler_usr2);
 	signal(SIGHUP, signal_handler_hup);
+
 	netlib_register_timer(msg_conn_timer_callback, NULL, 1000);
+
+	//这个赋值很奇怪~~
 	s_file_handler = CFileHandler::getInstance();
 	s_group_chat = CGroupChat::GetInstance();
 }
@@ -136,24 +139,14 @@ void CMsgConn::SendUserStatusUpdate(uint32_t user_status)
     IM::Server::IMUserCntUpdate msg;
     msg.set_user_action(user_status == ::IM::BaseDefine::USER_STATUS_ONLINE ? USER_CNT_INC : USER_CNT_DEC);
     msg.set_user_id(pImUser->GetUserId());
-    
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg);
-    pdu.SetServiceId(SID_OTHER);
-    pdu.SetCommandId(CID_OTHER_USER_CNT_UPDATE);
-    send_to_all_login_server(&pdu);
-    
+	SendPdu(SID_OTHER, CID_OTHER_USER_CNT_UPDATE, msg);
+
     IM::Server::IMUserStatusUpdate msg2;
     msg2.set_user_status(::IM::BaseDefine::USER_STATUS_ONLINE);
     msg2.set_user_id(pImUser->GetUserId());
     msg2.set_client_type((::IM::BaseDefine::ClientType)m_client_type);
     
-    CImPdu pdu2;
-    pdu2.SetPBMsg(&msg2);
-    pdu2.SetServiceId(SID_OTHER);
-    pdu2.SetCommandId(CID_OTHER_USER_STATUS_UPDATE);
-    
-    send_to_all_route_server(&pdu2);
+    send_to_all_route_server(SID_OTHER, CID_OTHER_USER_STATUS_UPDATE, msg);
 }
 
 void CMsgConn::Close(bool kick_user)
@@ -406,15 +399,11 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
         msg.set_server_time(time(NULL));
         msg.set_result_code((IM::BaseDefine::ResultType)result);
         msg.set_result_string(result_string);
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_LOGIN);
-        pdu.SetCommandId(CID_LOGIN_RES_USERLOGIN);
-        pdu.SetSeqNum(pPdu->GetSeqNum());
-        SendPdu(&pdu);
+        SendPdu(SID_LOGIN, CID_LOGIN_RES_USERLOGIN, msg);
         Close();
         return;
     }
+
     IM::Login::IMLoginReq msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
     //假如是汉字，则转成拼音
@@ -430,6 +419,7 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
     m_online_status = online_status;
     log("HandleLoginReq, user_name=%s, status=%u, client_type=%u, client=%s, ",
         m_login_name.c_str(), online_status, m_client_type, m_client_version.c_str());
+
     CImUser* pImUser = CImUserManager::GetInstance()->GetImUserByLoginName(GetLoginName());
     if (!pImUser) {
         pImUser = new CImUser(GetLoginName());
@@ -444,38 +434,27 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
     msg2.set_user_name(msg.user_name());
     msg2.set_password(password);
     msg2.set_attach_data(attach_data.GetBuffer(), attach_data.GetLength());
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg2);
-    pdu.SetServiceId(SID_OTHER);
-    pdu.SetCommandId(CID_OTHER_VALIDATE_REQ);
-    pdu.SetSeqNum(pPdu->GetSeqNum());
-    pDbConn->SendPdu(&pdu);
+
+    pDbConn->SendPdu(SID_OTHER, CID_OTHER_VALIDATE_REQ, msg2);
 }
 
 void CMsgConn::_HandleLoginOutRequest(CImPdu *pPdu)
 {
     log("HandleLoginOutRequest, user_id=%d, client_type=%u. ", GetUserId(), GetClientType());
-    CDBServConn* pDBConn = get_db_serv_conn();
+
+	CDBServConn* pDBConn = get_db_serv_conn();
 	if (pDBConn) {
         IM::Login::IMDeviceTokenReq msg;
         msg.set_user_id(GetUserId());
         msg.set_device_token("");
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_LOGIN);
-        pdu.SetCommandId(CID_LOGIN_REQ_DEVICETOKEN);
-        pdu.SetSeqNum(pPdu->GetSeqNum());
-		pDBConn->SendPdu(&pdu);
+
+		pDBConn->SendPdu(SID_LOGIN, CID_LOGIN_REQ_DEVICETOKEN, msg);
 	}
     
     IM::Login::IMLogoutRsp msg2;
     msg2.set_result_code(0);
-    CImPdu pdu2;
-    pdu2.SetPBMsg(&msg2);
-    pdu2.SetServiceId(SID_LOGIN);
-    pdu2.SetCommandId(CID_LOGIN_RES_LOGINOUT);
-    pdu2.SetSeqNum(pPdu->GetSeqNum());
-    SendPdu(&pdu2);
+	SendPdu(SID_LOGIN, CID_LOGIN_RES_LOGINOUT, msg2);
+
     Close();
 }
 
@@ -503,22 +482,15 @@ void CMsgConn::_HandleKickPCClient(CImPdu *pPdu)
         msg2.set_user_id(user_id);
         msg2.set_client_type(::IM::BaseDefine::CLIENT_TYPE_MAC);
         msg2.set_reason(IM::BaseDefine::KICK_REASON_MOBILE_KICK);
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg2);
-        pdu.SetServiceId(SID_OTHER);
-        pdu.SetCommandId(CID_OTHER_SERVER_KICK_USER);
-        pRouteConn->SendPdu(&pdu);
+
+		pRouteConn->SendPdu(SID_OTHER, CID_OTHER_SERVER_KICK_USER, msg2);
     }
     
     IM::Login::IMKickPCClientRsp msg2;
     msg2.set_user_id(user_id);
     msg2.set_result_code(0);
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg2);
-    pdu.SetServiceId(SID_LOGIN);
-    pdu.SetCommandId(CID_LOGIN_RES_KICKPCCLIENT);
-    pdu.SetSeqNum(pPdu->GetSeqNum());
-    SendPdu(&pdu);
+
+	SendPdu(SID_LOGIN, CID_LOGIN_RES_KICKPCCLIENT, msg2);
 }
 
 void CMsgConn::_HandleClientRecentContactSessionRequest(CImPdu *pPdu)
@@ -602,12 +574,7 @@ void CMsgConn::_HandleClientTimeRequest(CImPdu* pPdu)
 {
     IM::Message::IMClientTimeRsp msg;
     msg.set_server_time((uint32_t)time(NULL));
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg);
-    pdu.SetServiceId(SID_MSG);
-    pdu.SetCommandId(CID_MSG_TIME_RESPONSE);
-    pdu.SetSeqNum(pPdu->GetSeqNum());
-	SendPdu(&pdu);
+	SendPdu(SID_MSG, CID_MSG_TIME_RESPONSE, msg);
 }
 
 void CMsgConn::_HandleClientGetMsgListRequest(CImPdu *pPdu)
@@ -685,18 +652,17 @@ void CMsgConn::_HandleClientMsgReadAck(CImPdu* pPdu)
     msg2.set_session_id(session_id);
     msg2.set_msg_id(msg_id);
     msg2.set_session_type((IM::BaseDefine::SessionType)session_type);
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg2);
-    pdu.SetServiceId(SID_MSG);
-    pdu.SetCommandId(CID_MSG_READ_NOTIFY);
+
     CImUser* pUser = CImUserManager::GetInstance()->GetImUserById(GetUserId());
     if (pUser)
     {
-        pUser->BroadcastPdu(&pdu, this);
+		pUser->BroadcastPdu(SID_MSG, CID_MSG_READ_NOTIFY, msg2, this);
     }
+
     CRouteServConn* pRouteConn = get_route_serv_conn();
-    if (pRouteConn) {
-        pRouteConn->SendPdu(&pdu);
+    if (pRouteConn)
+	{
+		pRouteConn->SendPdu(SID_MSG, CID_MSG_READ_NOTIFY, msg2);
     }
     
     if (session_type == IM::BaseDefine::SESSION_TYPE_SINGLE)
@@ -790,17 +756,15 @@ void CMsgConn::_HandleClientRemoveSessionRequest(CImPdu* pPdu)
         msg2.set_user_id(GetUserId());
         msg2.set_session_id(session_id);
         msg2.set_session_type((IM::BaseDefine::SessionType)session_type);
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg2);
-        pdu.SetServiceId(SID_BUDDY_LIST);
-        pdu.SetCommandId(CID_BUDDY_LIST_REMOVE_SESSION_NOTIFY);
+
         CImUser* pImUser = CImUserManager::GetInstance()->GetImUserById(GetUserId());
         if (pImUser) {
-            pImUser->BroadcastPdu(&pdu, this);
+			pImUser->BroadcastPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_REMOVE_SESSION_NOTIFY, msg2, this);
         }
+
         CRouteServConn* pRouteConn = get_route_serv_conn();
         if (pRouteConn) {
-            pRouteConn->SendPdu(&pdu);
+			pRouteConn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_REMOVE_SESSION_NOTIFY, msg2);
         }
     }
 }
@@ -883,7 +847,8 @@ void CMsgConn::_HandleClientDeviceToken(CImPdu *pPdu)
     IM::Login::IMDeviceTokenRsp msg2;
     msg.set_user_id(GetUserId());
     msg.set_client_type((::IM::BaseDefine::ClientType)GetClientType());
-    CImPdu pdu;
+	SendPdu(SID_LOGIN, CID_LOGIN_RES_DEVICETOKEN, msg);
+	CImPdu pdu;
     pdu.SetPBMsg(&msg2);
     pdu.SetServiceId(SID_LOGIN);
     pdu.SetCommandId(CID_LOGIN_RES_DEVICETOKEN);
@@ -892,9 +857,7 @@ void CMsgConn::_HandleClientDeviceToken(CImPdu *pPdu)
     
     CDBServConn* pDBConn = get_db_serv_conn();
 	if (pDBConn) {
-        msg.set_user_id(GetUserId());
-        pPdu->SetPBMsg(&msg);
-		pDBConn->SendPdu(pPdu);
+		pDBConn->SendPdu(SID_LOGIN, CID_LOGIN_RES_DEVICETOKEN, msg);
 	}
 }
 

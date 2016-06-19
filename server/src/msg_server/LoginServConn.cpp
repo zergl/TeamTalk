@@ -148,11 +148,8 @@ void CLoginServConn::OnConfirm()
     msg.set_max_conn_cnt(g_max_conn_cnt);
     msg.set_cur_conn_cnt(cur_conn_cnt);
     msg.set_host_name(hostname);
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg);
-    pdu.SetServiceId(SID_OTHER);
-    pdu.SetCommandId(CID_OTHER_MSG_SERV_INFO);
-    SendPdu(&pdu);
+
+    SendPdu(SID_OTHER, CID_OTHER_MSG_SERV_INFO, msg);
 }
 
 void CLoginServConn::OnClose()
@@ -163,13 +160,10 @@ void CLoginServConn::OnClose()
 
 void CLoginServConn::OnTimer(uint64_t curr_tick)
 {
-    if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) {
+    if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) 
+	{
         IM::Other::IMHeartBeat msg;
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_OTHER);
-        pdu.SetCommandId(CID_OTHER_HEARTBEAT);
-        SendPdu(&pdu);
+        SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
     }
 
     if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) 

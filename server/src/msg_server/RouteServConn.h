@@ -47,6 +47,8 @@ private:
 void init_route_serv_conn(serv_info_t* server_list, uint32_t server_count);
 bool is_route_server_available();
 void send_to_all_route_server(CImPdu* pPdu);
+void send_to_all_route_server(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg);
+
 CRouteServConn* get_route_serv_conn();
 
 

@@ -46,6 +46,7 @@ public:
     map<uint32_t, CMsgConn*>& GetMsgConnMap() { return m_conn_map; }
 
     void BroadcastPdu(CImPdu* pPdu, CMsgConn* pFromConn = NULL);
+	void BroadcastPdu(, CMsgConn* pFromConn = NULL);
     void BroadcastPduWithOutMobile(CImPdu* pPdu, CMsgConn* pFromConn = NULL);
     void BroadcastPduToMobile(CImPdu* pPdu, CMsgConn* pFromConn = NULL);
     void BroadcastClientMsgData(CImPdu* pPdu, uint32_t msg_id, CMsgConn* pFromConn = NULL, uint32_t from_id = 0);
