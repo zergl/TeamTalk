@@ -392,8 +392,8 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
     else if (!is_route_server_available()) {
         result = IM::BaseDefine::REFUSE_REASON_NO_ROUTE_SERVER;
         result_string = "服务端异常";
-    
-}
+	}
+
     if (result) {
         IM::Login::IMLoginRes msg;
         msg.set_server_time(time(NULL));
@@ -410,10 +410,13 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
     m_login_name = msg.user_name();
     string password = msg.password();
     uint32_t online_status = msg.online_status();
-    if (online_status < IM::BaseDefine::USER_STATUS_ONLINE || online_status > IM::BaseDefine::USER_STATUS_LEAVE) {
+    if (online_status < IM::BaseDefine::USER_STATUS_ONLINE 
+		|| online_status > IM::BaseDefine::USER_STATUS_LEAVE) 
+	{
         log("HandleLoginReq, online status wrong: %u ", online_status);
         online_status = IM::BaseDefine::USER_STATUS_ONLINE;
     }
+
     m_client_version = msg.client_version();
     m_client_type = msg.client_type();
     m_online_status = online_status;

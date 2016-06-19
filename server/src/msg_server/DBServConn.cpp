@@ -331,22 +331,20 @@ void CDBServConn::_HandleValidateResponse(CImPdu* pPdu)
         
         pUser->SetUserId(user_id);
         pUser->SetNickName(user_info.user_nick_name());
-        pUser->SetValidated();
+        pUser->SetValidated(); //帐号验证通过
         CImUserManager::GetInstance()->AddImUserById(user_id, pUser);
         
         pUser->KickOutSameClientType(pMsgConn->GetClientType(), IM::BaseDefine::KICK_REASON_DUPLICATE_USER, pMsgConn);
         
         CRouteServConn* pRouteConn = get_route_serv_conn();
-        if (pRouteConn) {
+        if (pRouteConn) 
+		{
             IM::Server::IMServerKickUser msg2;
             msg2.set_user_id(user_id);
             msg2.set_client_type((::IM::BaseDefine::ClientType)pMsgConn->GetClientType());
             msg2.set_reason(1);
-            CImPdu pdu;
-            pdu.SetPBMsg(&msg2);
-            pdu.SetServiceId(SID_OTHER);
-            pdu.SetCommandId(CID_OTHER_SERVER_KICK_USER);
-            pRouteConn->SendPdu(&pdu);
+
+			pRouteConn->SendPdu(SID_OTHER, CID_OTHER_SERVER_KICK_USER, msg2);
         }
         
         log("user_name: %s, uid: %d", login_name.c_str(), user_id);
@@ -372,12 +370,8 @@ void CDBServConn::_HandleValidateResponse(CImPdu* pPdu)
         user_info_tmp->set_user_tel(user_info.user_tel());
         user_info_tmp->set_user_domain(user_info.user_domain());
         user_info_tmp->set_status(user_info.status());
-        CImPdu pdu2;
-        pdu2.SetPBMsg(&msg3);
-        pdu2.SetServiceId(SID_LOGIN);
-        pdu2.SetCommandId(CID_LOGIN_RES_USERLOGIN);
-        pdu2.SetSeqNum(pPdu->GetSeqNum());
-        pMsgConn->SendPdu(&pdu2);
+
+        pMsgConn->SendPdu(SID_LOGIN, CID_LOGIN_RES_USERLOGIN, msg3);
     }
     else
     {
@@ -385,12 +379,9 @@ void CDBServConn::_HandleValidateResponse(CImPdu* pPdu)
         msg4.set_server_time(time(NULL));
         msg4.set_result_code((IM::BaseDefine::ResultType)result);
         msg4.set_result_string(result_string);
-        CImPdu pdu3;
-        pdu3.SetPBMsg(&msg4);
-        pdu3.SetServiceId(SID_LOGIN);
-        pdu3.SetCommandId(CID_LOGIN_RES_USERLOGIN);
-        pdu3.SetSeqNum(pPdu->GetSeqNum());
-        pMsgConn->SendPdu(&pdu3);
+
+        pMsgConn->SendPdu(SID_LOGIN, CID_LOGIN_RES_USERLOGIN, msg4);
+
         pMsgConn->Close();
     }
 }
@@ -515,12 +506,8 @@ void CDBServConn::_HandleMsgData(CImPdu *pPdu)
         msg2.set_msg_id(msg_id);
         msg2.set_session_id(to_user_id);
         msg2.set_session_type(::IM::BaseDefine::SESSION_TYPE_SINGLE);
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg2);
-        pdu.SetServiceId(SID_MSG);
-        pdu.SetCommandId(CID_MSG_DATA_ACK);
-        pdu.SetSeqNum(pPdu->GetSeqNum());
-        pMsgConn->SendPdu(&pdu);
+
+        pMsgConn->SendPdu(SID_MSG, CID_MSG_DATA_ACK, msg2);
     }
     
     CRouteServConn* pRouteConn = get_route_serv_conn();
@@ -544,11 +531,8 @@ void CDBServConn::_HandleMsgData(CImPdu *pPdu)
     IM::Server::IMGetDeviceTokenReq msg3;
     msg3.add_user_id(to_user_id);
     msg3.set_attach_data(pPdu->GetBodyData(), pPdu->GetBodyLength());
-    CImPdu pdu2;
-    pdu2.SetPBMsg(&msg3);
-    pdu2.SetServiceId(SID_OTHER);
-    pdu2.SetCommandId(CID_OTHER_GET_DEVICE_TOKEN_REQ);
-    SendPdu(&pdu2);
+
+    SendPdu(SID_OTHER, CID_OTHER_GET_DEVICE_TOKEN_REQ, msg3);
 }
 
 void CDBServConn::_HandleGetLatestMsgIDRsp(CImPdu *pPdu)
@@ -620,7 +604,8 @@ void CDBServConn::_HandleUsersInfoResponse(CImPdu* pPdu)
 void CDBServConn::_HandleStopReceivePacket(CImPdu* pPdu)
 {
 	log("HandleStopReceivePacket, from %s:%d.",
-			g_db_server_list[m_serv_idx].server_ip.c_str(), g_db_server_list[m_serv_idx].server_port);
+		g_db_server_list[m_serv_idx].server_ip.c_str(),
+		g_db_server_list[m_serv_idx].server_port);
 
 	m_bOpen = false;
 }
@@ -797,28 +782,22 @@ void CDBServConn::_HandleGetDeviceTokenResponse(CImPdu *pPdu)
             msg5.set_user_id(0);
             msg5.add_user_id_list(user_id);
             msg5.set_attach_data(attach_data.GetBuffer(), attach_data.GetLength());
-            CImPdu pdu2;
-            pdu2.SetPBMsg(&msg5);
-            pdu2.SetServiceId(SID_BUDDY_LIST);
-            pdu2.SetCommandId(CID_BUDDY_LIST_USERS_STATUS_REQUEST);
+            
             CRouteServConn* route_conn = get_route_serv_conn();
             if (route_conn)
             {
                 route_conn->SendPdu(&pdu2);
+				route_conn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_USERS_STATUS_REQUEST, msg5);
             }
         }
     }
     
     if (msg3.user_token_list_size() > 0)
     {
-        CImPdu pdu3;
-        pdu3.SetPBMsg(&msg3);
-        pdu3.SetServiceId(SID_OTHER);
-        pdu3.SetCommandId(CID_OTHER_PUSH_TO_USER_REQ);
-        
         CPushServConn* PushConn = get_push_serv_conn();
-        if (PushConn) {
-            PushConn->SendPdu(&pdu3);
+        if (PushConn) 
+		{
+            PushConn->SendPdu(SID_OTHER, CID_OTHER_PUSH_TO_USER_REQ, msg3);
         }
     }
 }
@@ -837,33 +816,28 @@ void CDBServConn::_HandleChangeSignInfoResponse(CImPdu* pPdu) {
     
         CMsgConn* pMsgConn = CImUserManager::GetInstance()->GetMsgConnByHandle(user_id, handle);
     
-        if (pMsgConn && pMsgConn->IsOpen()) {
-                msg.clear_attach_data();
-                pPdu->SetPBMsg(&msg);
-                pMsgConn->SendPdu(pPdu);
-        }else {
-                   log("HandleChangeSignInfoResp: can't found msg_conn by user_id = %u, handle = %u", user_id, handle);
-
+        if (pMsgConn && pMsgConn->IsOpen()) 
+		{
+			msg.clear_attach_data();
+			pPdu->SetPBMsg(&msg);
+			pMsgConn->SendPdu(pPdu);
+        } else {
+			log("HandleChangeSignInfoResp: can't found msg_conn by user_id = %u, handle = %u", user_id, handle);
         }
     
         if (!result) {
-                CRouteServConn* route_conn = get_route_serv_conn();
-                if (route_conn) {
-                        IM::Buddy::IMSignInfoChangedNotify notify_msg;
-                        notify_msg.set_changed_user_id(user_id);
-                        notify_msg.set_sign_info(msg.sign_info());
-            
-                        CImPdu notify_pdu;
-                        notify_pdu.SetPBMsg(&notify_msg);
-                        notify_pdu.SetServiceId(SID_BUDDY_LIST);
-                        notify_pdu.SetCommandId(CID_BUDDY_LIST_SIGN_INFO_CHANGED_NOTIFY);
-            
-                        route_conn->SendPdu(&notify_pdu);
-                }else {
-                            log("HandleChangeSignInfoResp: can't found route_conn");
-                    
-                }
-           }
+			CRouteServConn* route_conn = get_route_serv_conn();
+            if (route_conn) 
+			{
+				IM::Buddy::IMSignInfoChangedNotify notify_msg;
+				notify_msg.set_changed_user_id(user_id);
+				notify_msg.set_sign_info(msg.sign_info());
+				
+				route_conn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_SIGN_INFO_CHANGED_NOTIFY, notify_msg);
+            } else {
+				log("HandleChangeSignInfoResp: can't found route_conn");
+			}
+		}
     }
 
 
