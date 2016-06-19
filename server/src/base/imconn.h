@@ -35,7 +35,8 @@ public:
 		pdu.SetPBMsg(&msg);
 		pdu.SetServiceId(service_id);
 		pdu.SetCommandId(command_id);
-		SendPdu(&pdu);
+		pdu.SetSeqNum(pPdu.GetSeqNum());
+		return SendPdu(&pdu);
 	}
 
 	int Send(void* data, int len);
