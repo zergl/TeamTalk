@@ -5,9 +5,9 @@
  *      Author: ziteng@mogujie.com
  */
 
-#include "netlib.h"
-#include "EncDec.h"
-#include "ConfigFileReader.h"
+#include "base/netlib.h"
+#include "base/EncDec.h"
+#include "base/ConfigFileReader.h"
 #include "MsgConn.h"
 #include "LoginServConn.h"
 #include "RouteServConn.h"

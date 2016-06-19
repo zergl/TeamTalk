@@ -11,8 +11,8 @@
 
 #include <iostream>
 
-#include "imconn.h"
-#include "ServInfo.h"
+#include "base/imconn.h"
+#include "base/ServInfo.h"
 
 class CPushServConn : public CImConn
 {

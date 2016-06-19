@@ -11,9 +11,9 @@
 
 #include <iostream>
 
-#include "imconn.h"
-#include "ServInfo.h"
-#include "BaseSocket.h"
+#include "base/imconn.h"
+#include "base/ServInfo.h"
+#include "base/BaseSocket.h"
 #include "IM.BaseDefine.pb.h"
 class CFileServConn : public CImConn
 {

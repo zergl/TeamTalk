@@ -5,7 +5,7 @@
  *      Author: ziteng@mogujie.com
  */
 
-#include "EncDec.h"
+#include "base/EncDec.h"
 #include "DBServConn.h"
 #include "MsgConn.h"
 #include "RouteServConn.h"
@@ -22,8 +22,8 @@
 #include "IM.Group.pb.h"
 #include "IM.Message.pb.h"
 #include "IM.Server.pb.h"
-#include "ImPduBase.h"
-#include "public_define.h"
+#include "base/ImPduBase.h"
+#include "base/public_define.h"
 using namespace IM::BaseDefine;
 
 static ConnMap_t g_db_server_conn_map;
@@ -786,7 +786,6 @@ void CDBServConn::_HandleGetDeviceTokenResponse(CImPdu *pPdu)
             CRouteServConn* route_conn = get_route_serv_conn();
             if (route_conn)
             {
-                route_conn->SendPdu(&pdu2);
 				route_conn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_USERS_STATUS_REQUEST, msg5);
             }
         }

@@ -11,8 +11,8 @@
 #include "ImUser.h"
 #include "IM.Other.pb.h"
 #include "IM.Server.pb.h"
-#include "ImPduBase.h"
-#include "public_define.h"
+#include "base/ImPduBase.h"
+#include "base/public_define.h"
 using namespace IM::BaseDefine;
 
 static ConnMap_t g_login_server_conn_map;

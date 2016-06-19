@@ -8,8 +8,8 @@
 #ifndef DBSERVCONN_H_
 #define DBSERVCONN_H_
 
-#include "imconn.h"
-#include "ServInfo.h"
+#include "base/imconn.h"
+#include "base/ServInfo.h"
 #include "RouteServConn.h"
 
 class CDBServConn : public CImConn

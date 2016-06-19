@@ -8,8 +8,8 @@
 #ifndef IMUSER_H_
 #define IMUSER_H_
 
-#include "imconn.h"
-#include "public_define.h"
+#include "base/imconn.h"
+#include "base/public_define.h"
 #define MAX_ONLINE_FRIEND_CNT		100	//通知好友状态通知的最多个数
 
 class CMsgConn;

@@ -8,8 +8,8 @@
 #ifndef LOGINSERVCONN_H_
 #define LOGINSERVCONN_H_
 
-#include "imconn.h"
-#include "ServInfo.h"
+#include "base/imconn.h"
+#include "base/ServInfo.h"
 
 class CLoginServConn : public CImConn
 {

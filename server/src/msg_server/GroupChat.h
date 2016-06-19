@@ -8,7 +8,7 @@
 #ifndef GROUPCHAT_H_
 #define GROUPCHAT_H_
 
-#include "ImPduBase.h" 
+#include "base/ImPduBase.h" 
 
 typedef set<uint32_t> group_member_t;
 typedef hash_map<uint32_t, group_member_t*> group_map_t;

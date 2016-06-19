@@ -85,7 +85,7 @@ void CImUser::BroadcastPdu(CImPdu* pPdu, CMsgConn* pFromConn)
     }
 }
 
-void BroadcastPdu(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg, CMsgConn* pFromConn)
+void CImUser::BroadcastPdu(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg, CMsgConn* pFromConn)
 {
 	CImPdu pPdu;
 	for (map<uint32_t, CMsgConn*>::iterator it = m_conn_map.begin(); it != m_conn_map.end(); it++)

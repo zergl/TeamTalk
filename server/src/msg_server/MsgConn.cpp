@@ -20,8 +20,8 @@
 #include "IM.Group.pb.h"
 #include "IM.Server.pb.h"
 #include "IM.SwitchService.pb.h"
-#include "public_define.h"
-#include "ImPduBase.h"
+#include "base/public_define.h"
+#include "base/ImPduBase.h"
 using namespace IM::BaseDefine;
 
 #define TIMEOUT_WATI_LOGIN_RESPONSE		15000	// 15 seconds
