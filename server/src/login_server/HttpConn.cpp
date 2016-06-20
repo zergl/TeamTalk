@@ -9,13 +9,11 @@
 #include "json/json.h"
 #include "LoginConn.h"
 #include "base/HttpParserWrapper.h"
-#include "ipparser.h"
 
 extern map<uint32_t, msg_serv_info_t*>  g_msg_serv_info;
 
 HttpConnMgr *HttpConnMgr::_inst = NULL;
 
-extern IpParser* pIpParser;
 extern string strMsfsUrl;
 extern string strDiscovery;
 
@@ -241,10 +239,13 @@ void CHttpConn::_HandleMsgServRequest(string& url, string& post_data)
     {
         Json::Value value;
         value["code"] = 1;
-        value["msg"] = "没有msg_server";
+        value["msg"] = "not msg_server found.";
         string strContent = value.toStyledString();
         char* szContent = new char[HTTP_RESPONSE_HTML_MAX];
-        snprintf(szContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, strContent.length(), strContent.c_str());
+        snprintf(szContent, HTTP_RESPONSE_HTML_MAX, 
+			HTTP_RESPONSE_HTML, 
+			strContent.length(), 
+			strContent.c_str());
         Send((void*)szContent, strlen(szContent));
         delete [] szContent;
         return ;
@@ -281,18 +282,9 @@ void CHttpConn::_HandleMsgServRequest(string& url, string& post_data)
         value["msfsBackup"] = strMsfsUrl;
         value["discovery"] = strDiscovery;
         value["port"] = int2string(it_min_conn->second->port);
-        
-        if(pIpParser->isTelcome(GetPeerIP())) //@zergl: 这个判断有用么？没看懂地说~~
-        {
-            value["priorIP"] = string(it_min_conn->second->ip_addr1);
-            value["backupIP"] = string(it_min_conn->second->ip_addr2);
-        }
-        else
-        {
-            value["priorIP"] = string(it_min_conn->second->ip_addr2);
-            value["backupIP"] = string(it_min_conn->second->ip_addr1);
-        }
-        
+        value["priorIP"] = string(it_min_conn->second->ip_addr1);
+        value["backupIP"] = string(it_min_conn->second->ip_addr2);
+
         string strContent = value.toStyledString();
 
         char* szContent = new char[HTTP_RESPONSE_HTML_MAX];

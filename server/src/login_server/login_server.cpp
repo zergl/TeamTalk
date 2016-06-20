@@ -10,9 +10,7 @@
 #include "base/ConfigFileReader.h"
 #include "base/version.h"
 #include "HttpConn.h"
-#include "ipparser.h"
 
-IpParser* pIpParser = NULL;
 string strMsfsUrl;
 string strDiscovery;//发现获取地址
 
@@ -81,9 +79,6 @@ int main(int argc, char* argv[])
     uint16_t http_port = atoi(str_http_port);
     strMsfsUrl = str_msfs_url;
     strDiscovery = str_discovery;
-    
-    
-    pIpParser = new IpParser();
     
     int ret = netlib_init();
 
