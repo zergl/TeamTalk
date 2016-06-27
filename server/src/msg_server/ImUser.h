@@ -86,7 +86,8 @@ public:
     CMsgConn* GetMsgConnByHandle(uint32_t user_id, uint32_t handle);
     bool AddImUserByLoginName(string login_name, CImUser* pUser);
     void RemoveImUserByLoginName(string login_name);
-    
+    bool AddUserInfo(const string &login_name);
+
     bool AddImUserById(uint32_t user_id, CImUser* pUser);
     void RemoveImUserById(uint32_t user_id);
     
