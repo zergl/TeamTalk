@@ -78,14 +78,16 @@ bool is_route_server_available()
 
 void send_to_all_route_server(CImPdu* pPdu)
 {
-	CRouteServConn* pConn = NULL;
+    CRouteServConn* pConn = NULL;
 
-	for (uint32_t i = 0; i < g_route_server_count; i++) {
-		pConn = (CRouteServConn*)g_route_server_list[i].serv_conn;
-		if (pConn && pConn->IsOpen()) {
-			pConn->SendPdu(pPdu);
-		}
-	}
+    for (uint32_t i = 0; i < g_route_server_count; i++) 
+    {
+        pConn = (CRouteServConn*)g_route_server_list[i].serv_conn;
+        if (pConn && pConn->IsOpen()) 
+        {
+            pConn->SendPdu(pPdu);
+        }
+    }
 }
 
 void send_to_all_route_server(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg)
@@ -309,8 +311,8 @@ void CRouteServConn::_HandleMsgData(CImPdu* pPdu)
         s_group_chat->HandleGroupMessageBroadcast(pPdu);
         return;
     }
-	uint32_t from_user_id = msg.from_user_id();
-	uint32_t to_user_id = msg.to_session_id();
+    uint32_t from_user_id = msg.from_user_id();
+    uint32_t to_user_id = msg.to_session_id();
     uint32_t msg_id = msg.msg_id();
 	log("HandleMsgData, %u->%u, msg_id=%u. ", from_user_id, to_user_id, msg_id);
     

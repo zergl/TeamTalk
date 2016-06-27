@@ -260,6 +260,14 @@ bool CImUserManager::AddImUserByLoginName(string login_name, CImUser *pUser)
     return bRet;
 }
 
+bool CImUserManager::AddUserInfo(string login_name)
+{
+    CImUser *u = new CImUser(login_name);
+    m_im_user_map_by_name[login_name] = u;
+
+    return true;
+}
+
 void CImUserManager::RemoveImUserByLoginName(string login_name)
 {
     m_im_user_map_by_name.erase(login_name);

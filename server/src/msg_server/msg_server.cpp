@@ -84,7 +84,6 @@ int main(int argc, char* argv[])
     // 这样当其他业务量非常繁忙时，也不会影响客服端的登录验证
     // 建议配置4个实例，这样更新BusinessServer时，不会影响业务
     if (db_server_count < 2) {
-		//@zergl：随便配个2就可以了，这么不严谨~~
         log("DBServerIP need 2 instance at lest ");
         return 1;
     }

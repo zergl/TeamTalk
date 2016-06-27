@@ -44,64 +44,67 @@ static CGroupChat* s_group_chat = NULL;
 
 void msg_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	ConnMap_t::iterator it_old;
-	CMsgConn* pConn = NULL;
-	uint64_t cur_time = get_tick_count();
+    ConnMap_t::iterator it_old;
+    CMsgConn* pConn = NULL;
+    uint64_t cur_time = get_tick_count();
 
-	for (ConnMap_t::iterator it = g_msg_conn_map.begin(); it != g_msg_conn_map.end(); ) {
-		it_old = it;
-		it++;
+    for (ConnMap_t::iterator it = g_msg_conn_map.begin(); it != g_msg_conn_map.end(); ) 
+    {
+        it_old = it;
+        it++;
 
-		pConn = (CMsgConn*)it_old->second;
-		pConn->OnTimer(cur_time);
-	}
+        pConn = (CMsgConn*)it_old->second;
+        pConn->OnTimer(cur_time);
+    }
 
-	if (cur_time > g_last_stat_tick + LOG_MSG_STAT_INTERVAL) {
-		g_last_stat_tick = cur_time;
-		log("up_msg_cnt=%u, up_msg_miss_cnt=%u, down_msg_cnt=%u, down_msg_miss_cnt=%u ",
-			g_up_msg_total_cnt, g_up_msg_miss_cnt, g_down_msg_total_cnt, g_down_msg_miss_cnt);
-	}
+    if (cur_time > g_last_stat_tick + LOG_MSG_STAT_INTERVAL) 
+    {
+        g_last_stat_tick = cur_time;
+        log("up_msg_cnt=%u, up_msg_miss_cnt=%u, down_msg_cnt=%u, down_msg_miss_cnt=%u ",
+            g_up_msg_total_cnt, g_up_msg_miss_cnt, g_down_msg_total_cnt, g_down_msg_miss_cnt);
+    }
 }
 
 static void signal_handler_usr1(int sig_no)
 {
-	if (sig_no == SIGUSR1) {
-		log("receive SIGUSR1 ");
-		g_up_msg_total_cnt = 0;
-		g_up_msg_miss_cnt = 0;
-		g_down_msg_total_cnt = 0;
-		g_down_msg_miss_cnt = 0;
-	}
+    if (sig_no != SIGUSR1)
+        return;
+
+    log("receive SIGUSR1 ");
+    g_up_msg_total_cnt = 0;
+    g_up_msg_miss_cnt = 0;
+    g_down_msg_total_cnt = 0;
+    g_down_msg_miss_cnt = 0;
 }
 
 static void signal_handler_usr2(int sig_no)
 {
-	if (sig_no == SIGUSR2) {
-		log("receive SIGUSR2 ");
-		g_log_msg_toggle = !g_log_msg_toggle;
-	}
+    if (sig_no == SIGUSR2) {
+        log("receive SIGUSR2 ");
+        g_log_msg_toggle = !g_log_msg_toggle;
+    }
 }
 
 static void signal_handler_hup(int sig_no)
 {
-	if (sig_no == SIGHUP) {
-		log("receive SIGHUP exit... ");
-		exit(0);
-	}
+    if (sig_no == SIGHUP) {
+        log("receive SIGHUP exit... ");
+        exit(0);
+    }
 }
 
 void init_msg_conn()
 {
-	g_last_stat_tick = get_tick_count();
-	signal(SIGUSR1, signal_handler_usr1);
-	signal(SIGUSR2, signal_handler_usr2);
-	signal(SIGHUP, signal_handler_hup);
+    g_last_stat_tick = get_tick_count();
+    signal(SIGUSR1, signal_handler_usr1);
+    signal(SIGUSR2, signal_handler_usr2);
+    signal(SIGHUP, signal_handler_hup);
 
-	netlib_register_timer(msg_conn_timer_callback, NULL, 1000);
+    netlib_register_timer(msg_conn_timer_callback, NULL, 1000);
 
-	//这个赋值很奇怪~~
-	s_file_handler = CFileHandler::getInstance();
-	s_group_chat = CGroupChat::GetInstance();
+    //这个赋值很奇怪~~
+    s_file_handler = CFileHandler::getInstance();
+    s_group_chat = CGroupChat::GetInstance();
 }
 
 ////////////////////////////
@@ -139,7 +142,7 @@ void CMsgConn::SendUserStatusUpdate(uint32_t user_status)
     IM::Server::IMUserCntUpdate msg;
     msg.set_user_action(user_status == ::IM::BaseDefine::USER_STATUS_ONLINE ? USER_CNT_INC : USER_CNT_DEC);
     msg.set_user_id(pImUser->GetUserId());
-	SendPdu(SID_OTHER, CID_OTHER_USER_CNT_UPDATE, msg);
+    SendPdu(SID_OTHER, CID_OTHER_USER_CNT_UPDATE, msg);
 
     IM::Server::IMUserStatusUpdate msg2;
     msg2.set_user_status(::IM::BaseDefine::USER_STATUS_ONLINE);
@@ -176,32 +179,31 @@ void CMsgConn::Close(bool kick_user)
         }
     }
 
-    
     ReleaseRef();
 }
 
 void CMsgConn::OnConnect(net_handle_t handle)
 {
-	m_handle = handle;
-	m_login_time = get_tick_count();
+    m_handle = handle;
+    m_login_time = get_tick_count();
 
-	g_msg_conn_map.insert(make_pair(handle, this));
+    g_msg_conn_map.insert(make_pair(handle, this));
 
-	netlib_option(handle, NETLIB_OPT_SET_CALLBACK, (void*)imconn_callback);
-	netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, (void*)&g_msg_conn_map);
-	netlib_option(handle, NETLIB_OPT_GET_REMOTE_IP, (void*)&m_peer_ip);
-	netlib_option(handle, NETLIB_OPT_GET_REMOTE_PORT, (void*)&m_peer_port);
+    netlib_option(handle, NETLIB_OPT_SET_CALLBACK, (void*)imconn_callback);
+    netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, (void*)&g_msg_conn_map);
+    netlib_option(handle, NETLIB_OPT_GET_REMOTE_IP, (void*)&m_peer_ip);
+    netlib_option(handle, NETLIB_OPT_GET_REMOTE_PORT, (void*)&m_peer_port);
 }
 
 void CMsgConn::OnClose()
 {
     log("Warning: peer closed. ");
-	Close();
+    Close();
 }
 
 void CMsgConn::OnTimer(uint64_t curr_tick)
 {
-	m_msg_cnt_per_sec = 0;
+    m_msg_cnt_per_sec = 0;
 
     if (CHECK_CLIENT_TYPE_MOBILE(GetClientType()))
     {
@@ -221,43 +223,48 @@ void CMsgConn::OnTimer(uint64_t curr_tick)
     }
     
 
-	if (!IsOpen()) {
-		if (curr_tick > m_login_time + TIMEOUT_WATI_LOGIN_RESPONSE) {
-			log("login timeout, handle=%d, uid=%u ", m_handle, GetUserId());
-			Close();
-			return;
-		}
-	}
+    if (!IsOpen()) 
+    {
+        if (curr_tick > m_login_time + TIMEOUT_WATI_LOGIN_RESPONSE) 
+        {
+            log("login timeout, handle=%d, uid=%u ", m_handle, GetUserId());
+            Close();
+            return;
+        }
+    }
 
-	list<msg_ack_t>::iterator it_old;
-	for (list<msg_ack_t>::iterator it = m_send_msg_list.begin(); it != m_send_msg_list.end(); ) {
-		msg_ack_t msg = *it;
-		it_old = it;
-		it++;
-		if (curr_tick >= msg.timestamp + TIMEOUT_WAITING_MSG_DATA_ACK) {
-			log("!!!a msg missed, msg_id=%u, %u->%u ", msg.msg_id, msg.from_id, GetUserId());
-			g_down_msg_miss_cnt++;
-			m_send_msg_list.erase(it_old);
-		} else {
-			break;
-		}
-	}
+    list<msg_ack_t>::iterator it_old;
+    for (list<msg_ack_t>::iterator it = m_send_msg_list.begin(); it != m_send_msg_list.end(); ) 
+    {
+        msg_ack_t msg = *it;
+        it_old = it;
+        it++;
+        if (curr_tick >= msg.timestamp + TIMEOUT_WAITING_MSG_DATA_ACK) 
+        {
+            log("!!!a msg missed, msg_id=%u, %u->%u ", msg.msg_id, msg.from_id, GetUserId());
+            g_down_msg_miss_cnt++;
+            m_send_msg_list.erase(it_old);
+        } else {
+            break;
+        }
+    }
 }
 
 void CMsgConn::HandlePdu(CImPdu* pPdu)
 {
-	// request authorization check
-	if (pPdu->GetCommandId() != CID_LOGIN_REQ_USERLOGIN && !IsOpen() && IsKickOff()) {
+    // request authorization check
+    if (pPdu->GetCommandId() != CID_LOGIN_REQ_USERLOGIN && !IsOpen() && IsKickOff()) {
         log("HandlePdu, wrong msg. ");
         throw CPduException(pPdu->GetServiceId(), pPdu->GetCommandId(), ERROR_CODE_WRONG_SERVICE_ID, "HandlePdu error, user not login. ");
-		return;
+        return;
     }
-	switch (pPdu->GetCommandId()) {
+
+    switch (pPdu->GetCommandId()) {
         case CID_OTHER_HEARTBEAT:
             _HandleHeartBeat(pPdu);
             break;
-        case CID_LOGIN_REQ_USERLOGIN:
-            _HandleLoginRequest(pPdu );
+        case CID_LOGIN_REQ_USERLOGIN: //客户端上行登录请求包
+            _HandleLoginRequest(pPdu);
             break;
         case CID_LOGIN_REQ_LOGINOUT:
             _HandleLoginOutRequest(pPdu);
@@ -359,7 +366,7 @@ void CMsgConn::HandlePdu(CImPdu* pPdu)
         default:
             log("wrong msg, cmd id=%d, user id=%u. ", pPdu->GetCommandId(), GetUserId());
             break;
-	}
+    }
 }
 
 void CMsgConn::_HandleHeartBeat(CImPdu *pPdu)
@@ -384,55 +391,60 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
     if (!pDbConn) {
         result = IM::BaseDefine::REFUSE_REASON_NO_DB_SERVER;
         result_string = "服务端异常";
-	}
+    }
     else if (!is_login_server_available()) {
         result = IM::BaseDefine::REFUSE_REASON_NO_LOGIN_SERVER;
         result_string = "服务端异常";
-	}
+    }
     else if (!is_route_server_available()) {
         result = IM::BaseDefine::REFUSE_REASON_NO_ROUTE_SERVER;
         result_string = "服务端异常";
-	}
+    }
 
-    if (result) {
+    if (result) 
+    {
         IM::Login::IMLoginRes msg;
         msg.set_server_time(time(NULL));
         msg.set_result_code((IM::BaseDefine::ResultType)result);
         msg.set_result_string(result_string);
         SendPdu(SID_LOGIN, CID_LOGIN_RES_USERLOGIN, msg);
+        
         Close();
         return;
     }
 
     IM::Login::IMLoginReq msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
+    
     //假如是汉字，则转成拼音
     m_login_name = msg.user_name();
-    string password = msg.password();
+    string password = msg.password(); //直接传密码明文 wtf！！！
     uint32_t online_status = msg.online_status();
     if (online_status < IM::BaseDefine::USER_STATUS_ONLINE 
-		|| online_status > IM::BaseDefine::USER_STATUS_LEAVE) 
-	{
+        || online_status > IM::BaseDefine::USER_STATUS_LEAVE) 
+    {
         log("HandleLoginReq, online status wrong: %u ", online_status);
         online_status = IM::BaseDefine::USER_STATUS_ONLINE;
     }
 
     m_client_version = msg.client_version();
-    m_client_type = msg.client_type();
+    m_client_type = msg.client_type();    //客户端类型，PC、android、ios等
     m_online_status = online_status;
     log("HandleLoginReq, user_name=%s, status=%u, client_type=%u, client=%s, ",
         m_login_name.c_str(), online_status, m_client_type, m_client_version.c_str());
 
     CImUser* pImUser = CImUserManager::GetInstance()->GetImUserByLoginName(GetLoginName());
     if (!pImUser) {
-        pImUser = new CImUser(GetLoginName());
-        CImUserManager::GetInstance()->AddImUserByLoginName(GetLoginName(), pImUser);
+        //pImUser = new CImUser(GetLoginName());
+        //CImUserManager::GetInstance()->AddImUserByLoginName(GetLoginName(), pImUser);
+        CImUserManager::GetInstance()->AddUserInfo(m_login_name);
     }
-    pImUser->AddUnValidateMsgConn(this);
+    pImUser->AddUnValidateMsgConn(this);   //多终端登录时，每个登录都需要验证的
     
     CDbAttachData attach_data(ATTACH_TYPE_HANDLE, m_handle, 0);
     // continue to validate if the user is OK
     
+    //向db_proxy_server发送帐号验证请求
     IM::Server::IMValidateReq msg2;
     msg2.set_user_name(msg.user_name());
     msg2.set_password(password);
@@ -445,18 +457,19 @@ void CMsgConn::_HandleLoginOutRequest(CImPdu *pPdu)
 {
     log("HandleLoginOutRequest, user_id=%d, client_type=%u. ", GetUserId(), GetClientType());
 
-	CDBServConn* pDBConn = get_db_serv_conn();
-	if (pDBConn) {
+    CDBServConn* pDBConn = get_db_serv_conn();
+    if (pDBConn) 
+    {
         IM::Login::IMDeviceTokenReq msg;
         msg.set_user_id(GetUserId());
         msg.set_device_token("");
 
-		pDBConn->SendPdu(SID_LOGIN, CID_LOGIN_REQ_DEVICETOKEN, msg);
-	}
+        pDBConn->SendPdu(SID_LOGIN, CID_LOGIN_REQ_DEVICETOKEN, msg);
+    }
     
     IM::Login::IMLogoutRsp msg2;
     msg2.set_result_code(0);
-	SendPdu(SID_LOGIN, CID_LOGIN_RES_LOGINOUT, msg2);
+    SendPdu(SID_LOGIN, CID_LOGIN_RES_LOGINOUT, msg2);
 
     Close();
 }
@@ -519,15 +532,15 @@ void CMsgConn::_HandleClientMsgData(CImPdu* pPdu)
 {
     IM::Message::IMMsgData msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
-	if (msg.msg_data().length() == 0) {
-		log("discard an empty message, uid=%u ", GetUserId());
-		return;
-	}
+    if (msg.msg_data().length() == 0) {
+        log("discard an empty message, uid=%u ", GetUserId());
+        return;
+    }
 
-	if (m_msg_cnt_per_sec >= MAX_MSG_CNT_PER_SECOND) {
-		log("!!!too much msg cnt in one second, uid=%u ", GetUserId());
-		return;
-	}
+    if (m_msg_cnt_per_sec >= MAX_MSG_CNT_PER_SECOND) {
+        log("!!!too much msg cnt in one second, uid=%u ", GetUserId());
+        return;
+    }
     
     if (msg.from_user_id() == msg.to_session_id() && CHECK_MSG_TYPE_SINGLE(msg.msg_type()))
     {
@@ -535,28 +548,28 @@ void CMsgConn::_HandleClientMsgData(CImPdu* pPdu)
         return;
     }
 
-	m_msg_cnt_per_sec++;
+    m_msg_cnt_per_sec++;
 
-	uint32_t to_session_id = msg.to_session_id();
+    uint32_t to_session_id = msg.to_session_id();
     uint32_t msg_id = msg.msg_id();
-	uint8_t msg_type = msg.msg_type();
+    uint8_t msg_type = msg.msg_type();
     string msg_data = msg.msg_data();
 
-	if (g_log_msg_toggle) {
-		log("HandleClientMsgData, %d->%d, msg_type=%u, msg_id=%u. ", GetUserId(), to_session_id, msg_type, msg_id);
-	}
+    if (g_log_msg_toggle) {
+        log("HandleClientMsgData, %d->%d, msg_type=%u, msg_id=%u. ", GetUserId(), to_session_id, msg_type, msg_id);
+    }
 
-	uint32_t cur_time = time(NULL);
+    uint32_t cur_time = time(NULL);
     CDbAttachData attach_data(ATTACH_TYPE_HANDLE, m_handle, 0);
     msg.set_from_user_id(GetUserId());
     msg.set_create_time(cur_time);
     msg.set_attach_data(attach_data.GetBuffer(), attach_data.GetLength());
     pPdu->SetPBMsg(&msg);
-	// send to DB storage server
-	CDBServConn* pDbConn = get_db_serv_conn();
-	if (pDbConn) {
-		pDbConn->SendPdu(pPdu);
-	}
+    // send to DB storage server
+    CDBServConn* pDbConn = get_db_serv_conn();
+    if (pDbConn) {
+        pDbConn->SendPdu(pPdu);
+    }
 }
 
 void CMsgConn::_HandleClientMsgDataAck(CImPdu* pPdu)
@@ -850,8 +863,8 @@ void CMsgConn::_HandleClientDeviceToken(CImPdu *pPdu)
     IM::Login::IMDeviceTokenRsp msg2;
     msg.set_user_id(GetUserId());
     msg.set_client_type((::IM::BaseDefine::ClientType)GetClientType());
-	SendPdu(SID_LOGIN, CID_LOGIN_RES_DEVICETOKEN, msg);
-	CImPdu pdu;
+    SendPdu(SID_LOGIN, CID_LOGIN_RES_DEVICETOKEN, msg);
+    CImPdu pdu;
     pdu.SetPBMsg(&msg2);
     pdu.SetServiceId(SID_LOGIN);
     pdu.SetCommandId(CID_LOGIN_RES_DEVICETOKEN);
@@ -859,21 +872,21 @@ void CMsgConn::_HandleClientDeviceToken(CImPdu *pPdu)
     SendPdu(&pdu);
     
     CDBServConn* pDBConn = get_db_serv_conn();
-	if (pDBConn) {
-		pDBConn->SendPdu(SID_LOGIN, CID_LOGIN_RES_DEVICETOKEN, msg);
-	}
+    if (pDBConn) {
+        pDBConn->SendPdu(SID_LOGIN, CID_LOGIN_RES_DEVICETOKEN, msg);
+    }
 }
 
 void CMsgConn::AddToSendList(uint32_t msg_id, uint32_t from_id)
 {
-	//log("AddSendMsg, seq_no=%u, from_id=%u ", seq_no, from_id);
-	msg_ack_t msg;
-	msg.msg_id = msg_id;
-	msg.from_id = from_id;
-	msg.timestamp = get_tick_count();
-	m_send_msg_list.push_back(msg);
+    //log("AddSendMsg, seq_no=%u, from_id=%u ", seq_no, from_id);
+    msg_ack_t msg;
+    msg.msg_id = msg_id;
+    msg.from_id = from_id;
+    msg.timestamp = get_tick_count();
+    m_send_msg_list.push_back(msg);
 
-	g_down_msg_total_cnt++;
+    g_down_msg_total_cnt++;
 }
 
 void CMsgConn::DelFromSendList(uint32_t msg_id, uint32_t from_id)

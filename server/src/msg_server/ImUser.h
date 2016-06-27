@@ -10,7 +10,7 @@
 
 #include "base/imconn.h"
 #include "base/public_define.h"
-#define MAX_ONLINE_FRIEND_CNT		100	//通知好友状态通知的最多个数
+#define MAX_ONLINE_FRIEND_CNT   100 //通知好友状态通知的最多个数
 
 class CMsgConn;
 
@@ -46,7 +46,7 @@ public:
     map<uint32_t, CMsgConn*>& GetMsgConnMap() { return m_conn_map; }
 
     void BroadcastPdu(CImPdu* pPdu, CMsgConn* pFromConn = NULL);
-	void BroadcastPdu(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg, CMsgConn* pFromConn = NULL);
+    void BroadcastPdu(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg, CMsgConn* pFromConn = NULL);
     void BroadcastPduWithOutMobile(CImPdu* pPdu, CMsgConn* pFromConn = NULL);
     void BroadcastPduToMobile(CImPdu* pPdu, CMsgConn* pFromConn = NULL);
     void BroadcastClientMsgData(CImPdu* pPdu, uint32_t msg_id, CMsgConn* pFromConn = NULL, uint32_t from_id = 0);
@@ -58,16 +58,16 @@ public:
     
     uint32_t GetClientTypeFlag();
 private:
-    uint32_t		m_user_id;
-    string			m_login_name;            /* 登录名 */
-    string          m_nick_name;            /* 花名 */
-    bool 			m_user_updated;
-    uint32_t        m_pc_login_status;  // pc client login状态，1: on 0: off
+    uint32_t    m_user_id;
+    string      m_login_name;   /* 登录名 */
+    string      m_nick_name;    /* 花名 */
+    bool        m_user_updated;
+    uint32_t    m_pc_login_status;  // pc client login状态，1: on 0: off
     
-    bool 			m_bValidate;
+    bool        m_bValidate;
     
-    map<uint32_t /* handle */, CMsgConn*>	m_conn_map;
-    set<CMsgConn*> m_unvalidate_conn_set;
+    map<uint32_t /* handle */, CMsgConn*>   m_conn_map;
+    set<CMsgConn*> m_unvalidate_conn_set; //未认证的连接(pc/android/ios等客户端)
 };
 
 typedef map<uint32_t /* user_id */, CImUser*> ImUserMap_t;
@@ -97,12 +97,12 @@ public:
     void GetUserConnCnt(list<user_conn_t>* user_conn_list, uint32_t& total_conn_cnt);
     
     void BroadcastPdu(CImPdu* pdu, uint32_t client_type_flag);
+
 private:
     ImUserMap_t m_im_user_map;
     ImUserMapByName_t m_im_user_map_by_name;
 };
 
 void get_online_user_info(list<user_stat_t>* online_user_info);
-
 
 #endif /* IMUSER_H_ */

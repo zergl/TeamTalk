@@ -22,11 +22,11 @@ CGroupChat* CGroupChat::s_group_chat_instance = NULL;
 
 CGroupChat* CGroupChat::GetInstance()
 {
-	if (!s_group_chat_instance) {
-		s_group_chat_instance = new CGroupChat();
-	}
+    if (!s_group_chat_instance) {
+        s_group_chat_instance = new CGroupChat();
+    }
 
-	return s_group_chat_instance;
+    return s_group_chat_instance;
 }
 
 void CGroupChat::HandleClientGroupNormalRequest(CImPdu* pPdu, CMsgConn* pFromConn)
@@ -199,9 +199,9 @@ void CGroupChat::HandleGroupMessage(CImPdu* pPdu)
 {
     IM::Message::IMMsgData msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
-	uint32_t from_user_id = msg.from_user_id();
-	uint32_t to_group_id = msg.to_session_id();
-	string msg_data = msg.msg_data();
+    uint32_t from_user_id = msg.from_user_id();
+    uint32_t to_group_id = msg.to_session_id();
+    string msg_data = msg.msg_data();
     uint32_t msg_id = msg.msg_id();
     if (msg_id == 0) {
         log("HandleGroupMsg, write db failed, %u->%u. ", from_user_id, to_group_id);
@@ -222,12 +222,7 @@ void CGroupChat::HandleGroupMessage(CImPdu* pPdu)
         msg2.set_session_id(to_group_id);
         msg2.set_msg_id(msg_id);
         msg2.set_session_type(::IM::BaseDefine::SESSION_TYPE_GROUP);
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg2);
-        pdu.SetServiceId(SID_MSG);
-        pdu.SetCommandId(CID_MSG_DATA_ACK);
-        pdu.SetSeqNum(pPdu->GetSeqNum());
-        pFromConn->SendPdu(&pdu);
+        pFromConn->SendPdu(SID_MSG, CID_MSG_DATA_ACK, msg2);
     }
     
     CRouteServConn* pRouteConn = get_route_serv_conn();
@@ -238,22 +233,22 @@ void CGroupChat::HandleGroupMessage(CImPdu* pPdu)
     
     // 服务器没有群的信息，向DB服务器请求群信息，并带上消息作为附件，返回时在发送该消息给其他群成员
     //IM::BaseDefine::GroupVersionInfo group_version_info;
-    CPduAttachData pduAttachData(ATTACH_TYPE_HANDLE_AND_PDU, attach_data.GetHandle(), pPdu->GetBodyLength(), pPdu->GetBodyData());
+    CPduAttachData pduAttachData(ATTACH_TYPE_HANDLE_AND_PDU, 
+        attach_data.GetHandle(), 
+        pPdu->GetBodyLength(), 
+        pPdu->GetBodyData());
     
-    IM::Group::IMGroupInfoListReq msg3;
-    msg3.set_user_id(from_user_id);
-    IM::BaseDefine::GroupVersionInfo* group_version_info = msg3.add_group_version_list();
-    group_version_info->set_group_id(to_group_id);
-    group_version_info->set_version(0);
-    msg3.set_attach_data(pduAttachData.GetBuffer(), pduAttachData.GetLength());
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg3);
-    pdu.SetServiceId(SID_GROUP);
-    pdu.SetCommandId(CID_GROUP_INFO_REQUEST);
     CDBServConn* pDbConn = get_db_serv_conn();
     if(pDbConn)
     {
-        pDbConn->SendPdu(&pdu);
+        IM::Group::IMGroupInfoListReq msg3;
+        msg3.set_user_id(from_user_id);
+        IM::BaseDefine::GroupVersionInfo* group_version_info = msg3.add_group_version_list();
+        group_version_info->set_group_id(to_group_id);
+        group_version_info->set_version(0);
+        msg3.set_attach_data(pduAttachData.GetBuffer(), pduAttachData.GetLength());
+    
+        pDbConn->SendPdu(SID_GROUP, CID_GROUP_INFO_REQUEST, msg3);
     }
 }
 
@@ -268,7 +263,7 @@ void CGroupChat::HandleGroupMessageBroadcast(CImPdu *pPdu)
     uint32_t msg_id = msg.msg_id();
     log("HandleGroupMessageBroadcast, %u->%u, msg id=%u. ", from_user_id, to_group_id, msg_id);
     
-    // 服务器没有群的信息，向DB服务器请求群信息，并带上消息作为附件，返回时在发送该消息给其他群成员
+    //服务器没有群的信息，向DB服务器请求群信息，并带上消息作为附件，返回时在发送该消息给其他群成员
     //IM::BaseDefine::GroupVersionInfo group_version_info;
     CPduAttachData pduAttachData(ATTACH_TYPE_HANDLE_AND_PDU, 0, pPdu->GetBodyLength(), pPdu->GetBodyData());
     

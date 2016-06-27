@@ -11,8 +11,8 @@
 #include "base/imconn.h"
 
 
-#define KICK_FROM_ROUTE_SERVER 		1
-#define MAX_ONLINE_FRIEND_CNT		100	//通知好友状态通知的最多个数
+#define KICK_FROM_ROUTE_SERVER  1
+#define MAX_ONLINE_FRIEND_CNT   100 //通知好友状态通知的最多个数
 
 typedef struct {
     uint32_t msg_id;
@@ -85,22 +85,15 @@ private:
 private:
     string          m_login_name;        //登录名拼音
     uint32_t        m_user_id;
-    bool            m_bOpen;    // only DB validate passed will be set to true;
     bool            m_bKickOff;
     uint64_t        m_login_time;
     
     uint32_t        m_last_seq_no;
-    
     uint16_t        m_pdu_version;
-    
     string          m_client_version;   // e.g MAC/2.2, or WIN/2.2
-    
     list<msg_ack_t> m_send_msg_list;
-    
     uint32_t        m_msg_cnt_per_sec;
-    
     uint32_t        m_client_type;        //客户端登录方式
-    
     uint32_t        m_online_status;      //在线状态 1-online, 2-off-line, 3-leave
 };
 

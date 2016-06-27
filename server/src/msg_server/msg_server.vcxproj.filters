@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="AttachData.cpp" />
+    <ClCompile Include="DBServConn.cpp" />
+    <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="FileServConn.cpp" />
+    <ClCompile Include="GroupChat.cpp" />
+    <ClCompile Include="ImUser.cpp" />
+    <ClCompile Include="jsonxx.cpp" />
+    <ClCompile Include="LoginServConn.cpp" />
+    <ClCompile Include="msg_server.cpp" />
+    <ClCompile Include="MsgConn.cpp" />
+    <ClCompile Include="PushServConn.cpp" />
+    <ClCompile Include="RouteServConn.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AttachData.h" />
+    <ClInclude Include="DBServConn.h" />
+    <ClInclude Include="FileHandler.h" />
+    <ClInclude Include="FileServConn.h" />
+    <ClInclude Include="GroupChat.h" />
+    <ClInclude Include="ImUser.h" />
+    <ClInclude Include="jsonxx.h" />
+    <ClInclude Include="LoginServConn.h" />
+    <ClInclude Include="MsgConn.h" />
+    <ClInclude Include="PushServConn.h" />
+    <ClInclude Include="RouteServConn.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="msgserver.conf" />
+  </ItemGroup>
+</Project>

@@ -60,78 +60,78 @@ static void db_server_conn_timer_callback(void* callback_data, uint8_t msg, uint
 
 void init_db_serv_conn(serv_info_t* server_list, uint32_t server_count, uint32_t concur_conn_cnt)
 {
-	g_db_server_list = server_list;
-	g_db_server_count = server_count;
+    g_db_server_list = server_list;
+    g_db_server_count = server_count;
 
-	uint32_t total_db_instance = server_count / concur_conn_cnt;
-	g_db_server_login_count = (total_db_instance / 2) * concur_conn_cnt;
-	log("DB server connection index for login business: [0, %u), for other business: [%u, %u) ",
-			g_db_server_login_count, g_db_server_login_count, g_db_server_count);
+    uint32_t total_db_instance = server_count / concur_conn_cnt;
+    g_db_server_login_count = (total_db_instance / 2) * concur_conn_cnt;
+    log("DB server connection index for login business: [0, %u), for other business: [%u, %u) ",
+        g_db_server_login_count, g_db_server_login_count, g_db_server_count);
 
-	serv_init<CDBServConn>(g_db_server_list, g_db_server_count);
+    serv_init<CDBServConn>(g_db_server_list, g_db_server_count);
 
-	netlib_register_timer(db_server_conn_timer_callback, NULL, 1000);
-	s_group_chat = CGroupChat::GetInstance();
-	s_file_handler = CFileHandler::getInstance();
+    netlib_register_timer(db_server_conn_timer_callback, NULL, 1000);
+    s_group_chat = CGroupChat::GetInstance();
+    s_file_handler = CFileHandler::getInstance();
 }
 
 // get a random db server connection in the range [start_pos, stop_pos)
 static CDBServConn* get_db_server_conn_in_range(uint32_t start_pos, uint32_t stop_pos)
 {
-	uint32_t i = 0;
-	CDBServConn* pDbConn = NULL;
+    uint32_t i = 0;
+    CDBServConn* pDbConn = NULL;
 
-	// determine if there is a valid DB server connection
-	for (i = start_pos; i < stop_pos; i++) {
-		pDbConn = (CDBServConn*)g_db_server_list[i].serv_conn;
-		if (pDbConn && pDbConn->IsOpen()) {
-			break;
-		}
-	}
+    // determine if there is a valid DB server connection
+    for (i = start_pos; i < stop_pos; i++) {
+        pDbConn = (CDBServConn*)g_db_server_list[i].serv_conn;
+        if (pDbConn && pDbConn->IsOpen()) {
+            break;
+        }
+    }
 
-	// no valid DB server connection
-	if (i == stop_pos) {
-		return NULL;
-	}
+    // no valid DB server connection
+    if (i == stop_pos) {
+        return NULL;
+    }
 
-	// return a random valid DB server connection
-	while (true) {
-		int i = rand() % (stop_pos - start_pos) + start_pos;
-		pDbConn = (CDBServConn*)g_db_server_list[i].serv_conn;
-		if (pDbConn && pDbConn->IsOpen()) {
-			break;
-		}
-	}
+    // return a random valid DB server connection
+    while (true) {
+        int i = rand() % (stop_pos - start_pos) + start_pos;
+        pDbConn = (CDBServConn*)g_db_server_list[i].serv_conn;
+        if (pDbConn && pDbConn->IsOpen()) {
+            break;
+        }
+    }
 
-	return pDbConn;
+    return pDbConn;
 }
 
 CDBServConn* get_db_serv_conn_for_login()
 {
-	// 先获取login业务的实例，没有就去获取其他业务流程的实例
-	CDBServConn* pDBConn = get_db_server_conn_in_range(0, g_db_server_login_count);
-	if (!pDBConn) {
-		pDBConn = get_db_server_conn_in_range(g_db_server_login_count, g_db_server_count);
-	}
+    // 先获取login业务的实例，没有就去获取其他业务流程的实例
+    CDBServConn* pDBConn = get_db_server_conn_in_range(0, g_db_server_login_count);
+    if (!pDBConn) {
+        pDBConn = get_db_server_conn_in_range(g_db_server_login_count, g_db_server_count);
+    }
 
-	return pDBConn;
+    return pDBConn;
 }
 
 CDBServConn* get_db_serv_conn()
 {
-	// 先获取其他业务流程的实例，没有就去获取login业务的实例
-	CDBServConn* pDBConn = get_db_server_conn_in_range(g_db_server_login_count, g_db_server_count);
-	if (!pDBConn) {
-		pDBConn = get_db_server_conn_in_range(0, g_db_server_login_count);
-	}
+    // 先获取其他业务流程的实例，没有就去获取login业务的实例
+    CDBServConn* pDBConn = get_db_server_conn_in_range(g_db_server_login_count, g_db_server_count);
+    if (!pDBConn) {
+        pDBConn = get_db_server_conn_in_range(0, g_db_server_login_count);
+    }
 
-	return pDBConn;
+    return pDBConn;
 }
 
 
 CDBServConn::CDBServConn()
 {
-	m_bOpen = false;
+    m_bOpen = false;
 }
 
 CDBServConn::~CDBServConn()
@@ -141,14 +141,15 @@ CDBServConn::~CDBServConn()
 
 void CDBServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
 {
-	log("Connecting to DB Storage Server %s:%d ", server_ip, server_port);
+    log("Connecting to DB Storage Server %s:%d ", server_ip, server_port);
 
-	m_serv_idx = serv_idx;
-	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_db_server_conn_map);
+    m_serv_idx = serv_idx;
+    m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_db_server_conn_map);
 
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		g_db_server_conn_map.insert(make_pair(m_handle, this));
-	}
+    if (m_handle != NETLIB_INVALID_HANDLE) 
+    {
+        g_db_server_conn_map.insert(make_pair(m_handle, this));
+    }
 }
 
 void CDBServConn::Close()
@@ -196,10 +197,10 @@ void CDBServConn::OnTimer(uint64_t curr_tick)
 
 void CDBServConn::HandlePdu(CImPdu* pPdu)
 {
-	switch (pPdu->GetCommandId()) {
+    switch (pPdu->GetCommandId()) {
         case CID_OTHER_HEARTBEAT:
             break;
-        case CID_OTHER_VALIDATE_RSP:
+        case CID_OTHER_VALIDATE_RSP:  //db_proxy_server相应帐号验证请求
             _HandleValidateResponse(pPdu );
             break;
         case CID_LOGIN_RES_DEVICETOKEN:
@@ -279,7 +280,7 @@ void CDBServConn::HandlePdu(CImPdu* pPdu)
         
         default:
             log("db server, wrong cmd id=%d ", pPdu->GetCommandId());
-	}
+    }
 }
 
 void CDBServConn::_HandleValidateResponse(CImPdu* pPdu)
