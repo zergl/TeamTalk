@@ -41,6 +41,7 @@ public:
 
     int Send(void* data, int len);
     bool IsOpen() { return m_bOpen; }
+    void SetOpen() { m_bOpen = true; }
 
     virtual void OnConnect(net_handle_t handle) { m_handle = handle; }
     virtual void OnConfirm() {}

@@ -338,13 +338,13 @@ void CDBServConn::_HandleValidateResponse(CImPdu* pPdu)
         
         CRouteServConn* pRouteConn = get_route_serv_conn();
         if (pRouteConn) 
-		{
+        {
             IM::Server::IMServerKickUser msg2;
             msg2.set_user_id(user_id);
             msg2.set_client_type((::IM::BaseDefine::ClientType)pMsgConn->GetClientType());
             msg2.set_reason(1);
 
-			pRouteConn->SendPdu(SID_OTHER, CID_OTHER_SERVER_KICK_USER, msg2);
+            pRouteConn->SendPdu(SID_OTHER, CID_OTHER_SERVER_KICK_USER, msg2);
         }
         
         log("user_name: %s, uid: %d", login_name.c_str(), user_id);
