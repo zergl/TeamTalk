@@ -1,0 +1,707 @@
+﻿Build started 2016/06/20 12:08:26.
+     1>Project "F:\workspace\mygithub\teamtalk\server\src\base\base.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         D:\_vsdev\vs2013\VC\bin\CL.exe /c /I../../../proto/gen/cpp /I../../3rdparty/include /I../../3rdparty/pthread_win/include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"F:\workspace\mygithub\teamtalk\server\msbuild\..\tmpobj\Win32-Debug\\" /Fd"F:\workspace\mygithub\teamtalk\server\msbuild\..\output\Win32-Debug\base.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\..\proto\gen\cpp\IM.BaseDefine.pb.cc ..\..\..\proto\gen\cpp\IM.Buddy.pb.cc ..\..\..\proto\gen\cpp\IM.File.pb.cc ..\..\..\proto\gen\cpp\IM.Group.pb.cc ..\..\..\proto\gen\cpp\IM.Login.pb.cc ..\..\..\proto\gen\cpp\IM.Message.pb.cc ..\..\..\proto\gen\cpp\IM.Other.pb.cc ..\..\..\proto\gen\cpp\IM.Server.pb.cc ..\..\..\proto\gen\cpp\IM.SwitchService.pb.cc Base64.cpp BaseSocket.cpp Condition.cpp ConfigFileReader.cpp EncDec.cpp EventDispatch.cpp HttpClient.cpp HttpParserWrapper.cpp http_parser.cpp imconn.cpp ImPduBase.cpp im_conn_util.cpp Lock.cpp log4z.cpp netlib.cpp ServInfo.cpp Thread.cpp ThreadPool.cpp TokenValidator.cpp util.cpp UtilPdu.cpp
+         UtilPdu.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.cpp(14): warning C4273: 'CSimpleBuffer::CSimpleBuffer' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.h(70) : see previous definition of '{ctor}'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.cpp(22): warning C4273: 'CSimpleBuffer::~CSimpleBuffer' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.h(71) : see previous definition of '{dtor}'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.cpp(33): warning C4273: 'CSimpleBuffer::Extend' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.h(77) : see previous definition of 'Extend'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.cpp(41): warning C4273: 'CSimpleBuffer::Write' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.h(78) : see previous definition of 'Write'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.cpp(58): warning C4273: 'CSimpleBuffer::Read' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\utilpdu.h(79) : see previous definition of 'Read'
+         util.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\util.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\util.cpp(308): warning C4018: '<' : signed/unsigned mismatch
+         TokenValidator.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\tokenvalidator.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+         ThreadPool.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\threadpool.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\threadpool.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\task.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\threadpool.cpp(108): error C3861: 'random': identifier not found
+         Thread.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.h(24): error C2146: syntax error : missing ';' before identifier 'WINAPI'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.h(24): error C2146: syntax error : missing ';' before identifier 'StartRoutine'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.h(24): error C2061: syntax error : identifier 'LPVOID'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.h(24): warning C4183: 'StartRoutine': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.h(33): error C2146: syntax error : missing ';' before identifier 'm_thread_id'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.h(33): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(15): error C2065: 'm_thread_id' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(23): error C2146: syntax error : missing ';' before identifier 'WINAPI'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(23): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(23): error C2143: syntax error : missing ';' before 'CThread::StartRoutine'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(23): error C2065: 'LPVOID' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(23): error C2146: syntax error : missing ')' before identifier 'arg'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(23): error C2761: 'int CThread::StartRoutine(void)' : member function redeclaration not allowed
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(23): error C2059: syntax error : ')'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(27): error C2143: syntax error : missing ';' before '{'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(27): error C2447: '{' : missing function header (old-style formal list?)
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(42): error C3867: 'CThread::StartRoutine': function call missing argument list; use '&CThread::StartRoutine' to create a pointer to member
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(42): error C2065: 'm_thread_id' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\thread.cpp(42): error C3861: 'CreateThread': identifier not found
+         ServInfo.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(69): error C2039: 'reversed' : is not a member of 'PduHeader_t'
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(43) : see declaration of 'PduHeader_t'
+         netlib.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+         log4z.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\log4z.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\log4z.cpp(1227): error C2509: 'config' : member function not declared in 'zsummer::log4z::LogerManager'
+                 f:\workspace\mygithub\teamtalk\server\src\base\log4z.cpp(346) : see declaration of 'zsummer::log4z::LogerManager'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\log4z.cpp(1227): fatal error C1903: unable to recover from previous error(s); stopping compilation
+         Lock.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+         im_conn_util.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\im_conn_util.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\im_conn_util.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\im_conn_util.cpp(11): fatal error C1083: Cannot open include file: 'base/imconn.h': No such file or directory
+         ImPduBase.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(69): error C2039: 'reversed' : is not a member of 'PduHeader_t'
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(43) : see declaration of 'PduHeader_t'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(14): warning C4273: 'CImPdu::CImPdu' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(55) : see previous definition of '{ctor}'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(20): error C2039: 'reversed' : is not a member of 'PduHeader_t'
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(43) : see declaration of 'PduHeader_t'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(24): warning C4273: 'CImPdu::GetBuffer' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(58) : see previous definition of 'GetBuffer'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(29): warning C4273: 'CImPdu::GetLength' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(59) : see previous definition of 'GetLength'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(34): warning C4273: 'CImPdu::GetBodyData' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(60) : see previous definition of 'GetBodyData'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(39): warning C4273: 'CImPdu::GetBodyLength' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(61) : see previous definition of 'GetBodyLength'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(46): warning C4273: 'CImPdu::WriteHeader' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(78) : see previous definition of 'WriteHeader'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(55): error C2039: 'reversed' : is not a member of 'PduHeader_t'
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(43) : see declaration of 'PduHeader_t'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(55): error C2660: 'CByteStream::WriteUint16' : function does not take 1 arguments
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(59): warning C4273: 'CImPdu::SetVersion' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(71) : see previous definition of 'SetVersion'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(65): warning C4273: 'CImPdu::SetFlag' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(72) : see previous definition of 'SetFlag'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(71): warning C4273: 'CImPdu::SetServiceId' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(73) : see previous definition of 'SetServiceId'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(77): warning C4273: 'CImPdu::SetCommandId' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(74) : see previous definition of 'SetCommandId'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(83): warning C4273: 'CImPdu::SetError' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(75) : see previous definition of 'SetError'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(89): warning C4273: 'CImPdu::SetSeqNum' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(76) : see previous definition of 'SetSeqNum'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(95): warning C4273: 'CImPdu::SetReversed' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(77) : see previous definition of 'SetReversed'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(101): warning C4273: 'CImPdu::ReadPduHeader' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(83) : see previous definition of 'ReadPduHeader'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(112): error C2039: 'reversed' : is not a member of 'PduHeader_t'
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(43) : see declaration of 'PduHeader_t'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(121): warning C4273: 'CImPdu::ReadPdu' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(81) : see previous definition of 'ReadPdu'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(140): warning C4273: 'CImPdu::IsPduAvailable' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(80) : see previous definition of 'IsPduAvailable'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(160): warning C4273: 'CImPdu::SetPBMsg' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(84) : see previous definition of 'SetPBMsg'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.cpp(178): warning C4273: 'CImPdu::Decode' : inconsistent dll linkage
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(86) : see previous definition of 'Decode'
+         imconn.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(69): error C2039: 'reversed' : is not a member of 'PduHeader_t'
+                 f:\workspace\mygithub\teamtalk\server\src\base\impdubase.h(43) : see declaration of 'PduHeader_t'
+         http_parser.cpp
+         HttpParserWrapper.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpparserwrapper.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>d:\_vsdev\vs2013\vc\include\stdint.h(8): error C2371: 'int8_t' : redefinition; different basic types
+                 f:\workspace\mygithub\teamtalk\server\src\base\ostype.h(54) : see declaration of 'int8_t'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpparserwrapper.cpp(64): error C3861: 'strncasecmp': identifier not found
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpparserwrapper.cpp(72): error C3861: 'strncasecmp': identifier not found
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpparserwrapper.cpp(80): error C3861: 'strncasecmp': identifier not found
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpparserwrapper.cpp(88): error C3861: 'strncasecmp': identifier not found
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpparserwrapper.cpp(96): error C3861: 'strncasecmp': identifier not found
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpparserwrapper.cpp(103): error C3861: 'strncasecmp': identifier not found
+         HttpClient.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpclient.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpclient.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\httpclient.h(16): fatal error C1083: Cannot open include file: 'curl/curl.h': No such file or directory
+         EventDispatch.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+         EncDec.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\encdec.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\encdec.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\base64.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\encdec.cpp(82): error C2065: 'pTmp' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\encdec.cpp(82): error C2660: 'AES_decrypt' : function does not take 2 arguments
+     1>f:\workspace\mygithub\teamtalk\server\src\base\encdec.cpp(85): error C2065: 'pTmp' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\encdec.cpp(90): error C2065: 'pTmp' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\encdec.cpp(93): error C2065: 'pTmp' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\encdec.cpp(94): error C2065: 'pTmp' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\encdec.cpp(115): error C3861: 'snprintf': identifier not found
+         ConfigFileReader.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+         Condition.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\condition.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\condition.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+         BaseSocket.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2143: syntax error : missing ';' before '&'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): warning C4183: 'getMutex': missing return type; assumed to be a member function returning 'int'
+     1>f:\workspace\mygithub\teamtalk\server\src\base\lock.h(24): error C2065: 'm_lock' : undeclared identifier
+     1>f:\workspace\mygithub\teamtalk\server\src\base\slog_api.h : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+     1>f:\workspace\mygithub\teamtalk\server\src\base\basesocket.cpp(216): error C2664: 'int setsockopt(SOCKET,int,int,const char *,int)' : cannot convert argument 4 from 'uint32_t *' to 'const char *'
+                 Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+     1>f:\workspace\mygithub\teamtalk\server\src\base\basesocket.cpp(223): error C2664: 'int getsockopt(SOCKET,int,int,char *,int *)' : cannot convert argument 4 from 'int *' to 'char *'
+                 Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+     1>f:\workspace\mygithub\teamtalk\server\src\base\basesocket.cpp(229): error C2664: 'int setsockopt(SOCKET,int,int,const char *,int)' : cannot convert argument 4 from 'uint32_t *' to 'const char *'
+                 Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+     1>f:\workspace\mygithub\teamtalk\server\src\base\basesocket.cpp(236): error C2664: 'int getsockopt(SOCKET,int,int,char *,int *)' : cannot convert argument 4 from 'int *' to 'char *'
+                 Types pointed to are unrelated; conversion requires reinterpret_cast, C-style cast or function-style cast
+         Generating Code...
+         Compiling...
+         Base64.cpp
+     1>f:\workspace\mygithub\teamtalk\server\src\base\base64.cpp : warning C4819: The file contains a character that cannot be represented in the current code page (936). Save the file in Unicode format to prevent data loss
+         IM.SwitchService.pb.cc
+     1>d:\_vsdev\vs2013\vc\include\xutility(2132): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(842) : see reference to function template instantiation '_OutIt std::copy<const Element[],Element[]>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=google::protobuf::uint64 []
+         ,            Element=google::protobuf::uint64
+         ,            _InIt=const google::protobuf::uint64 []
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(841) : while compiling class template member function 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to function template instantiation 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to class template instantiation 'google::protobuf::internal::ElementCopier<Element,false>' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(833) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(828) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(827) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(814) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(806) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(685) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(631) : while compiling class template member function 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(276) : see reference to function template instantiation 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(256) : see reference to class template instantiation 'google::protobuf::RepeatedField<google::protobuf::uint64>' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(309) : see reference to function template instantiation 'bool google::protobuf::internal::WireFormatLite::ReadRepeatedFixedSizePrimitive<google::protobuf::uint64,TYPE_FIXED64>(int,google::protobuf::uint32,google::protobuf::io::CodedInputStream *,google::protobuf::RepeatedField<google::protobuf::uint64> *)' being compiled
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+         IM.Server.pb.cc
+     1>d:\_vsdev\vs2013\vc\include\xutility(2132): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(842) : see reference to function template instantiation '_OutIt std::copy<const Element[],Element[]>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=google::protobuf::uint64 []
+         ,            Element=google::protobuf::uint64
+         ,            _InIt=const google::protobuf::uint64 []
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(841) : while compiling class template member function 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to function template instantiation 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to class template instantiation 'google::protobuf::internal::ElementCopier<Element,false>' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(833) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(828) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(827) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(814) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(806) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(685) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(631) : while compiling class template member function 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(276) : see reference to function template instantiation 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(256) : see reference to class template instantiation 'google::protobuf::RepeatedField<google::protobuf::uint64>' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(309) : see reference to function template instantiation 'bool google::protobuf::internal::WireFormatLite::ReadRepeatedFixedSizePrimitive<google::protobuf::uint64,TYPE_FIXED64>(int,google::protobuf::uint32,google::protobuf::io::CodedInputStream *,google::protobuf::RepeatedField<google::protobuf::uint64> *)' being compiled
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+         IM.Other.pb.cc
+     1>d:\_vsdev\vs2013\vc\include\xutility(2132): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(842) : see reference to function template instantiation '_OutIt std::copy<const Element[],Element[]>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=google::protobuf::uint64 []
+         ,            Element=google::protobuf::uint64
+         ,            _InIt=const google::protobuf::uint64 []
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(841) : while compiling class template member function 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to function template instantiation 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to class template instantiation 'google::protobuf::internal::ElementCopier<Element,false>' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(833) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(828) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(827) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(814) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(806) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(685) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(631) : while compiling class template member function 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(276) : see reference to function template instantiation 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(256) : see reference to class template instantiation 'google::protobuf::RepeatedField<google::protobuf::uint64>' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(309) : see reference to function template instantiation 'bool google::protobuf::internal::WireFormatLite::ReadRepeatedFixedSizePrimitive<google::protobuf::uint64,TYPE_FIXED64>(int,google::protobuf::uint32,google::protobuf::io::CodedInputStream *,google::protobuf::RepeatedField<google::protobuf::uint64> *)' being compiled
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+         IM.Message.pb.cc
+     1>d:\_vsdev\vs2013\vc\include\xutility(2132): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(842) : see reference to function template instantiation '_OutIt std::copy<const Element[],Element[]>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=google::protobuf::uint64 []
+         ,            Element=google::protobuf::uint64
+         ,            _InIt=const google::protobuf::uint64 []
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(841) : while compiling class template member function 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to function template instantiation 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to class template instantiation 'google::protobuf::internal::ElementCopier<Element,false>' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(833) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(828) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(827) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(814) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(806) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(685) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(631) : while compiling class template member function 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(276) : see reference to function template instantiation 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(256) : see reference to class template instantiation 'google::protobuf::RepeatedField<google::protobuf::uint64>' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(309) : see reference to function template instantiation 'bool google::protobuf::internal::WireFormatLite::ReadRepeatedFixedSizePrimitive<google::protobuf::uint64,TYPE_FIXED64>(int,google::protobuf::uint32,google::protobuf::io::CodedInputStream *,google::protobuf::RepeatedField<google::protobuf::uint64> *)' being compiled
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+         IM.Login.pb.cc
+     1>d:\_vsdev\vs2013\vc\include\xutility(2132): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(842) : see reference to function template instantiation '_OutIt std::copy<const Element[],Element[]>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=google::protobuf::uint64 []
+         ,            Element=google::protobuf::uint64
+         ,            _InIt=const google::protobuf::uint64 []
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(841) : while compiling class template member function 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to function template instantiation 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to class template instantiation 'google::protobuf::internal::ElementCopier<Element,false>' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(833) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(828) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(827) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(814) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(806) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(685) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(631) : while compiling class template member function 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(276) : see reference to function template instantiation 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(256) : see reference to class template instantiation 'google::protobuf::RepeatedField<google::protobuf::uint64>' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(309) : see reference to function template instantiation 'bool google::protobuf::internal::WireFormatLite::ReadRepeatedFixedSizePrimitive<google::protobuf::uint64,TYPE_FIXED64>(int,google::protobuf::uint32,google::protobuf::io::CodedInputStream *,google::protobuf::RepeatedField<google::protobuf::uint64> *)' being compiled
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+         IM.Group.pb.cc
+     1>d:\_vsdev\vs2013\vc\include\xutility(2132): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(842) : see reference to function template instantiation '_OutIt std::copy<const Element[],Element[]>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=google::protobuf::uint64 []
+         ,            Element=google::protobuf::uint64
+         ,            _InIt=const google::protobuf::uint64 []
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(841) : while compiling class template member function 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to function template instantiation 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to class template instantiation 'google::protobuf::internal::ElementCopier<Element,false>' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(833) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(828) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(827) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(814) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(806) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(685) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(631) : while compiling class template member function 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(276) : see reference to function template instantiation 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(256) : see reference to class template instantiation 'google::protobuf::RepeatedField<google::protobuf::uint64>' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(309) : see reference to function template instantiation 'bool google::protobuf::internal::WireFormatLite::ReadRepeatedFixedSizePrimitive<google::protobuf::uint64,TYPE_FIXED64>(int,google::protobuf::uint32,google::protobuf::io::CodedInputStream *,google::protobuf::RepeatedField<google::protobuf::uint64> *)' being compiled
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+         IM.File.pb.cc
+     1>d:\_vsdev\vs2013\vc\include\xutility(2132): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(842) : see reference to function template instantiation '_OutIt std::copy<const Element[],Element[]>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=google::protobuf::uint64 []
+         ,            Element=google::protobuf::uint64
+         ,            _InIt=const google::protobuf::uint64 []
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(841) : while compiling class template member function 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to function template instantiation 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to class template instantiation 'google::protobuf::internal::ElementCopier<Element,false>' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(833) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(828) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(827) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(814) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(806) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(685) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(631) : while compiling class template member function 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(276) : see reference to function template instantiation 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(256) : see reference to class template instantiation 'google::protobuf::RepeatedField<google::protobuf::uint64>' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(309) : see reference to function template instantiation 'bool google::protobuf::internal::WireFormatLite::ReadRepeatedFixedSizePrimitive<google::protobuf::uint64,TYPE_FIXED64>(int,google::protobuf::uint32,google::protobuf::io::CodedInputStream *,google::protobuf::RepeatedField<google::protobuf::uint64> *)' being compiled
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+         IM.Buddy.pb.cc
+     1>d:\_vsdev\vs2013\vc\include\xutility(2132): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(842) : see reference to function template instantiation '_OutIt std::copy<const Element[],Element[]>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=google::protobuf::uint64 []
+         ,            Element=google::protobuf::uint64
+         ,            _InIt=const google::protobuf::uint64 []
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(841) : while compiling class template member function 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to function template instantiation 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to class template instantiation 'google::protobuf::internal::ElementCopier<Element,false>' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(833) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(828) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(827) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(814) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(806) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(685) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(631) : while compiling class template member function 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(276) : see reference to function template instantiation 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(256) : see reference to class template instantiation 'google::protobuf::RepeatedField<google::protobuf::uint64>' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(309) : see reference to function template instantiation 'bool google::protobuf::internal::WireFormatLite::ReadRepeatedFixedSizePrimitive<google::protobuf::uint64,TYPE_FIXED64>(int,google::protobuf::uint32,google::protobuf::io::CodedInputStream *,google::protobuf::RepeatedField<google::protobuf::uint64> *)' being compiled
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+         IM.BaseDefine.pb.cc
+     1>d:\_vsdev\vs2013\vc\include\xutility(2132): warning C4996: 'std::_Copy_impl': Function call with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(842) : see reference to function template instantiation '_OutIt std::copy<const Element[],Element[]>(_InIt,_InIt,_OutIt)' being compiled
+                 with
+                 [
+                     _OutIt=google::protobuf::uint64 []
+         ,            Element=google::protobuf::uint64
+         ,            _InIt=const google::protobuf::uint64 []
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(841) : while compiling class template member function 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to function template instantiation 'void google::protobuf::internal::ElementCopier<Element,false>::operator ()(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(834) : see reference to class template instantiation 'google::protobuf::internal::ElementCopier<Element,false>' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(833) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(828) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::CopyArray(Element [],const Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(827) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)'
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(814) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::MoveArray(Element [],Element [],int)' being compiled
+                 with
+                 [
+                     Element=google::protobuf::uint64
+                 ]
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(806) : while compiling class template member function 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(685) : see reference to function template instantiation 'void google::protobuf::RepeatedField<google::protobuf::uint64>::Reserve(int)' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\repeated_field.h(631) : while compiling class template member function 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const'
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(276) : see reference to function template instantiation 'int google::protobuf::RepeatedField<google::protobuf::uint64>::size(void) const' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(256) : see reference to class template instantiation 'google::protobuf::RepeatedField<google::protobuf::uint64>' being compiled
+                 f:\workspace\mygithub\teamtalk\server\3rdparty\include\google\protobuf\wire_format_lite_inl.h(309) : see reference to function template instantiation 'bool google::protobuf::internal::WireFormatLite::ReadRepeatedFixedSizePrimitive<google::protobuf::uint64,TYPE_FIXED64>(int,google::protobuf::uint32,google::protobuf::io::CodedInputStream *,google::protobuf::RepeatedField<google::protobuf::uint64> *)' being compiled
+                 d:\_vsdev\vs2013\vc\include\xutility(2113) : see declaration of 'std::_Copy_impl'
+         Generating Code...
+     1>Done Building Project "F:\workspace\mygithub\teamtalk\server\src\base\base.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:15.17

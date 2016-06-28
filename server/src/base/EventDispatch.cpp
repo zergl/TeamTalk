@@ -203,7 +203,6 @@ void CEventDispatch::StartDispatch(uint32_t wait_timeout)
         
         for (u_int i = 0; i < read_set.fd_count; i++)
         {
-            //log("select return read count=%d\n", read_set.fd_count);
             SOCKET fd = read_set.fd_array[i];
             CBaseSocket* pSocket = FindBaseSocket((net_handle_t)fd);
             if (pSocket)

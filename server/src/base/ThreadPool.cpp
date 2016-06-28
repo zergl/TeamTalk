@@ -80,17 +80,17 @@ CThreadPool::~CThreadPool()
 int CThreadPool::Init(uint32_t worker_size)
 {
     m_worker_size = worker_size;
-	m_worker_list = new CWorkerThread [m_worker_size];
-	if (!m_worker_list) {
-		return 1;
-	}
+    m_worker_list = new CWorkerThread [m_worker_size];
+    if (!m_worker_list) {
+        return 1;
+    }
 
-	for (uint32_t i = 0; i < m_worker_size; i++) {
-		m_worker_list[i].SetThreadIdx(i);
-		m_worker_list[i].Start();
-	}
+    for (uint32_t i = 0; i < m_worker_size; i++) {
+        m_worker_list[i].SetThreadIdx(i);
+        m_worker_list[i].Start();
+    }
 
-	return 0;
+    return 0;
 }
 
 void CThreadPool::Destory()
@@ -101,12 +101,12 @@ void CThreadPool::Destory()
 
 void CThreadPool::AddTask(CTask* pTask)
 {
-	/*
-	 * select a random thread to push task
-	 * we can also select a thread that has less task to do
-	 * but that will scan the whole thread list and use thread lock to get each task size
-	 */
-	uint32_t thread_idx = random() % m_worker_size;
-	m_worker_list[thread_idx].PushTask(pTask);
+    /*
+     * select a random thread to push task
+     * we can also select a thread that has less task to do
+     * but that will scan the whole thread list and use thread lock to get each task size
+     */
+    uint32_t thread_idx = random() % m_worker_size;
+    m_worker_list[thread_idx].PushTask(pTask);
 }
 
