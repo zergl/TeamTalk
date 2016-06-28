@@ -400,11 +400,17 @@ void CGroupChat::HandleGroupChangeMemberResponse(CImPdu* pPdu)
             msg2.add_cur_user_id_list(msg.cur_user_id_list(i));
         }
         
+        CRouteServConn* pRouteConn = get_route_serv_conn();
         if (pRouteConn) 
         {
             pRouteConn->SendPdu(SID_GROUP, CID_GROUP_CHANGE_MEMBER_NOTIFY, msg2);
         }
 
+        //todo: 以下两个接口还不兼容指定cmd和msg的方式
+        CImPdu pdu;
+        pdu.SetPBMsg(&msg2);
+        pdu.SetServiceId(SID_GROUP);
+        pdu.SetCommandId(CID_GROUP_CHANGE_MEMBER_NOTIFY);
         for (uint32_t i = 0; i < chg_user_cnt; i++)
         {
             uint32_t to_user_id = msg.chg_user_id_list(i);
