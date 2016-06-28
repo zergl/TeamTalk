@@ -69,6 +69,13 @@ void CFileHandler::HandleClientFileRequest(CMsgConn* pMsgConn, CImPdu* pPdu)
                 CRouteServConn* route_conn = get_route_serv_conn();
                 if (route_conn)
                 {
+                    //todo:
+                    CImPdu pdu;
+                    pdu.SetPBMsg(&msg2);
+                    pdu.SetServiceId(SID_OTHER);
+                    pdu.SetCommandId(CID_OTHER_FILE_TRANSFER_REQ);
+                    pdu.SetSeqNum(pPdu->GetSeqNum());
+
                     //no pc_client in this msg_server, check it from route_server
                     CPduAttachData attach_data(ATTACH_TYPE_HANDLE_AND_PDU_FOR_FILE, pMsgConn->GetHandle(), pdu.GetBodyLength(), pdu.GetBodyData());
                     IM::Buddy::IMUsersStatReq msg3;
