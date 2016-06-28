@@ -63,18 +63,16 @@ void imconn_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pP
 //////////////////////////
 CImConn::CImConn()
 {
-	//log("CImConn::CImConn ");
+    m_bOpen = false;
+    m_busy = false;
+    m_handle = NETLIB_INVALID_HANDLE;
+    m_recv_bytes = 0;
 
-	m_busy = false;
-	m_handle = NETLIB_INVALID_HANDLE;
-	m_recv_bytes = 0;
-
-	m_last_send_tick = m_last_recv_tick = get_tick_count();
+    m_last_send_tick = m_last_recv_tick = get_tick_count();
 }
 
 CImConn::~CImConn()
 {
-	//log("CImConn::~CImConn, handle=%d ", m_handle);
 }
 
 int CImConn::Send(void* data, int len)

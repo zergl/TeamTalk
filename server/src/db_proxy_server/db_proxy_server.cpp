@@ -79,9 +79,10 @@ puts("db init success");
         return -1;
     }
 
-	if (!CSessionModel::getInstance()) {
-		return -1;
-	}
+    if (!CSessionModel::getInstance()) 
+    {
+        return -1;
+    }
     
     if(!CRelationModel::getInstance())
     {

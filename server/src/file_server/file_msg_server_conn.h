@@ -41,6 +41,4 @@ private:
 void InitializeFileMsgServerConn();
 void FileMsgServerConnCallback(void* callback_data, uint8_t msg, uint32_t handle, void* param);
 
-
-
 #endif /* defined(FILE_SERVER_FILE_MSG_SERVER_CONN_H_) */

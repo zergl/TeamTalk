@@ -139,8 +139,7 @@ void update_master_route_serv_conn()
 
 CRouteServConn::CRouteServConn()
 {
-	m_bOpen = false;
-	m_serv_idx = 0;
+    m_serv_idx = 0;
 }
 
 CRouteServConn::~CRouteServConn()
@@ -162,33 +161,34 @@ void CRouteServConn::Connect(const char* server_ip, uint16_t server_port, uint32
 
 void CRouteServConn::Close()
 {
-	serv_reset<CRouteServConn>(g_route_server_list, g_route_server_count, m_serv_idx);
+    serv_reset<CRouteServConn>(g_route_server_list, g_route_server_count, m_serv_idx);
 
-	m_bOpen = false;
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		netlib_close(m_handle);
-		g_route_server_conn_map.erase(m_handle);
-	}
+    m_bOpen = false;
+    if (m_handle != NETLIB_INVALID_HANDLE) {
+        netlib_close(m_handle);
+        g_route_server_conn_map.erase(m_handle);
+    }
 
-	ReleaseRef();
+    ReleaseRef();
 
-	if (g_master_rs_conn == this) {
-		update_master_route_serv_conn();
-	}
+    if (g_master_rs_conn == this) {
+        update_master_route_serv_conn();
+    }
 }
 
 void CRouteServConn::OnConfirm()
 {
-	log("connect to route server success ");
-	m_bOpen = true;
-	m_connect_time = get_tick_count();
-	g_route_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
+    log("connect to route server success ");
+    m_bOpen = true;
+    m_connect_time = get_tick_count();
+    g_route_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
 
-	if (g_master_rs_conn == NULL) {
-		update_master_route_serv_conn();
-	}
+    if (g_master_rs_conn == NULL) 
+    {
+        update_master_route_serv_conn();
+    }
 
-	list<user_stat_t> online_user_list;
+    list<user_stat_t> online_user_list;
     CImUserManager::GetInstance()->GetOnlineUserInfo(&online_user_list);
     IM::Server::IMOnlineUserInfo msg;
     for (list<user_stat_t>::iterator it = online_user_list.begin(); it != online_user_list.end(); it++) {
@@ -199,39 +199,32 @@ void CRouteServConn::OnConfirm()
         server_user_stat->set_client_type((::IM::BaseDefine::ClientType)user_stat.client_type);
 
     }
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg);
-    pdu.SetServiceId(SID_OTHER);
-    pdu.SetCommandId(CID_OTHER_ONLINE_USER_INFO);
-	SendPdu(&pdu);
+    
+    SendPdu(SID_OTHER, CID_OTHER_ONLINE_USER_INFO, msg);
 }
 
 void CRouteServConn::OnClose()
 {
-	log("onclose from route server handle=%d ", m_handle);
-	Close();
+    log("onclose from route server handle=%d ", m_handle);
+    Close();
 }
 
 void CRouteServConn::OnTimer(uint64_t curr_tick)
 {
-	if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) {
+    if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) {
         IM::Other::IMHeartBeat msg;
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_OTHER);
-        pdu.SetCommandId(CID_OTHER_HEARTBEAT);
-		SendPdu(&pdu);
-	}
+        SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
+    }
 
-	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("conn to route server timeout ");
-		Close();
-	}
+    if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
+        log("conn to route server timeout ");
+        Close();
+    }
 }
 
 void CRouteServConn::HandlePdu(CImPdu* pPdu)
 {
-	switch (pPdu->GetCommandId()) {
+    switch (pPdu->GetCommandId()) {
         case CID_OTHER_HEARTBEAT:
             break;
         case CID_OTHER_SERVER_KICK_USER:
@@ -270,7 +263,7 @@ void CRouteServConn::HandlePdu(CImPdu* pPdu)
         default:
             log("unknown cmd id=%d ", pPdu->GetCommandId());
             break;
-	}
+    }
 }
 
 void CRouteServConn::_HandleKickUser(CImPdu* pPdu)

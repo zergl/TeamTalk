@@ -24,20 +24,20 @@
 #include "base/ImPduBase.h"
 using namespace IM::BaseDefine;
 
-#define TIMEOUT_WATI_LOGIN_RESPONSE		15000	// 15 seconds
-#define TIMEOUT_WAITING_MSG_DATA_ACK	15000	// 15 seconds
-#define LOG_MSG_STAT_INTERVAL			300000	// log message miss status in every 5 minutes;
-#define MAX_MSG_CNT_PER_SECOND			20	// user can not send more than 20 msg in one second
+#define TIMEOUT_WATI_LOGIN_RESPONSE     15000   // 15 seconds
+#define TIMEOUT_WAITING_MSG_DATA_ACK    15000   // 15 seconds
+#define LOG_MSG_STAT_INTERVAL           300000  // log message miss status in every 5 minutes;
+#define MAX_MSG_CNT_PER_SECOND          20      // user can not send more than 20 msg in one second
 static ConnMap_t g_msg_conn_map;
 static UserMap_t g_msg_conn_user_map;
 
-static uint64_t	g_last_stat_tick;	// 上次显示丢包率信息的时间
-static uint32_t g_up_msg_total_cnt = 0;		// 上行消息包总数
-static uint32_t g_up_msg_miss_cnt = 0;		// 上行消息包丢数
-static uint32_t g_down_msg_total_cnt = 0;	// 下行消息包总数
-static uint32_t g_down_msg_miss_cnt = 0;	// 下行消息丢包数
+static uint64_t g_last_stat_tick;           // 上次显示丢包率信息的时间
+static uint32_t g_up_msg_total_cnt = 0;     // 上行消息包总数
+static uint32_t g_up_msg_miss_cnt = 0;      // 上行消息包丢数
+static uint32_t g_down_msg_total_cnt = 0;   // 下行消息包总数
+static uint32_t g_down_msg_miss_cnt = 0;    // 下行消息丢包数
 
-static bool g_log_msg_toggle = true;	// 是否把收到的MsgData写入Log的开关，通过kill -SIGUSR2 pid 打开/关闭
+static bool g_log_msg_toggle = true;    // 是否把收到的MsgData写入Log的开关，通过kill -SIGUSR2 pid 打开/关闭
 
 static CFileHandler* s_file_handler = NULL;
 static CGroupChat* s_group_chat = NULL;
@@ -111,7 +111,6 @@ void init_msg_conn()
 CMsgConn::CMsgConn()
 {
     m_user_id = 0;
-    m_bOpen = false;
     m_bKickOff = false;
     m_last_seq_no = 0;
     m_msg_cnt_per_sec = 0;
@@ -126,7 +125,7 @@ CMsgConn::~CMsgConn()
 
 void CMsgConn::SendUserStatusUpdate(uint32_t user_status)
 {
-    if (!m_bOpen)
+    if (!IsOpen())
         return;
     
     CImUser* pImUser = CImUserManager::GetInstance()->GetImUserById(GetUserId());

@@ -94,7 +94,6 @@ void send_to_all_login_server(CImPdu* pPdu)
 
 CLoginServConn::CLoginServConn()
 {
-    m_bOpen = false;
 }
 
 CLoginServConn::~CLoginServConn()

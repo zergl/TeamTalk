@@ -36,24 +36,25 @@ CUserInfo* GetUserInfo(uint32_t user_id)
  
 void route_serv_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	uint64_t cur_time = get_tick_count();
-	for (ConnMap_t::iterator it = g_route_conn_map.begin(); it != g_route_conn_map.end(); ) {
-		ConnMap_t::iterator it_old = it;
-		it++;
+    uint64_t cur_time = get_tick_count();
+    for (ConnMap_t::iterator it = g_route_conn_map.begin(); it != g_route_conn_map.end(); ) 
+    {
+        ConnMap_t::iterator it_old = it;
+        it++;
 
-		CRouteConn* pConn = (CRouteConn*)it_old->second;
-		pConn->OnTimer(cur_time);
-	}
+        CRouteConn* pConn = (CRouteConn*)it_old->second;
+        pConn->OnTimer(cur_time);
+    }
 }
 
 void init_routeconn_timer_callback()
 {
-	netlib_register_timer(route_serv_timer_callback, NULL, 1000);
+    netlib_register_timer(route_serv_timer_callback, NULL, 1000);
 }
 
 CRouteConn::CRouteConn()
 {
-	m_bMaster = false;
+    m_bMaster = false;
 }
 
 CRouteConn::~CRouteConn()
@@ -63,12 +64,13 @@ CRouteConn::~CRouteConn()
 
 void CRouteConn::Close()
 {
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		netlib_close(m_handle);
-		g_route_conn_map.erase(m_handle);
-	}
+    if (m_handle != NETLIB_INVALID_HANDLE) 
+    {
+        netlib_close(m_handle);
+        g_route_conn_map.erase(m_handle);
+    }
 
-	// remove all user info from this MessageServer
+    // remove all user info from this MessageServer
     
     UserInfoMap_t::iterator it_old;
     for (UserInfoMap_t::iterator it = g_user_map.begin(); it != g_user_map.end(); )
@@ -86,46 +88,43 @@ void CRouteConn::Close()
         }
     }
 
-	ReleaseRef();
+    ReleaseRef();
 }
 
 void CRouteConn::OnConnect(net_handle_t handle)
 {
-	m_handle = handle;
+    m_handle = handle;
 
-	g_route_conn_map.insert(make_pair(handle, this));
+    g_route_conn_map.insert(make_pair(handle, this));
 
-	netlib_option(handle, NETLIB_OPT_SET_CALLBACK, (void*)imconn_callback);
-	netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, (void*)&g_route_conn_map);
+    netlib_option(handle, NETLIB_OPT_SET_CALLBACK, (void*)imconn_callback);
+    netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, (void*)&g_route_conn_map);
 }
 
 void CRouteConn::OnClose()
 {
-	log("MsgServer onclose: handle=%d ", m_handle);
-	Close();
+    log("MsgServer onclose: handle=%d ", m_handle);
+    Close();
 }
 
 void CRouteConn::OnTimer(uint64_t curr_tick)
 {
-	if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL)
+    if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL)
     {
         IM::Other::IMHeartBeat msg;
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_OTHER);
-        pdu.SetCommandId(CID_OTHER_HEARTBEAT);
-		SendPdu(&pdu);
-	}
+        SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
+    }
 
-	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("message server timeout ");
-		Close();
-	}
+    if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) 
+    {
+        log("message server timeout ");
+        Close();
+    }
 }
 
 void CRouteConn::HandlePdu(CImPdu* pPdu)
 {
-	switch (pPdu->GetCommandId()) {
+    switch (pPdu->GetCommandId()) {
         case CID_OTHER_HEARTBEAT:
             // do not take any action, heart beat only update m_last_recv_tick
             break;
@@ -154,10 +153,10 @@ void CRouteConn::HandlePdu(CImPdu* pPdu)
             _BroadcastMsg(pPdu);
             break;
         
-	default:
-		log("CRouteConn::HandlePdu, wrong cmd id: %d ", pPdu->GetCommandId());
-		break;
-	}
+    default:
+        log("CRouteConn::HandlePdu, wrong cmd id: %d ", pPdu->GetCommandId());
+        break;
+    }
 }
 
 void CRouteConn::_HandleOnlineUserInfo(CImPdu* pPdu)
@@ -165,14 +164,15 @@ void CRouteConn::_HandleOnlineUserInfo(CImPdu* pPdu)
     IM::Server::IMOnlineUserInfo msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
 
-	uint32_t user_count = msg.user_stat_list_size();
+    uint32_t user_count = msg.user_stat_list_size();
 
-	log("HandleOnlineUserInfo, user_cnt=%u ", user_count);
+    log("HandleOnlineUserInfo, user_cnt=%u ", user_count);
 
-	for (uint32_t i = 0; i < user_count; i++) {
+    for (uint32_t i = 0; i < user_count; i++) 
+    {
         IM::BaseDefine::ServerUserStat server_user_stat = msg.user_stat_list(i);
-		_UpdateUserStatus(server_user_stat.user_id(), server_user_stat.status(), server_user_stat.client_type());
-	}
+        _UpdateUserStatus(server_user_stat.user_id(), server_user_stat.status(), server_user_stat.client_type());
+    }
 }
 
 void CRouteConn::_HandleUserStatusUpdate(CImPdu* pPdu)
@@ -180,12 +180,12 @@ void CRouteConn::_HandleUserStatusUpdate(CImPdu* pPdu)
     IM::Server::IMUserStatusUpdate msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
 
-	uint32_t user_status = msg.user_status();
-	uint32_t user_id = msg.user_id();
+    uint32_t user_status = msg.user_status();
+    uint32_t user_id = msg.user_id();
     uint32_t client_type = msg.client_type();
-	log("HandleUserStatusUpdate, status=%u, uid=%u, client_type=%u ", user_status, user_id, client_type);
+    log("HandleUserStatusUpdate, status=%u, uid=%u, client_type=%u ", user_status, user_id, client_type);
 
-	_UpdateUserStatus(user_id, user_status, client_type);
+    _UpdateUserStatus(user_id, user_status, client_type);
     
     //用于通知客户端,同一用户在pc端的登录情况
     CUserInfo* pUser = GetUserInfo(user_id);
@@ -262,14 +262,14 @@ void CRouteConn::_HandleRoleSet(CImPdu* pPdu)
     IM::Server::IMRoleSet msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
 
-	uint32_t master = msg.master();
+    uint32_t master = msg.master();
 
-	log("HandleRoleSet, master=%u, handle=%u ", master, m_handle);
-	if (master == 1) {
-		m_bMaster = true;
-	} else {
-		m_bMaster = false;
-	}
+    log("HandleRoleSet, master=%u, handle=%u ", master, m_handle);
+    if (master == 1) {
+        m_bMaster = true;
+    } else {
+        m_bMaster = false;
+    }
 }
 
 void CRouteConn::_HandleUsersStatusRequest(CImPdu* pPdu)
@@ -277,17 +277,18 @@ void CRouteConn::_HandleUsersStatusRequest(CImPdu* pPdu)
     IM::Buddy::IMUsersStatReq msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
 
-	uint32_t request_id = msg.user_id();
-	uint32_t query_count = msg.user_id_list_size();
-	log("HandleUserStatusReq, req_id=%u, query_count=%u ", request_id, query_count);
+    uint32_t request_id = msg.user_id();
+    uint32_t query_count = msg.user_id_list_size();
+    log("HandleUserStatusReq, req_id=%u, query_count=%u ", request_id, query_count);
 
     IM::Buddy::IMUsersStatRsp msg2;
     msg2.set_user_id(request_id);
     msg2.set_attach_data(msg.attach_data());
     list<user_stat_t> result_list;
-	user_stat_t status;
+    user_stat_t status;
+
     for(uint32_t i = 0; i < query_count; i++)
-	{
+    {
         IM::BaseDefine::UserStat* user_stat = msg2.add_user_stat_list();
         uint32_t user_id = msg.user_id_list(i);
         user_stat->set_user_id(user_id);
@@ -295,19 +296,19 @@ void CRouteConn::_HandleUsersStatusRequest(CImPdu* pPdu)
         if (pUser) {
             user_stat->set_status((::IM::BaseDefine::UserStatType) pUser->GetStatus()) ;
         }
-		else
-		{
+        else
+        {
             user_stat->set_status(USER_STATUS_OFFLINE) ;
-		}
-	}
+        }
+    }
 
-	// send back query user status
+    // send back query user status
     CImPdu pdu;
     pdu.SetPBMsg(&msg2);
     pdu.SetServiceId(SID_BUDDY_LIST);
     pdu.SetCommandId(CID_BUDDY_LIST_USERS_STATUS_RESPONSE);
-	pdu.SetSeqNum(pPdu->GetSeqNum());
-	SendPdu(&pdu);
+    pdu.SetSeqNum(pPdu->GetSeqNum());
+    SendPdu(&pdu);
 }
 
 /*
@@ -365,13 +366,15 @@ void CRouteConn::_UpdateUserStatus(uint32_t user_id, uint32_t status, uint32_t c
 
 void CRouteConn::_BroadcastMsg(CImPdu* pPdu, CRouteConn* pFromConn)
 {
-	ConnMap_t::iterator it;
-	for (it = g_route_conn_map.begin(); it != g_route_conn_map.end(); it++) {
-		CRouteConn* pRouteConn = (CRouteConn*)it->second;
-		if (pRouteConn != pFromConn) {
-			pRouteConn->SendPdu(pPdu);
-		}
-	}
+    ConnMap_t::iterator it;
+    for (it = g_route_conn_map.begin(); it != g_route_conn_map.end(); it++) 
+    {
+        CRouteConn* pRouteConn = (CRouteConn*)it->second;
+        if (pRouteConn != pFromConn) 
+        {
+            pRouteConn->SendPdu(pPdu);
+        }
+    }
 }
 
 

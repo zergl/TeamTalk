@@ -115,7 +115,6 @@ CPushServConn* get_push_serv_conn()
 
 CPushServConn::CPushServConn()
 {
-	m_bOpen = false;
 }
 
 CPushServConn::~CPushServConn()
@@ -125,36 +124,36 @@ CPushServConn::~CPushServConn()
 
 void CPushServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
 {
-	log("Connecting to Push Server %s:%d ", server_ip, server_port);
+    log("Connecting to Push Server %s:%d ", server_ip, server_port);
     
-	m_serv_idx = serv_idx;
-	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_push_server_conn_map);
+    m_serv_idx = serv_idx;
+    m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_push_server_conn_map);
     
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		g_push_server_conn_map.insert(make_pair(m_handle, this));
-	}
+    if (m_handle != NETLIB_INVALID_HANDLE) {
+        g_push_server_conn_map.insert(make_pair(m_handle, this));
+    }
 }
 
 void CPushServConn::Close()
 {
-	// reset server information for the next connect
-	serv_reset<CPushServConn>(g_push_server_list, g_push_server_count, m_serv_idx);
+    // reset server information for the next connect
+    serv_reset<CPushServConn>(g_push_server_list, g_push_server_count, m_serv_idx);
     
     m_bOpen = false;
     g_master_push_conn = NULL;
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		netlib_close(m_handle);
-		g_push_server_conn_map.erase(m_handle);
-	}
+    if (m_handle != NETLIB_INVALID_HANDLE) {
+        netlib_close(m_handle);
+        g_push_server_conn_map.erase(m_handle);
+    }
     
-	ReleaseRef();
+    ReleaseRef();
 }
 
 void CPushServConn::OnConfirm()
 {
-	log("connect to push server success ");
-	m_bOpen = true;
-	g_push_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
+    log("connect to push server success ");
+    m_bOpen = true;
+    g_push_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
     g_master_push_conn = this;
 }
 

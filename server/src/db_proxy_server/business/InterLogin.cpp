@@ -60,9 +60,9 @@ bool CInterLoginStrategy::doLogin(const std::string &strName, const std::string 
                 user.set_avatar_url(strAvatar);
                 user.set_department_id(nDeptId);
                 user.set_status(nStatus);
-  	        user.set_sign_info(strSignInfo);
-
+                user.set_sign_info(strSignInfo);
             }
+
             delete  pResultSet;
         }
         pDBManger->RelDBConn(pDBConn);

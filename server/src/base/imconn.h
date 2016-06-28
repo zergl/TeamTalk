@@ -40,6 +40,7 @@ public:
     }
 
     int Send(void* data, int len);
+    bool IsOpen() { return m_bOpen; }
 
     virtual void OnConnect(net_handle_t handle) { m_handle = handle; }
     virtual void OnConfirm() {}

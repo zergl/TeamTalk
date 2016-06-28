@@ -99,8 +99,7 @@ CFileServConn* get_random_file_serv_conn()
 
 CFileServConn::CFileServConn()
 {
-	m_bOpen = false;
-	m_serv_idx = 0;
+    m_serv_idx = 0;
 }
 
 CFileServConn::~CFileServConn()
@@ -121,58 +120,52 @@ void CFileServConn::Connect(const char* server_ip, uint16_t server_port, uint32_
 
 void CFileServConn::Close()
 {
-	serv_reset<CFileServConn>(g_file_server_list, g_file_server_count, m_serv_idx);
+    serv_reset<CFileServConn>(g_file_server_list, g_file_server_count, m_serv_idx);
     
-	m_bOpen = false;
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		netlib_close(m_handle);
-		g_file_server_conn_map.erase(m_handle);
-	}
+    m_bOpen = false;
+    if (m_handle != NETLIB_INVALID_HANDLE) {
+        netlib_close(m_handle);
+        g_file_server_conn_map.erase(m_handle);
+    }
     
-	ReleaseRef();
+    ReleaseRef();
 }
 
 void CFileServConn::OnConfirm()
 {
-	log("connect to file server success ");
-	m_bOpen = true;
-	m_connect_time = get_tick_count();
-	g_file_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
+    log("connect to file server success ");
+    m_bOpen = true;
+    m_connect_time = get_tick_count();
+    g_file_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
     
     IM::Server::IMFileServerIPReq msg;
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg);
-    pdu.SetServiceId(SID_OTHER);
-    pdu.SetCommandId(CID_OTHER_FILE_SERVER_IP_REQ);
-    SendPdu(&pdu);
+    SendPdu(SID_OTHER, CID_OTHER_FILE_SERVER_IP_REQ, msg);
 }
 
 void CFileServConn::OnClose()
 {
-	log("onclose from file server handle=%d ", m_handle);
-	Close();
+    log("onclose from file server handle=%d ", m_handle);
+    Close();
 }
 
 void CFileServConn::OnTimer(uint64_t curr_tick)
 {
-	if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) {
+    if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) 
+    {
         IM::Other::IMHeartBeat msg;
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_OTHER);
-        pdu.SetCommandId(CID_OTHER_HEARTBEAT);
-		SendPdu(&pdu);
-	}
+        SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
+    }
     
-	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("conn to file server timeout ");
-		Close();
-	}
+    if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) 
+    {
+        log("conn to file server timeout ");
+        Close();
+    }
 }
 
 void CFileServConn::HandlePdu(CImPdu* pPdu)
 {
-	switch (pPdu->GetCommandId()) {
+    switch (pPdu->GetCommandId()) {
         case CID_OTHER_HEARTBEAT:
             break;
         case CID_OTHER_FILE_TRANSFER_RSP:
@@ -184,7 +177,7 @@ void CFileServConn::HandlePdu(CImPdu* pPdu)
         default:
             log("unknown cmd id=%d ", pPdu->GetCommandId());
             break;
-	}
+    }
 }
 
 void CFileServConn::_HandleFileMsgTransRsp(CImPdu* pPdu)
@@ -204,33 +197,28 @@ void CFileServConn::_HandleFileMsgTransRsp(CImPdu* pPdu)
         task_id: %s, trans_mode: %u. ", result, from_id, to_id,
         file_name.c_str(), task_id.c_str(), trans_mode);
 
-    const list<IM::BaseDefine::IpAddr>* ip_addr_list = GetFileServerIPList();
-
-    IM::File::IMFileRsp msg2;
-    msg2.set_result_code(result);
-    msg2.set_from_user_id(from_id);
-    msg2.set_to_user_id(to_id);
-    msg2.set_file_name(file_name);
-    msg2.set_task_id(task_id);
-    msg2.set_trans_mode((IM::BaseDefine::TransferFileType)trans_mode);
-    for (list<IM::BaseDefine::IpAddr>::const_iterator it = ip_addr_list->begin(); it != ip_addr_list->end(); it++)
-    {
-        IM::BaseDefine::IpAddr ip_addr_tmp = *it;
-        IM::BaseDefine::IpAddr* ip_addr = msg2.add_ip_addr_list();
-        ip_addr->set_ip(ip_addr_tmp.ip());
-        ip_addr->set_port(ip_addr_tmp.port());
-    }
-    CImPdu pdu;
-    pdu.SetPBMsg(&msg2);
-    pdu.SetServiceId(SID_FILE);
-    pdu.SetCommandId(CID_FILE_RESPONSE);
-    pdu.SetSeqNum(pPdu->GetSeqNum());
-    uint32_t handle = attach.GetHandle();
-    
+    uint32_t handle = attach.GetHandle();    
     CMsgConn* pFromConn = CImUserManager::GetInstance()->GetMsgConnByHandle(from_id, handle);
     if (pFromConn)
     {
-        pFromConn->SendPdu(&pdu);
+        IM::File::IMFileRsp msg2;
+        msg2.set_result_code(result);
+        msg2.set_from_user_id(from_id);
+        msg2.set_to_user_id(to_id);
+        msg2.set_file_name(file_name);
+        msg2.set_task_id(task_id);
+        msg2.set_trans_mode((IM::BaseDefine::TransferFileType)trans_mode);
+
+        const list<IM::BaseDefine::IpAddr>* ip_addr_list = GetFileServerIPList();
+        for (list<IM::BaseDefine::IpAddr>::const_iterator it = ip_addr_list->begin(); it != ip_addr_list->end(); it++)
+        {
+            IM::BaseDefine::IpAddr ip_addr_tmp = *it;
+            IM::BaseDefine::IpAddr* ip_addr = msg2.add_ip_addr_list();
+            ip_addr->set_ip(ip_addr_tmp.ip());
+            ip_addr->set_port(ip_addr_tmp.port());
+        }
+
+        pFromConn->SendPdu(SID_FILE, CID_FILE_RESPONSE, msg2);
     }
     
     if (result == 0)

@@ -17,8 +17,6 @@ public:
     CLoginServConn();
     virtual ~CLoginServConn();
 
-    bool IsOpen() { return m_bOpen; }
-
     void Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx);
     virtual void Close();
 
@@ -28,7 +26,6 @@ public:
 
     virtual void HandlePdu(CImPdu* pPdu);
 private:
-    bool        m_bOpen;
     uint32_t    m_serv_idx;
 };
 

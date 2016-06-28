@@ -17,25 +17,23 @@
 class CPushServConn : public CImConn
 {
 public:
-	CPushServConn();
-	virtual ~CPushServConn();
+    CPushServConn();
+    virtual ~CPushServConn();
     
-	bool IsOpen() { return m_bOpen; }
+    void Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx);
+    virtual void Close();
     
-	void Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx);
-	virtual void Close();
+    virtual void OnConfirm();
+    virtual void OnClose();
+    virtual void OnTimer(uint64_t curr_tick);
     
-	virtual void OnConfirm();
-	virtual void OnClose();
-	virtual void OnTimer(uint64_t curr_tick);
-    
-	virtual void HandlePdu(CImPdu* pPdu);
-private:
-	void _HandlePushToUserResponse(CImPdu* pPdu);
+    virtual void HandlePdu(CImPdu* pPdu);
 
 private:
-	bool 		m_bOpen;
-	uint32_t	m_serv_idx;
+    void _HandlePushToUserResponse(CImPdu* pPdu);
+
+private:
+    uint32_t    m_serv_idx;
 };
 
 void init_push_serv_conn(serv_info_t* server_list, uint32_t server_count);

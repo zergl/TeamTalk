@@ -35,8 +35,6 @@ public:
     uint16_t GetPduVersion() { return m_pdu_version; }
     uint32_t GetClientType() { return m_client_type; }
     uint32_t GetClientTypeFlag();
-    void SetOpen() { m_bOpen = true; }
-    bool IsOpen() { return m_bOpen; }
     void SetKickOff() { m_bKickOff = true; }
     bool IsKickOff() { return m_bKickOff; }
     void SetOnlineStatus(uint32_t status) { m_online_status = status; }

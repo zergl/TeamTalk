@@ -28,34 +28,36 @@ using namespace IM::BaseDefine;
 
 static ConnMap_t g_db_server_conn_map;
 
-static serv_info_t* g_db_server_list = NULL;
-static uint32_t		g_db_server_count = 0;			// 到DBServer的总连接数
-static uint32_t		g_db_server_login_count = 0;	// 到进行登录处理的DBServer的总连接数
-static CGroupChat*	s_group_chat = NULL;
-static CFileHandler* s_file_handler = NULL;
+static serv_info_t*     g_db_server_list = NULL;
+static uint32_t         g_db_server_count = 0;          // 到DBServer的总连接数
+static uint32_t         g_db_server_login_count = 0;    // 到进行登录处理的DBServer的总连接数
+static CGroupChat*      s_group_chat = NULL;
+static CFileHandler*    s_file_handler = NULL;
 
 
 extern CAes *pAes;
 
 static void db_server_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	ConnMap_t::iterator it_old;
-	CDBServConn* pConn = NULL;
-	uint64_t cur_time = get_tick_count();
+    ConnMap_t::iterator it_old;
+    CDBServConn* pConn = NULL;
+    uint64_t cur_time = get_tick_count();
 
-	for (ConnMap_t::iterator it = g_db_server_conn_map.begin(); it != g_db_server_conn_map.end(); ) {
-		it_old = it;
-		it++;
+    for (ConnMap_t::iterator it = g_db_server_conn_map.begin(); it != g_db_server_conn_map.end(); ) 
+    {
+        it_old = it;
+        it++;
 
-		pConn = (CDBServConn*)it_old->second;
-		if (pConn->IsOpen()) {
-			pConn->OnTimer(cur_time);
-		}
-	}
+        pConn = (CDBServConn*)it_old->second;
+        if (pConn->IsOpen()) 
+        {
+            pConn->OnTimer(cur_time);
+        }
+    }
 
-	// reconnect DB Storage Server
-	// will reconnect in 4s, 8s, 16s, 32s, 64s, 4s 8s ...
-	serv_check_reconnect<CDBServConn>(g_db_server_list, g_db_server_count);
+    // reconnect DB Storage Server
+    // will reconnect in 4s, 8s, 16s, 32s, 64s, 4s 8s ...
+    serv_check_reconnect<CDBServConn>(g_db_server_list, g_db_server_count);
 }
 
 void init_db_serv_conn(serv_info_t* server_list, uint32_t server_count, uint32_t concur_conn_cnt)
@@ -131,7 +133,6 @@ CDBServConn* get_db_serv_conn()
 
 CDBServConn::CDBServConn()
 {
-    m_bOpen = false;
 }
 
 CDBServConn::~CDBServConn()
@@ -154,45 +155,43 @@ void CDBServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t 
 
 void CDBServConn::Close()
 {
-	// reset server information for the next connect
-	serv_reset<CDBServConn>(g_db_server_list, g_db_server_count, m_serv_idx);
+    // reset server information for the next connect
+    serv_reset<CDBServConn>(g_db_server_list, g_db_server_count, m_serv_idx);
 
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		netlib_close(m_handle);
-		g_db_server_conn_map.erase(m_handle);
-	}
+    if (m_handle != NETLIB_INVALID_HANDLE) {
+        netlib_close(m_handle);
+        g_db_server_conn_map.erase(m_handle);
+    }
 
-	ReleaseRef();
+    ReleaseRef();
 }
 
 void CDBServConn::OnConfirm()
 {
-	log("connect to db server success");
-	m_bOpen = true;
-	g_db_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
+    log("connect to db server success");
+    m_bOpen = true;
+    g_db_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
 }
 
 void CDBServConn::OnClose()
 {
-	log("onclose from db server handle=%d", m_handle);
-	Close();
+    log("onclose from db server handle=%d", m_handle);
+    Close();
 }
 
 void CDBServConn::OnTimer(uint64_t curr_tick)
 {
-	if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) {
+    if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) //可以把心跳时间做成配置
+    {
         IM::Other::IMHeartBeat msg;
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_OTHER);
-        pdu.SetCommandId(CID_OTHER_HEARTBEAT);
-		SendPdu(&pdu);
-	}
+        SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
+    }
 
-	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("conn to db server timeout");
-		Close();
-	}
+    if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) 
+    {
+        log("conn to db server timeout");
+        Close();
+    }
 }
 
 void CDBServConn::HandlePdu(CImPdu* pPdu)
@@ -604,11 +603,11 @@ void CDBServConn::_HandleUsersInfoResponse(CImPdu* pPdu)
 
 void CDBServConn::_HandleStopReceivePacket(CImPdu* pPdu)
 {
-	log("HandleStopReceivePacket, from %s:%d.",
-		g_db_server_list[m_serv_idx].server_ip.c_str(),
-		g_db_server_list[m_serv_idx].server_port);
+    log("HandleStopReceivePacket, from %s:%d.",
+        g_db_server_list[m_serv_idx].server_ip.c_str(),
+        g_db_server_list[m_serv_idx].server_port);
 
-	m_bOpen = false;
+    m_bOpen = false;
 }
 
 void CDBServConn::_HandleRemoveSessionResponse(CImPdu* pPdu)
@@ -616,21 +615,22 @@ void CDBServConn::_HandleRemoveSessionResponse(CImPdu* pPdu)
     IM::Buddy::IMRemoveSessionRsp msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
 
-	uint32_t user_id = msg.user_id();
-	uint32_t result = msg.result_code();
-	uint32_t session_type = msg.session_type();
-	uint32_t session_id = msg.session_id();
-	log("HandleRemoveSessionResp, req_id=%u, result=%u, session_id=%u, type=%u.",
-			user_id, result, session_id, session_type);
+    uint32_t user_id = msg.user_id();
+    uint32_t result = msg.result_code();
+    uint32_t session_type = msg.session_type();
+    uint32_t session_id = msg.session_id();
+    log("HandleRemoveSessionResp, req_id=%u, result=%u, session_id=%u, type=%u.",
+        user_id, result, session_id, session_type);
 
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
     uint32_t handle = attach_data.GetHandle();
     CMsgConn* pConn = CImUserManager::GetInstance()->GetMsgConnByHandle(user_id, handle);
-	if (pConn && pConn->IsOpen()) {
+    if (pConn && pConn->IsOpen()) 
+    {
         msg.clear_attach_data();
         pPdu->SetPBMsg(&msg);
         pConn->SendPdu(pPdu);
-	}
+    }
 }
 
 void CDBServConn::_HandleChangeAvatarResponse(CImPdu* pPdu)
