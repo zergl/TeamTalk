@@ -87,15 +87,15 @@ void CImUser::BroadcastPdu(CImPdu* pPdu, CMsgConn* pFromConn)
 
 void CImUser::BroadcastPdu(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg, CMsgConn* pFromConn)
 {
-	CImPdu pPdu;
-	for (map<uint32_t, CMsgConn*>::iterator it = m_conn_map.begin(); it != m_conn_map.end(); it++)
-	{
-		CMsgConn* pConn = it->second;
-		if (pConn == pFromConn)
-			continue;
+    CImPdu pPdu;
+    for (map<uint32_t, CMsgConn*>::iterator it = m_conn_map.begin(); it != m_conn_map.end(); it++)
+    {
+        CMsgConn* pConn = it->second;
+        if (pConn == pFromConn)
+            continue;
 
-		pConn->SendPdu(service_id, command_id, msg);
-	}
+        pConn->SendPdu(service_id, command_id, msg);
+    }
 }
 
 void CImUser::BroadcastPduWithOutMobile(CImPdu *pPdu, CMsgConn* pFromConn)
@@ -103,7 +103,8 @@ void CImUser::BroadcastPduWithOutMobile(CImPdu *pPdu, CMsgConn* pFromConn)
     for (map<uint32_t, CMsgConn*>::iterator it = m_conn_map.begin(); it != m_conn_map.end(); it++)
     {
         CMsgConn* pConn = it->second;
-        if (pConn != pFromConn && CHECK_CLIENT_TYPE_PC(pConn->GetClientType())) {
+        if (pConn != pFromConn && CHECK_CLIENT_TYPE_PC(pConn->GetClientType())) 
+        {
             pConn->SendPdu(pPdu);
         }
     }

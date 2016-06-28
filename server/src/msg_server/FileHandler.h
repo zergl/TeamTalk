@@ -15,9 +15,9 @@ class CMsgConn;
 class CFileHandler
 {
 public:
-	virtual ~CFileHandler() {}
+    virtual ~CFileHandler() {}
 
-	static CFileHandler* getInstance();
+    static CFileHandler* getInstance();
 
     void HandleClientFileRequest(CMsgConn* pMsgConn, CImPdu* pPdu);
     void HandleClientFileHasOfflineReq(CMsgConn* pMsgConn, CImPdu* pPdu);
@@ -25,11 +25,12 @@ public:
     void HandleClientFileDelOfflineReq(CMsgConn* pMsgConn, CImPdu* pPdu);
     void HandleFileHasOfflineRes(CImPdu* pPdu);
     void HandleFileNotify(CImPdu* pPdu);
-private:
-	CFileHandler() {}
 
 private:
-	static CFileHandler* s_handler_instance;
+    CFileHandler() {}
+
+private:
+    static CFileHandler* s_handler_instance;
 };
 
 

@@ -19,37 +19,39 @@ static ConnMap_t g_push_server_conn_map;
 static CPushServConn* g_master_push_conn = NULL;
 
 static serv_info_t* g_push_server_list = NULL;
-static uint32_t		g_push_server_count = 0;			// 到PushServer的总连接数
+static uint32_t     g_push_server_count = 0;    // 到PushServer的总连接数
 
 static void push_server_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	ConnMap_t::iterator it_old;
-	CPushServConn* pConn = NULL;
-	uint64_t cur_time = get_tick_count();
+    ConnMap_t::iterator it_old;
+    CPushServConn* pConn = NULL;
+    uint64_t cur_time = get_tick_count();
     
-	for (ConnMap_t::iterator it = g_push_server_conn_map.begin(); it != g_push_server_conn_map.end(); ) {
-		it_old = it;
-		it++;
+    for (ConnMap_t::iterator it = g_push_server_conn_map.begin(); it != g_push_server_conn_map.end(); ) 
+    {
+        it_old = it;
+        it++;
         
-		pConn = (CPushServConn*)it_old->second;
-		if (pConn->IsOpen()) {
-			pConn->OnTimer(cur_time);
-		}
-	}
+        pConn = (CPushServConn*)it_old->second;
+        if (pConn->IsOpen()) 
+        {
+            pConn->OnTimer(cur_time);
+        }
+    }
     
-	// reconnect Push Server
-	// will reconnect in 4s, 8s, 16s, 32s, 64s, 4s 8s ...
-	serv_check_reconnect<CPushServConn>(g_push_server_list, g_push_server_count);
+    // reconnect Push Server
+    // will reconnect in 4s, 8s, 16s, 32s, 64s, 4s 8s ...
+    serv_check_reconnect<CPushServConn>(g_push_server_list, g_push_server_count);
 }
 
 void init_push_serv_conn(serv_info_t* server_list, uint32_t server_count)
 {
-	g_push_server_list = server_list;
-	g_push_server_count = server_count;
+    g_push_server_list = server_list;
+    g_push_server_count = server_count;
     
-	serv_init<CPushServConn>(g_push_server_list, g_push_server_count);
+    serv_init<CPushServConn>(g_push_server_list, g_push_server_count);
     
-	netlib_register_timer(push_server_conn_timer_callback, NULL, 1000);
+    netlib_register_timer(push_server_conn_timer_callback, NULL, 1000);
 }
 
 void build_ios_push_flash(string& flash, uint32_t msg_type, uint32_t from_id)
@@ -106,10 +108,12 @@ void build_ios_push_flash(string& flash, uint32_t msg_type, uint32_t from_id)
 CPushServConn* get_push_serv_conn()
 {
     CPushServConn* push_conn = NULL;
-	if (g_master_push_conn && g_master_push_conn->IsOpen()) {
+    if (g_master_push_conn && g_master_push_conn->IsOpen()) 
+    {
         push_conn = g_master_push_conn;
     }
-	return push_conn;
+
+    return push_conn;
 }
 
 
@@ -159,30 +163,29 @@ void CPushServConn::OnConfirm()
 
 void CPushServConn::OnClose()
 {
-	log("onclose from push server handle=%d ", m_handle);
-	Close();
+    log("onclose from push server handle=%d ", m_handle);
+    Close();
 }
 
 void CPushServConn::OnTimer(uint64_t curr_tick)
 {
-	if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) {
+    if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) 
+    {
         IM::Other::IMHeartBeat msg;
-        CImPdu pdu;
-        pdu.SetPBMsg(&msg);
-        pdu.SetServiceId(SID_OTHER);
-        pdu.SetCommandId(CID_OTHER_HEARTBEAT);
-		SendPdu(&pdu);
-	}
+        
+        SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
+    }
     
-	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("conn to push server timeout ");
-		Close();
-	}
+    if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
+        log("conn to push server timeout ");
+        Close();
+    }
 }
 
 void CPushServConn::HandlePdu(CImPdu* pPdu)
 {
-	switch (pPdu->GetCommandId()) {
+    switch (pPdu->GetCommandId()) 
+    {
         case CID_OTHER_HEARTBEAT:
             //log("push server heart beat. ");
             break;
@@ -191,7 +194,7 @@ void CPushServConn::HandlePdu(CImPdu* pPdu)
             break;
         default:
             log("push server, wrong cmd id=%d ", pPdu->GetCommandId());
-	}
+    }
 }
 
 void CPushServConn::_HandlePushToUserResponse(CImPdu *pPdu)
