@@ -8,8 +8,8 @@
 
 #include "im_conn_util.h"
 
-#include "base/imconn.h"
-#include "base/ImPduBase.h"
+#include "imconn.h"
+#include "ImPduBase.h"
 
 int SendMessageLite(CImConn* conn, uint16_t sid, uint16_t cid, const ::google::protobuf::MessageLite* message) {
     CImPdu pdu;

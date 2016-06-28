@@ -3,6 +3,8 @@
  *
  *  Created on: 2013-9-29
  *      Author: ziteng@mogujie.com
+ *
+ *      modified-by: zergl 2016/06
  */
 
 #include "HttpConn.h"
@@ -235,7 +237,10 @@ void CHttpConn::_HandleMsgServRequest(string& url, string& post_data)
     uint32_t min_user_cnt = (uint32_t)-1;
     map<uint32_t, msg_serv_info_t*>::iterator it_min_conn = g_msg_serv_info.end();
     map<uint32_t, msg_serv_info_t*>::iterator it;
-    if(g_msg_serv_info.size() <= 0)
+    
+	log("g_msg_serv_info: %u", g_msg_serv_info.size());
+
+	if(g_msg_serv_info.size() <= 0)
     {
         Json::Value value;
         value["code"] = 1;

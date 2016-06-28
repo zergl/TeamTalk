@@ -16,6 +16,8 @@ static ConnMap_t g_client_conn_map;
 static ConnMap_t g_msg_serv_conn_map;
 static uint32_t g_total_online_user_cnt = 0;    // 并发在线总人数
 
+map<uint32_t, msg_serv_info_t*> g_msg_serv_info;
+
 void login_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
     uint64_t cur_time = get_tick_count();
@@ -157,6 +159,28 @@ void CLoginConn::HandlePdu(CImPdu* pPdu)
     }
 }
 
+msg_serv_info_t* CLoginConn::_FindMinLoadMsgSever()
+{
+	msg_serv_info_t* pMsgServInfo;
+	msg_serv_info_t* min_ms;
+
+	uint32_t min_user_cnt = 0; //最低在线
+	map<uint32_t, msg_serv_info_t*>::iterator it;
+
+	for (it = g_msg_serv_info.begin(); it != g_msg_serv_info.end(); it++)
+	{
+		pMsgServInfo = it->second;
+		if ((pMsgServInfo->cur_conn_cnt < pMsgServInfo->max_conn_cnt) &&
+			(pMsgServInfo->cur_conn_cnt < min_user_cnt))
+		{
+			min_user_cnt = pMsgServInfo->cur_conn_cnt;
+			min_ms = pMsgServInfo;
+		}
+	}
+
+	return min_ms;
+}
+
 void CLoginConn::_HandleMsgServInfo(CImPdu* pPdu)
 {
     msg_serv_info_t* pMsgServInfo = new msg_serv_info_t;
@@ -170,7 +194,7 @@ void CLoginConn::_HandleMsgServInfo(CImPdu* pPdu)
     pMsgServInfo->cur_conn_cnt = msg.cur_conn_cnt();
     pMsgServInfo->hostname = msg.host_name();
     g_msg_serv_info.insert(make_pair(m_handle, pMsgServInfo));
-
+	log("g_msg_serv_info: %u", g_msg_serv_info.size());
     g_total_online_user_cnt += pMsgServInfo->cur_conn_cnt;
 
     log("MsgServInfo, ip_addr1=%s, ip_addr2=%s, port=%d, max_conn_cnt=%d, cur_conn_cnt=%d, "\

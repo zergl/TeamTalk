@@ -6,12 +6,6 @@ message(STATUS "PROJECT: ${CURRENT_DIRNAME}")
 AUX_SOURCE_DIRECTORY(./ SRC_LIST1)
 AUX_SOURCE_DIRECTORY(../../../proto/gen/cpp SRC_LIST2)
 
-if(APPLE)
-    SET(PB_LIB_DIR ./pb/lib/mac)
-elseif(UNIX)
-    SET(PB_LIB_DIR ./pb/lib/linux)
-endif()
-
 SET(LIBRARY_OUTPUT_PATH ./)
 #SET(EXECUTABLE_OUTPUT_PATH  ./bin)
 
@@ -22,8 +16,11 @@ ADD_DEFINITIONS( -g -W -Wall -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
 -Wno-missing-field-initializers -Wno-missing-field-initializers)
 
 SET(IMPORT_HEADER_DIR ../../3rdparty/include/)
-INCLUDE_DIRECTORIES(./ ../ ${IMPORT_HEADER_DIR} ../../../proto/gen/cpp)
-LINK_DIRECTORIES(./ ${PB_LIB_DIR})
+set(PROTO_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../proto/gen/cpp)
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR} ${IMPORT_HEADER_DIR} ${PROTO_SRC_DIR})
+
+SET(IMPORT_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/lib/linux64)
+LINK_DIRECTORIES(${IMPORT_LIB_DIR})
 
 ADD_LIBRARY(base STATIC ${SRC_LIST1} ${SRC_LIST2})
 
