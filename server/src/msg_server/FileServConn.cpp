@@ -197,6 +197,8 @@ void CFileServConn::_HandleFileMsgTransRsp(CImPdu* pPdu)
         task_id: %s, trans_mode: %u. ", result, from_id, to_id,
         file_name.c_str(), task_id.c_str(), trans_mode);
 
+    const list<IM::BaseDefine::IpAddr>* ip_addr_list = GetFileServerIPList();
+
     uint32_t handle = attach.GetHandle();    
     CMsgConn* pFromConn = CImUserManager::GetInstance()->GetMsgConnByHandle(from_id, handle);
     if (pFromConn)
@@ -209,7 +211,6 @@ void CFileServConn::_HandleFileMsgTransRsp(CImPdu* pPdu)
         msg2.set_task_id(task_id);
         msg2.set_trans_mode((IM::BaseDefine::TransferFileType)trans_mode);
 
-        const list<IM::BaseDefine::IpAddr>* ip_addr_list = GetFileServerIPList();
         for (list<IM::BaseDefine::IpAddr>::const_iterator it = ip_addr_list->begin(); it != ip_addr_list->end(); it++)
         {
             IM::BaseDefine::IpAddr ip_addr_tmp = *it;
