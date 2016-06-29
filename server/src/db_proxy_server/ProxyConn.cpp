@@ -59,14 +59,13 @@ static void sig_handler(int sig_no)
     if (sig_no == SIGTERM) 
     {
         log("receive SIGTERM, prepare for exit");
-        CImPdu cPdu;
         IM::Server::IMStopReceivePacket msg;
         msg.set_result(0);
         
         for (ConnMap_t::iterator it = g_proxy_conn_map.begin(); it != g_proxy_conn_map.end(); it++) 
         {
             CProxyConn* pConn = (CProxyConn*)it->second;
-            pConn->SendPdu(SID_OTHER, CID_OTHER_STOP_RECV_PACKET, msg);
+            pConn->SendPdu(IM::BaseDefine::SID_OTHER, IM::BaseDefine::CID_OTHER_STOP_RECV_PACKET, msg);
         }
 
         // Add By ZhangYuanhao
@@ -184,7 +183,7 @@ void CProxyConn::OnTimer(uint64_t curr_tick)
 {
     if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) 
     {
-        CImPdu cPdu;
+        IM::Other::IMHeartBeat msg;
         SendPdu(IM::BaseDefine::SID_OTHER, IM::BaseDefine::CID_OTHER_HEARTBEAT, msg);
     }
 
