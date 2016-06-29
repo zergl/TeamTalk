@@ -172,8 +172,7 @@ int main(int argc, char* argv[])
     CStrExplode listen_ip_list(listen_ip, ';');
     for (uint32_t i = 0; i < listen_ip_list.GetItemCnt(); i++)
     {
-        ret = netlib_listen(listen_ip_list.GetItem(i), listen_port,
-                http_callback, NULL);
+        ret = netlib_listen(listen_ip_list.GetItem(i), listen_port, http_callback, NULL);
         if (ret == NETLIB_ERROR)
             return ret;
     }

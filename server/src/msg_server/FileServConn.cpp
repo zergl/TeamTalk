@@ -25,45 +25,48 @@ static CFileHandler* s_file_handler = NULL;
 
 void file_server_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	ConnMap_t::iterator it_old;
-	CFileServConn* pConn = NULL;
-	uint64_t cur_time = get_tick_count();
+    ConnMap_t::iterator it_old;
+    CFileServConn* pConn = NULL;
+    uint64_t cur_time = get_tick_count();
     
-	for (ConnMap_t::iterator it = g_file_server_conn_map.begin(); it != g_file_server_conn_map.end();
+    for (ConnMap_t::iterator it = g_file_server_conn_map.begin(); it != g_file_server_conn_map.end();
          )
     {
         it_old = it;
         it++;
-		pConn = (CFileServConn*)it_old->second;
-		pConn->OnTimer(cur_time);
-	}
+        pConn = (CFileServConn*)it_old->second;
+        pConn->OnTimer(cur_time);
+    }
     
-	// reconnect FileServer
-	serv_check_reconnect<CFileServConn>(g_file_server_list, g_file_server_count);
+    // reconnect FileServer
+    serv_check_reconnect<CFileServConn>(g_file_server_list, g_file_server_count);
 }
 
 void init_file_serv_conn(serv_info_t* server_list, uint32_t server_count)
 {
-	g_file_server_list = server_list;
-	g_file_server_count = server_count;
+    g_file_server_list = server_list;
+    g_file_server_count = server_count;
     
-	serv_init<CFileServConn>(g_file_server_list, g_file_server_count);
+    serv_init<CFileServConn>(g_file_server_list, g_file_server_count);
     
-	netlib_register_timer(file_server_conn_timer_callback, NULL, 1000);
-	s_file_handler = CFileHandler::getInstance();
+    netlib_register_timer(file_server_conn_timer_callback, NULL, 1000);
+    s_file_handler = CFileHandler::getInstance();
 }
 
 bool is_file_server_available()
 {
-	CFileServConn* pConn = NULL;
+    CFileServConn* pConn = NULL;
     
-	for (uint32_t i = 0; i < g_file_server_count; i++) {
-		pConn = (CFileServConn*)g_file_server_list[i].serv_conn;
-		if (pConn && pConn->IsOpen()) {
-			return true;
-		}
-	}
-	return false;
+    for (uint32_t i = 0; i < g_file_server_count; i++) 
+    {
+        pConn = (CFileServConn*)g_file_server_list[i].serv_conn;
+        if (pConn && pConn->IsOpen()) 
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 //
@@ -93,7 +96,8 @@ CFileServConn* get_random_file_serv_conn()
             }
         }
     }
-	return pConn;
+
+    return pConn;
 }
 
 
@@ -108,14 +112,15 @@ CFileServConn::~CFileServConn()
 
 void CFileServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t idx)
 {
-	log("Connecting to FileServer %s:%d ", server_ip, server_port);
+    log("Connecting to FileServer %s:%d ", server_ip, server_port);
     
-	m_serv_idx = idx;
-	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_file_server_conn_map);
+    m_serv_idx = idx;
+    m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_file_server_conn_map);
     
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		g_file_server_conn_map.insert(make_pair(m_handle, this));
-	}
+    if (m_handle != NETLIB_INVALID_HANDLE) 
+    {
+        g_file_server_conn_map.insert(make_pair(m_handle, this));
+    }
 }
 
 void CFileServConn::Close()

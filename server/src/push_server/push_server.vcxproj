@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5C3E4748-98C2-4275-A148-5F1147885C56}</ProjectGuid>
+    <ProjectGuid>{8ED48735-2525-4AB4-8278-DE99F0D03595}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>msfs</RootNamespace>
+    <RootNamespace>push_server</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -52,7 +52,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -68,7 +67,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,19 +76,42 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CriticalSection.h" />
-    <ClInclude Include="FileLin.h" />
-    <ClInclude Include="FileManager.h" />
-    <ClInclude Include="HttpConn.h" />
-    <ClInclude Include="Portable.h" />
-    <ClInclude Include="StringUtils.h" />
+    <ClCompile Include="apns_client.cpp" />
+    <ClCompile Include="apns_client_handler.cpp" />
+    <ClCompile Include="apns_feedback_handler.cpp" />
+    <ClCompile Include="apns_msg.cpp" />
+    <ClCompile Include="byte_stream.cpp" />
+    <ClCompile Include="ConfigFileReader.cpp" />
+    <ClCompile Include="jsonxx.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="pdu_msg.cpp" />
+    <ClCompile Include="push_app.cpp" />
+    <ClCompile Include="push_server.cpp" />
+    <ClCompile Include="push_server_handler.cpp" />
+    <ClCompile Include="push_session.cpp" />
+    <ClCompile Include="push_session_handler.cpp" />
+    <ClCompile Include="session_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FileLin.cpp" />
-    <ClCompile Include="FileManager.cpp" />
-    <ClCompile Include="HttpConn.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="StringUtils.cpp" />
+    <ClInclude Include="apns_client.h" />
+    <ClInclude Include="apns_client_handler.h" />
+    <ClInclude Include="apns_feedback_handler.h" />
+    <ClInclude Include="apns_msg.h" />
+    <ClInclude Include="byte_stream.h" />
+    <ClInclude Include="ConfigFileReader.h" />
+    <ClInclude Include="jsonxx.h" />
+    <ClInclude Include="pdu_msg.h" />
+    <ClInclude Include="push_app.h" />
+    <ClInclude Include="push_app_define.h" />
+    <ClInclude Include="push_define.h" />
+    <ClInclude Include="push_server.h" />
+    <ClInclude Include="push_server_handler.h" />
+    <ClInclude Include="push_session.h" />
+    <ClInclude Include="push_session_handler.h" />
+    <ClInclude Include="session_manager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

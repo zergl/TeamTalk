@@ -7,57 +7,55 @@
 
 #include "imconn.h"
 
-//static uint64_t g_send_pkt_cnt = 0;		// 发送数据包总数
-//static uint64_t g_recv_pkt_cnt = 0;		// 接收数据包总数
+//static uint64_t g_send_pkt_cnt = 0;   // 发送数据包总数
+//static uint64_t g_recv_pkt_cnt = 0;   // 接收数据包总数
 
 static CImConn* FindImConn(ConnMap_t* imconn_map, net_handle_t handle)
 {
-	CImConn* pConn = NULL;
-	ConnMap_t::iterator iter = imconn_map->find(handle);
-	if (iter != imconn_map->end())
-	{
-		pConn = iter->second;
-		pConn->AddRef();
-	}
+    CImConn* pConn = NULL;
+    ConnMap_t::iterator iter = imconn_map->find(handle);
+    if (iter != imconn_map->end())
+    {
+        pConn = iter->second;
+        pConn->AddRef();
+    }
 
-	return pConn;
+    return pConn;
 }
 
 void imconn_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	NOTUSED_ARG(handle);
-	NOTUSED_ARG(pParam);
+    NOTUSED_ARG(handle);
+    NOTUSED_ARG(pParam);
 
-	if (!callback_data)
-		return;
+    if (!callback_data)
+        return;
 
-	ConnMap_t* conn_map = (ConnMap_t*)callback_data;
-	CImConn* pConn = FindImConn(conn_map, handle);
-	if (!pConn)
-		return;
+    ConnMap_t* conn_map = (ConnMap_t*)callback_data;
+    CImConn* pConn = FindImConn(conn_map, handle);
+    if (!pConn)
+        return;
 
-	//log("msg=%d, handle=%d ", msg, handle);
+    switch (msg)
+    {
+    case NETLIB_MSG_CONFIRM:
+        pConn->OnConfirm();
+        break;
+    case NETLIB_MSG_READ:
+        pConn->OnRead();
+        break;
+    case NETLIB_MSG_WRITE:
+        pConn->OnWrite();
+        break;
+    case NETLIB_MSG_CLOSE:
+        pConn->OnClose();
+        break;
+    default:
+        log("!!!imconn_callback error msg: %d ", msg);
+        break;
+    }
 
-	switch (msg)
-	{
-	case NETLIB_MSG_CONFIRM:
-		pConn->OnConfirm();
-		break;
-	case NETLIB_MSG_READ:
-		pConn->OnRead();
-		break;
-	case NETLIB_MSG_WRITE:
-		pConn->OnWrite();
-		break;
-	case NETLIB_MSG_CLOSE:
-		pConn->OnClose();
-		break;
-	default:
-		log("!!!imconn_callback error msg: %d ", msg);
-		break;
-	}
-
-	pConn->ReleaseRef();
+    pConn->ReleaseRef();
 }
 
 //////////////////////////

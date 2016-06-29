@@ -144,7 +144,7 @@ int CBaseSocket::Send(void* buf, int len)
 
 int CBaseSocket::Recv(void* buf, int len)
 {
-	return recv(m_socket, (char*)buf, len, 0);
+    return recv(m_socket, (char*)buf, len, 0);
 }
 
 int CBaseSocket::Close()

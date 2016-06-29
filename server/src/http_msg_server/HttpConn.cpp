@@ -149,66 +149,67 @@ void CHttpConn::OnConnect(net_handle_t handle)
 
 void CHttpConn::OnRead()
 {
-	for (;;)
-	{
-		uint32_t free_buf_len = m_in_buf.GetAllocSize() - m_in_buf.GetWriteOffset();
-		if (free_buf_len < READ_BUF_SIZE + 1)
-			m_in_buf.Extend(READ_BUF_SIZE + 1);
+    for (;;)
+    {
+        uint32_t free_buf_len = m_in_buf.GetAllocSize() - m_in_buf.GetWriteOffset();
+        if (free_buf_len < READ_BUF_SIZE + 1)
+            m_in_buf.Extend(READ_BUF_SIZE + 1);
 
-		int ret = netlib_recv(m_sock_handle, m_in_buf.GetBuffer() + m_in_buf.GetWriteOffset(), READ_BUF_SIZE);
-		if (ret <= 0)
-			break;
+        int ret = netlib_recv(m_sock_handle, m_in_buf.GetBuffer() + m_in_buf.GetWriteOffset(), READ_BUF_SIZE);
+        if (ret <= 0)
+            break;
 
-		m_in_buf.IncWriteOffset(ret);
+        m_in_buf.IncWriteOffset(ret);
 
-		m_last_recv_tick = get_tick_count();
-	}
+        m_last_recv_tick = get_tick_count();
+    }
 
-	// 每次请求对应一个HTTP连接，所以读完数据后，不用在同一个连接里面准备读取下个请求
-	char* in_buf = (char*)m_in_buf.GetBuffer();
-	uint32_t buf_len = m_in_buf.GetWriteOffset();
-	in_buf[buf_len] = '\0';
+    // 每次请求对应一个HTTP连接，所以读完数据后，不用在同一个连接里面准备读取下个请求
+    char* in_buf = (char*)m_in_buf.GetBuffer();
+    uint32_t buf_len = m_in_buf.GetWriteOffset();
+    in_buf[buf_len] = '\0';
 
-	//log("OnRead, buf_len=%u, conn_handle=%u\n", buf_len, m_conn_handle); // for debug
+    //log("OnRead, buf_len=%u, conn_handle=%u\n", buf_len, m_conn_handle); // for debug
 
-	m_HttpParser.ParseHttpContent(in_buf, buf_len);
+    m_HttpParser.ParseHttpContent(in_buf, buf_len);
 
-	if (m_HttpParser.IsReadAll()) {
-		string url =  m_HttpParser.GetUrl();
-		if (strncmp(url.c_str(), "/query/", 7) == 0) {
-			string content = m_HttpParser.GetBodyContent();
-			CHttpQuery* pQueryInstance = CHttpQuery::GetInstance();
-			pQueryInstance->DispatchQuery(url, content, this);
-		} else {
-			log("url unknown, url=%s ", url.c_str());
-			Close();
-		}
-	}
+    if (m_HttpParser.IsReadAll()) 
+    {
+        string url =  m_HttpParser.GetUrl();
+        if (strncmp(url.c_str(), "/query/", 7) == 0) {
+            string content = m_HttpParser.GetBodyContent();
+            CHttpQuery* pQueryInstance = CHttpQuery::GetInstance();
+            pQueryInstance->DispatchQuery(url, content, this);
+        } else {
+            log("url unknown, url=%s ", url.c_str());
+            Close();
+        }
+    }
 }
 
 void CHttpConn::OnWrite()
 {
-	if (!m_busy)
-		return;
+    if (!m_busy)
+        return;
 
-	int ret = netlib_send(m_sock_handle, m_out_buf.GetBuffer(), m_out_buf.GetWriteOffset());
-	if (ret < 0)
-		ret = 0;
+    int ret = netlib_send(m_sock_handle, m_out_buf.GetBuffer(), m_out_buf.GetWriteOffset());
+    if (ret < 0)
+        ret = 0;
 
-	int out_buf_size = (int)m_out_buf.GetWriteOffset();
+    int out_buf_size = (int)m_out_buf.GetWriteOffset();
 
-	m_out_buf.Read(NULL, ret);
+    m_out_buf.Read(NULL, ret);
 
-	if (ret < out_buf_size)
-	{
-		m_busy = true;
-		log("not send all, remain=%d ", m_out_buf.GetWriteOffset());
-	}
-	else
-	{
-		m_busy = false;
+    if (ret < out_buf_size)
+    {
+        m_busy = true;
+        log("not send all, remain=%d ", m_out_buf.GetWriteOffset());
+    }
+    else
+    {
+        m_busy = false;
         OnWriteCompelete();
-	}
+    }
 }
 
 void CHttpConn::OnClose()

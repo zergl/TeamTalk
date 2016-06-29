@@ -153,14 +153,15 @@ CRouteServConn::~CRouteServConn()
 
 void CRouteServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t idx)
 {
-	log("Connecting to RouteServer %s:%d ", server_ip, server_port);
+    log("Connecting to RouteServer %s:%d ", server_ip, server_port);
 
-	m_serv_idx = idx;
-	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_route_server_conn_map);
+    m_serv_idx = idx;
+    m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_route_server_conn_map);
 
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		g_route_server_conn_map.insert(make_pair(m_handle, this));
-	}
+    if (m_handle != NETLIB_INVALID_HANDLE) 
+    {
+        g_route_server_conn_map.insert(make_pair(m_handle, this));
+    }
 }
 
 void CRouteServConn::Close()

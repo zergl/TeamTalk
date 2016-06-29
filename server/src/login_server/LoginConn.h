@@ -43,12 +43,11 @@ private:
     void _HandleUserCntUpdate(CImPdu* pPdu);
     void _HandleMsgServRequest(CImPdu* pPdu);
 
-	msg_serv_info_t* _FindMinLoadMsgSever();
+    msg_serv_info_t* _FindMinLoadMsgSever();
 private:
     int m_conn_type;
 };
 
 void init_login_conn();
-
 
 #endif /* LOGINCONN_H_ */

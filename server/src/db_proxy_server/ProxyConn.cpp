@@ -79,14 +79,14 @@ static void sig_handler(int sig_no)
 
 int init_proxy_conn(uint32_t thread_num)
 {
-	s_handler_map = CHandlerMap::getInstance();
-	g_thread_pool.Init(thread_num);
+    s_handler_map = CHandlerMap::getInstance();
+    g_thread_pool.Init(thread_num);
 
-	netlib_add_loop(proxy_loop_callback, NULL);
+    netlib_add_loop(proxy_loop_callback, NULL);
 
-	signal(SIGTERM, sig_handler);
+    signal(SIGTERM, sig_handler);
 
-	return netlib_register_timer(proxy_timer_callback, NULL, 1000);
+    return netlib_register_timer(proxy_timer_callback, NULL, 1000);
 }
 
 CProxyConn* get_proxy_conn_by_uuid(uint32_t uuid)
@@ -145,21 +145,22 @@ void CProxyConn::OnConnect(net_handle_t handle)
 // 由于数据包是在另一个线程处理的，所以不能在主线程delete数据包，所以需要Override这个方法
 void CProxyConn::OnRead()
 {
-	for (;;) {
-		uint32_t free_buf_len = m_in_buf.GetAllocSize() - m_in_buf.GetWriteOffset();
-		if (free_buf_len < READ_BUF_SIZE)
-			m_in_buf.Extend(READ_BUF_SIZE);
+    for (;;) 
+    {
+        uint32_t free_buf_len = m_in_buf.GetAllocSize() - m_in_buf.GetWriteOffset();
+        if (free_buf_len < READ_BUF_SIZE)
+            m_in_buf.Extend(READ_BUF_SIZE);
 
-		int ret = netlib_recv(m_handle, m_in_buf.GetBuffer() + m_in_buf.GetWriteOffset(), READ_BUF_SIZE);
-		if (ret <= 0)
-			break;
+        int ret = netlib_recv(m_handle, m_in_buf.GetBuffer() + m_in_buf.GetWriteOffset(), READ_BUF_SIZE);
+        if (ret <= 0)
+            break;
 
-		m_recv_bytes += ret;
-		m_in_buf.IncWriteOffset(ret);
-		m_last_recv_tick = get_tick_count();
-	}
+        m_recv_bytes += ret;
+        m_in_buf.IncWriteOffset(ret);
+        m_last_recv_tick = get_tick_count();
+    }
 
-	uint32_t pdu_len = 0;
+    uint32_t pdu_len = 0;
     try {
         while ( CImPdu::IsPduAvailable(m_in_buf.GetBuffer(), m_in_buf.GetWriteOffset(), pdu_len) ) {
             HandlePduBuf(m_in_buf.GetBuffer(), pdu_len);
@@ -170,13 +171,12 @@ void CProxyConn::OnRead()
             ex.GetErrorCode(), ex.GetErrorMsg());
         OnClose();
     }
-	
 }
 
 
 void CProxyConn::OnClose()
 {
-	Close();
+    Close();
 }
 
 void CProxyConn::OnTimer(uint64_t curr_tick)

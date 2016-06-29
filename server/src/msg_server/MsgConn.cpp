@@ -28,7 +28,7 @@ using namespace IM::BaseDefine;
 #define TIMEOUT_WAITING_MSG_DATA_ACK    15000   // 15 seconds
 #define LOG_MSG_STAT_INTERVAL           300000  // log message miss status in every 5 minutes;
 #define MAX_MSG_CNT_PER_SECOND          20      // user can not send more than 20 msg in one second
-static ConnMap_t g_msg_conn_map;
+static ConnMap_t g_msg_conn_map;    //所有客户端的socket连接
 static UserMap_t g_msg_conn_user_map;
 
 static uint64_t g_last_stat_tick;           // 上次显示丢包率信息的时间

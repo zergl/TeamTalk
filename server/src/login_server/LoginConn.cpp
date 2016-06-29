@@ -117,17 +117,12 @@ void CLoginConn::OnTimer(uint64_t curr_tick)
     } 
     else 
     {
-		//定时发送心跳包给msg_server
+        //定时发送心跳包给msg_server
         if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) 
         {
             IM::Other::IMHeartBeat msg;
-            CImPdu pdu;
-            pdu.SetPBMsg(&msg);
-            pdu.SetServiceId(SID_OTHER);
-            pdu.SetCommandId(CID_OTHER_HEARTBEAT);
-            SendPdu(&pdu);
+            SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
 
-			SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
         }
 
         if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) 
@@ -161,24 +156,24 @@ void CLoginConn::HandlePdu(CImPdu* pPdu)
 
 msg_serv_info_t* CLoginConn::_FindMinLoadMsgSever()
 {
-	msg_serv_info_t* pMsgServInfo;
-	msg_serv_info_t* min_ms;
+    msg_serv_info_t* pMsgServInfo;
+    msg_serv_info_t* min_ms;
 
-	uint32_t min_user_cnt = 0; //最低在线
-	map<uint32_t, msg_serv_info_t*>::iterator it;
+    uint32_t min_user_cnt = 0; //最低在线
+    map<uint32_t, msg_serv_info_t*>::iterator it;
 
-	for (it = g_msg_serv_info.begin(); it != g_msg_serv_info.end(); it++)
-	{
-		pMsgServInfo = it->second;
-		if ((pMsgServInfo->cur_conn_cnt < pMsgServInfo->max_conn_cnt) &&
-			(pMsgServInfo->cur_conn_cnt < min_user_cnt))
-		{
-			min_user_cnt = pMsgServInfo->cur_conn_cnt;
-			min_ms = pMsgServInfo;
-		}
-	}
+    for (it = g_msg_serv_info.begin(); it != g_msg_serv_info.end(); it++)
+    {
+        pMsgServInfo = it->second;
+        if ((pMsgServInfo->cur_conn_cnt < pMsgServInfo->max_conn_cnt) &&
+            (pMsgServInfo->cur_conn_cnt < min_user_cnt))
+        {
+            min_user_cnt = pMsgServInfo->cur_conn_cnt;
+            min_ms = pMsgServInfo;
+        }
+    }
 
-	return min_ms;
+    return min_ms;
 }
 
 void CLoginConn::_HandleMsgServInfo(CImPdu* pPdu)

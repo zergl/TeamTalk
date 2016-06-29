@@ -143,22 +143,22 @@ void CEventDispatch::AddEvent(SOCKET fd, uint8_t socket_event)
 
 void CEventDispatch::RemoveEvent(SOCKET fd, uint8_t socket_event)
 {
-	CAutoLock func_lock(&m_lock);
+    CAutoLock func_lock(&m_lock);
 
-	if ((socket_event & SOCKET_READ) != 0)
-	{
-		FD_CLR(fd, &m_read_set);
-	}
+    if ((socket_event & SOCKET_READ) != 0)
+    {
+        FD_CLR(fd, &m_read_set);
+    }
 
-	if ((socket_event & SOCKET_WRITE) != 0)
-	{
-		FD_CLR(fd, &m_write_set);
-	}
+    if ((socket_event & SOCKET_WRITE) != 0)
+    {
+        FD_CLR(fd, &m_write_set);
+    }
 
-	if ((socket_event & SOCKET_EXCEP) != 0)
-	{
-		FD_CLR(fd, &m_excep_set);
-	}
+    if ((socket_event & SOCKET_EXCEP) != 0)
+    {
+        FD_CLR(fd, &m_excep_set);
+    }
 }
 
 void CEventDispatch::StartDispatch(uint32_t wait_timeout)
@@ -166,7 +166,7 @@ void CEventDispatch::StartDispatch(uint32_t wait_timeout)
     fd_set read_set, write_set, excep_set;
     timeval timeout;
     timeout.tv_sec = 0;
-    timeout.tv_usec = wait_timeout * 1000;	// 10 millisecond
+    timeout.tv_usec = wait_timeout * 1000;  // 10 millisecond
 
     if(running)
         return;

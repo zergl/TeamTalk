@@ -144,21 +144,21 @@ puts("db init success");
     curl_global_init(CURL_GLOBAL_ALL);
     /// yunfan add end
 
-	init_proxy_conn(thread_num);
+    init_proxy_conn(thread_num);
     CSyncCenter::getInstance()->init();
     CSyncCenter::getInstance()->startSync();
 
-	CStrExplode listen_ip_list(listen_ip, ';');
-	for (uint32_t i = 0; i < listen_ip_list.GetItemCnt(); i++) {
-		ret = netlib_listen(listen_ip_list.GetItem(i), listen_port, proxy_serv_callback, NULL);
-		if (ret == NETLIB_ERROR)
-			return ret;
-	}
+    CStrExplode listen_ip_list(listen_ip, ';');
+    for (uint32_t i = 0; i < listen_ip_list.GetItemCnt(); i++) {
+        ret = netlib_listen(listen_ip_list.GetItem(i), listen_port, proxy_serv_callback, NULL);
+        if (ret == NETLIB_ERROR)
+            return ret;
+    }
 
-	printf("server start listen on: %s:%d\n", listen_ip,  listen_port);
-	printf("now enter the event loop...\n");
+    printf("server start listen on: %s:%d\n", listen_ip,  listen_port);
+    printf("now enter the event loop...\n");
     writePid();
-	netlib_eventloop(10);
+    netlib_eventloop(10);
 
 	return 0;
 }

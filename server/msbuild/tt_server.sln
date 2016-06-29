@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "msg_server", "..\src\msg_se
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "db_proxy_server", "..\src\db_proxy_server\db_proxy_server.vcxproj", "{13B01B5D-0DBD-43A3-9359-E47AB1A27812}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "route_server", "..\src\route_server\route_server.vcxproj", "{457ABFFB-E443-4FAF-8A6C-9A250B094D30}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -45,6 +47,12 @@ Global
 		{13B01B5D-0DBD-43A3-9359-E47AB1A27812}.Release|Win32.ActiveCfg = Release|Win32
 		{13B01B5D-0DBD-43A3-9359-E47AB1A27812}.Release|Win32.Build.0 = Release|Win32
 		{13B01B5D-0DBD-43A3-9359-E47AB1A27812}.Release|x64.ActiveCfg = Release|Win32
+		{457ABFFB-E443-4FAF-8A6C-9A250B094D30}.Debug|Win32.ActiveCfg = Debug|Win32
+		{457ABFFB-E443-4FAF-8A6C-9A250B094D30}.Debug|Win32.Build.0 = Debug|Win32
+		{457ABFFB-E443-4FAF-8A6C-9A250B094D30}.Debug|x64.ActiveCfg = Debug|Win32
+		{457ABFFB-E443-4FAF-8A6C-9A250B094D30}.Release|Win32.ActiveCfg = Release|Win32
+		{457ABFFB-E443-4FAF-8A6C-9A250B094D30}.Release|Win32.Build.0 = Release|Win32
+		{457ABFFB-E443-4FAF-8A6C-9A250B094D30}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

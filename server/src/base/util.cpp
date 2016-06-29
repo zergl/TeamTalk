@@ -53,31 +53,31 @@ void CRefObject::ReleaseRef()
 uint64_t get_tick_count()
 {
 #ifdef _WIN32
-	LARGE_INTEGER liCounter; 
-	LARGE_INTEGER liCurrent;
+    LARGE_INTEGER liCounter; 
+    LARGE_INTEGER liCurrent;
 
-	if (!QueryPerformanceFrequency(&liCounter))
-		return GetTickCount();
+    if (!QueryPerformanceFrequency(&liCounter))
+        return GetTickCount();
 
-	QueryPerformanceCounter(&liCurrent);
-	return (uint64_t)(liCurrent.QuadPart * 1000 / liCounter.QuadPart);
+    QueryPerformanceCounter(&liCurrent);
+    return (uint64_t)(liCurrent.QuadPart * 1000 / liCounter.QuadPart);
 #else
-	struct timeval tval;
-	uint64_t ret_tick;
+    struct timeval tval;
+    uint64_t ret_tick;
 
-	gettimeofday(&tval, NULL);
+    gettimeofday(&tval, NULL);
 
-	ret_tick = tval.tv_sec * 1000L + tval.tv_usec / 1000L;
-	return ret_tick;
+    ret_tick = tval.tv_sec * 1000L + tval.tv_usec / 1000L;
+    return ret_tick;
 #endif
 }
 
 void util_sleep(uint32_t millisecond)
 {
 #ifdef _WIN32
-	Sleep(millisecond);
+    Sleep(millisecond);
 #else
-	usleep(millisecond * 1000);
+    usleep(millisecond * 1000);
 #endif
 }
 

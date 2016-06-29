@@ -121,6 +121,7 @@ int main(int argc, char* argv[])
     if (ret == NETLIB_ERROR)
         return ret;
 
+    //本地监听端口，客户端连进来的
     CStrExplode listen_ip_list(listen_ip, ';');
     for (uint32_t i = 0; i < listen_ip_list.GetItemCnt(); i++) {
         ret = netlib_listen(listen_ip_list.GetItem(i), listen_port, msg_serv_callback, NULL);
@@ -133,19 +134,15 @@ int main(int argc, char* argv[])
     init_msg_conn();
 
     init_file_serv_conn(file_server_list, file_server_count);
-
     init_db_serv_conn(db_server_list2, db_server_count2, concurrent_db_conn_cnt);
-
     init_login_serv_conn(login_server_list, login_server_count, ip_addr1, ip_addr2, listen_port, max_conn_cnt);
-
     init_route_serv_conn(route_server_list, route_server_count);
-
     init_push_serv_conn(push_server_list, push_server_count);
+    
     printf("now enter the event loop...\n");
     
     writePid();
-
     netlib_eventloop();
 
-	return 0;
+    return 0;
 }
