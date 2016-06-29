@@ -34,46 +34,49 @@ static CGroupChat* s_group_chat = NULL;
 
 void route_server_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	ConnMap_t::iterator it_old;
-	CRouteServConn* pConn = NULL;
-	uint64_t cur_time = get_tick_count();
+    ConnMap_t::iterator it_old;
+    CRouteServConn* pConn = NULL;
+    uint64_t cur_time = get_tick_count();
 
-	for (ConnMap_t::iterator it = g_route_server_conn_map.begin(); it != g_route_server_conn_map.end(); ) {
-		it_old = it;
-		it++;
+    for (ConnMap_t::iterator it = g_route_server_conn_map.begin(); it != g_route_server_conn_map.end(); ) 
+    {
+        it_old = it;
+        it++;
 
-		pConn = (CRouteServConn*)it_old->second;
-		pConn->OnTimer(cur_time);
-	}
+        pConn = (CRouteServConn*)it_old->second;
+        pConn->OnTimer(cur_time);
+    }
 
-	// reconnect RouteServer
-	serv_check_reconnect<CRouteServConn>(g_route_server_list, g_route_server_count);
+    // reconnect RouteServer
+    serv_check_reconnect<CRouteServConn>(g_route_server_list, g_route_server_count);
 }
 
 void init_route_serv_conn(serv_info_t* server_list, uint32_t server_count)
 {
-	g_route_server_list = server_list;
-	g_route_server_count = server_count;
+    g_route_server_list = server_list;
+    g_route_server_count = server_count;
 
-	serv_init<CRouteServConn>(g_route_server_list, g_route_server_count);
+    serv_init<CRouteServConn>(g_route_server_list, g_route_server_count);
 
-	netlib_register_timer(route_server_conn_timer_callback, NULL, 1000);
-	s_file_handler = CFileHandler::getInstance();
-	s_group_chat = CGroupChat::GetInstance();
+    netlib_register_timer(route_server_conn_timer_callback, NULL, 1000);
+    s_file_handler = CFileHandler::getInstance();
+    s_group_chat = CGroupChat::GetInstance();
 }
 
 bool is_route_server_available()
 {
-	CRouteServConn* pConn = NULL;
+    CRouteServConn* pConn = NULL;
 
-	for (uint32_t i = 0; i < g_route_server_count; i++) {
-		pConn = (CRouteServConn*)g_route_server_list[i].serv_conn;
-		if (pConn && pConn->IsOpen()) {
-			return true;
-		}
-	}
+    for (uint32_t i = 0; i < g_route_server_count; i++) 
+    {
+        pConn = (CRouteServConn*)g_route_server_list[i].serv_conn;
+        if (pConn && pConn->IsOpen()) 
+        {
+            return true;
+        }
+    }
 
-	return false;
+    return false;
 }
 
 void send_to_all_route_server(CImPdu* pPdu)
@@ -92,20 +95,21 @@ void send_to_all_route_server(CImPdu* pPdu)
 
 void send_to_all_route_server(uint16_t service_id, uint16_t command_id, const google::protobuf::MessageLite &msg)
 {
-	CRouteServConn* pConn = NULL;
-
-	for (uint32_t i = 0; i < g_route_server_count; i++) {
-		pConn = (CRouteServConn*)g_route_server_list[i].serv_conn;
-		if (pConn && pConn->IsOpen()) {
-			pConn->SendPdu(service_id, command_id, msg);
-		}
-	}
+    CRouteServConn* pConn = NULL;
+    for (uint32_t i = 0; i < g_route_server_count; i++) 
+    {
+        pConn = (CRouteServConn*)g_route_server_list[i].serv_conn;
+        if (pConn && pConn->IsOpen()) 
+        {
+            pConn->SendPdu(service_id, command_id, msg);
+        }
+    }
 }
 
 // get the oldest route server connection
 CRouteServConn* get_route_serv_conn()
 {
-	return g_master_rs_conn;
+    return g_master_rs_conn;
 }
 
 void update_master_route_serv_conn()
@@ -271,15 +275,15 @@ void CRouteServConn::_HandleKickUser(CImPdu* pPdu)
     IM::Server::IMServerKickUser msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
 
-	uint32_t user_id = msg.user_id();
+    uint32_t user_id = msg.user_id();
     uint32_t client_type = msg.client_type();
     uint32_t reason = msg.reason();
-	log("HandleKickUser, user_id=%u, client_type=%u, reason=%u. ", user_id, client_type, reason);
+    log("HandleKickUser, user_id=%u, client_type=%u, reason=%u. ", user_id, client_type, reason);
 
     CImUser* pUser = CImUserManager::GetInstance()->GetImUserById(user_id);
-	if (pUser) {
-		pUser->KickOutSameClientType(client_type, reason);
-	}
+    if (pUser) {
+        pUser->KickOutSameClientType(client_type, reason);
+    }
 }
 
 // friend online/off-line notify

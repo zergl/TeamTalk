@@ -252,7 +252,8 @@ void CMsgConn::OnTimer(uint64_t curr_tick)
 void CMsgConn::HandlePdu(CImPdu* pPdu)
 {
     // request authorization check
-    if (pPdu->GetCommandId() != CID_LOGIN_REQ_USERLOGIN && !IsOpen() && IsKickOff()) {
+    if (pPdu->GetCommandId() != CID_LOGIN_REQ_USERLOGIN && !IsOpen() && IsKickOff()) 
+    {
         log("HandlePdu, wrong msg. ");
         throw CPduException(pPdu->GetServiceId(), pPdu->GetCommandId(), ERROR_CODE_WRONG_SERVICE_ID, "HandlePdu error, user not login. ");
         return;
@@ -384,7 +385,7 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
     }
     
     // check if all server connection are OK
-    uint32_t result = 0;
+    ResultType result = REFUSE_REASON_NONE;
     string result_string = "";
     CDBServConn* pDbConn = get_db_serv_conn_for_login();
     if (!pDbConn) {
@@ -400,7 +401,7 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
         result_string = "服务端异常";
     }
 
-    if (result) 
+    if (result != IM::BaseDefine::REFUSE_REASON_NONE)
     {
         IM::Login::IMLoginRes msg;
         msg.set_server_time(time(NULL));
@@ -417,8 +418,8 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
     
     //假如是汉字，则转成拼音
     m_login_name = msg.user_name();
-    string password = msg.password(); //直接传密码明文 wtf！！！
-    uint32_t online_status = msg.online_status();
+    string password = msg.password(); //md5sum(plain password)
+    uint32_t online_status = msg.online_status(); //为什么要这个状态
     if (online_status < IM::BaseDefine::USER_STATUS_ONLINE 
         || online_status > IM::BaseDefine::USER_STATUS_LEAVE) 
     {
@@ -426,7 +427,7 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
         online_status = IM::BaseDefine::USER_STATUS_ONLINE;
     }
 
-    m_client_version = msg.client_version();
+    m_client_version = msg.client_version();   //客户端版本这个信息用来干嘛
     m_client_type = msg.client_type();    //客户端类型，PC、android、ios等
     m_online_status = online_status;
     log("HandleLoginReq, user_name=%s, status=%u, client_type=%u, client=%s, ",
@@ -440,7 +441,7 @@ void CMsgConn::_HandleLoginRequest(CImPdu* pPdu)
     }
     pImUser->AddUnValidateMsgConn(this);   //多终端登录时，每个登录都需要验证的
     
-    CDbAttachData attach_data(ATTACH_TYPE_HANDLE, m_handle, 0);
+    CDbAttachData attach_data(ATTACH_TYPE_HANDLE, m_handle, 0); //类似回带数据
     // continue to validate if the user is OK
     
     //向db_proxy_server发送帐号验证请求
@@ -488,24 +489,26 @@ void CMsgConn::_HandleKickPCClient(CImPdu *pPdu)
     CImUser* pImUser = CImUserManager::GetInstance()->GetImUserById(user_id);
     if (pImUser)
     {
-        pImUser->KickOutSameClientType(CLIENT_TYPE_MAC, IM::BaseDefine::KICK_REASON_MOBILE_KICK,this);
+        pImUser->KickOutSameClientType(CLIENT_TYPE_MAC, IM::BaseDefine::KICK_REASON_MOBILE_KICK, this);
     }
     
     CRouteServConn* pRouteConn = get_route_serv_conn();
-    if (pRouteConn) {
+    if (pRouteConn != NULL) 
+    {
         IM::Server::IMServerKickUser msg2;
         msg2.set_user_id(user_id);
         msg2.set_client_type(::IM::BaseDefine::CLIENT_TYPE_MAC);
         msg2.set_reason(IM::BaseDefine::KICK_REASON_MOBILE_KICK);
 
-		pRouteConn->SendPdu(SID_OTHER, CID_OTHER_SERVER_KICK_USER, msg2);
+        pRouteConn->SendPdu(SID_OTHER, CID_OTHER_SERVER_KICK_USER, msg2);
     }
-    
+   
+    //这个包在客户端没有处理呢！！！
     IM::Login::IMKickPCClientRsp msg2;
     msg2.set_user_id(user_id);
     msg2.set_result_code(0);
 
-	SendPdu(SID_LOGIN, CID_LOGIN_RES_KICKPCCLIENT, msg2);
+    SendPdu(SID_LOGIN, CID_LOGIN_RES_KICKPCCLIENT, msg2);
 }
 
 void CMsgConn::_HandleClientRecentContactSessionRequest(CImPdu *pPdu)

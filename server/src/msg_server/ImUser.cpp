@@ -154,20 +154,18 @@ void CImUser::BroadcastData(void *buff, uint32_t len, CMsgConn* pFromConn)
 void CImUser::HandleKickUser(CMsgConn* pConn, uint32_t reason)
 {
     map<uint32_t, CMsgConn*>::iterator it = m_conn_map.find(pConn->GetHandle());
-    if (it != m_conn_map.end()) {
+    if (it != m_conn_map.end()) 
+    {
         CMsgConn* pConn = it->second;
-        if(pConn) {
+        if(pConn != NULL) 
+        {
             log("kick service user, user_id=%u.", m_user_id);
             IM::Login::IMKickUser msg;
             msg.set_user_id(m_user_id);
             msg.set_kick_reason((::IM::BaseDefine::KickReasonType)reason);
-            CImPdu pdu;
-            pdu.SetPBMsg(&msg);
-            pdu.SetServiceId(SID_LOGIN);
-            pdu.SetCommandId(CID_LOGIN_KICK_USER);
-            pConn->SendPdu(&pdu);
+            
+            pConn->SendPdu(SID_LOGIN, CID_LOGIN_KICK_USER, msg);
             pConn->SetKickOff();
-            //pConn->Close();
         }
     }
 }
@@ -180,7 +178,8 @@ bool CImUser::KickOutSameClientType(uint32_t client_type, uint32_t reason, CMsgC
         CMsgConn* pMsgConn = it->second;
         
         //16进制位移计算
-        if ((((pMsgConn->GetClientType() ^ client_type) >> 4) == 0) && (pMsgConn != pFromConn)) {
+        if ((((pMsgConn->GetClientType() ^ client_type) >> 4) == 0) && (pMsgConn != pFromConn)) 
+        {
             HandleKickUser(pMsgConn, reason);
             break;
         }
