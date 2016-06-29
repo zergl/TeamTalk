@@ -32,64 +32,65 @@ CEventDispatch::~CEventDispatch()
 #ifdef _WIN32
 
 #elif __APPLE__
-	close(m_kqfd);
+    close(m_kqfd);
 #else
-	close(m_epfd);
+    close(m_epfd);
 #endif
 }
 
 void CEventDispatch::AddTimer(callback_t callback, void* user_data, uint64_t interval)
 {
-	list<TimerItem*>::iterator it;
-	for (it = m_timer_list.begin(); it != m_timer_list.end(); it++)
-	{
-		TimerItem* pItem = *it;
-		if (pItem->callback == callback && pItem->user_data == user_data)
-		{
-			pItem->interval = interval;
-			pItem->next_tick = get_tick_count() + interval;
-			return;
-		}
-	}
+    list<TimerItem*>::iterator it;
+    for (it = m_timer_list.begin(); it != m_timer_list.end(); it++)
+    {
+        TimerItem* pItem = *it;
+        if (pItem->callback == callback && pItem->user_data == user_data)
+        {
+            pItem->interval = interval;
+            pItem->next_tick = get_tick_count() + interval;
+            return;
+        }
+    }
 
-	TimerItem* pItem = new TimerItem;
-	pItem->callback = callback;
-	pItem->user_data = user_data;
-	pItem->interval = interval;
-	pItem->next_tick = get_tick_count() + interval;
-	m_timer_list.push_back(pItem);
+    TimerItem* pItem = new TimerItem;
+    pItem->callback = callback;
+    pItem->user_data = user_data;
+    pItem->interval = interval;
+    pItem->next_tick = get_tick_count() + interval;
+    
+    m_timer_list.push_back(pItem);
 }
 
 void CEventDispatch::RemoveTimer(callback_t callback, void* user_data)
 {
-	list<TimerItem*>::iterator it;
-	for (it = m_timer_list.begin(); it != m_timer_list.end(); it++)
-	{
-		TimerItem* pItem = *it;
-		if (pItem->callback == callback && pItem->user_data == user_data)
-		{
-			m_timer_list.erase(it);
-			delete pItem;
-			return;
-		}
-	}
+    list<TimerItem*>::iterator it;
+    for (it = m_timer_list.begin(); it != m_timer_list.end(); it++)
+    {
+        TimerItem* pItem = *it;
+        if (pItem->callback == callback && pItem->user_data == user_data)
+        {
+            m_timer_list.erase(it);
+            delete pItem;
+            return;
+        }
+    }
 }
 
 void CEventDispatch::_CheckTimer()
 {
-	uint64_t curr_tick = get_tick_count();
-	list<TimerItem*>::iterator it;
+    uint64_t curr_tick = get_tick_count();
+    list<TimerItem*>::iterator it;
 
-	for (it = m_timer_list.begin(); it != m_timer_list.end(); )
-	{
-		TimerItem* pItem = *it;
-		it++;		// iterator maybe deleted in the callback, so we should increment it before callback
-		if (curr_tick >= pItem->next_tick)
-		{
-			pItem->next_tick += pItem->interval;
-			pItem->callback(pItem->user_data, NETLIB_MSG_TIMER, 0, NULL);
-		}
-	}
+    for (it = m_timer_list.begin(); it != m_timer_list.end(); )
+    {
+        TimerItem* pItem = *it;
+        it++;   // iterator maybe deleted in the callback, so we should increment it before callback
+        if (curr_tick >= pItem->next_tick)
+        {
+            pItem->next_tick += pItem->interval;
+            pItem->callback(pItem->user_data, NETLIB_MSG_TIMER, 0, NULL);
+        }
+    }
 }
 
 void CEventDispatch::AddLoop(callback_t callback, void* user_data)

@@ -49,12 +49,13 @@ CHandlerMap::~CHandlerMap()
  */
 CHandlerMap* CHandlerMap::getInstance()
 {
-	if (!s_handler_instance) {
-		s_handler_instance = new CHandlerMap();
-		s_handler_instance->Init();
-	}
+    if (!s_handler_instance) 
+    {
+        s_handler_instance = new CHandlerMap();
+        s_handler_instance->Init();
+    }
 
-	return s_handler_instance;
+    return s_handler_instance;
 }
 
 /**
@@ -118,12 +119,11 @@ void CHandlerMap::Init()
  */
 pdu_handler_t CHandlerMap::GetHandler(uint32_t pdu_type)
 {
-	HandlerMap_t::iterator it = m_handler_map.find(pdu_type);
-	if (it != m_handler_map.end()) {
-		return it->second;
-	} else {
-		return NULL;
-	}
+    HandlerMap_t::iterator it = m_handler_map.find(pdu_type);
+    if (it != m_handler_map.end()) 
+    {
+        return it->second;
+    } else {
+        return NULL;
+    }
 }
-
-

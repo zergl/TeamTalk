@@ -25,20 +25,21 @@ static CThreadPool g_thread_pool;
 
 void proxy_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	uint64_t cur_time = get_tick_count();
-	for (ConnMap_t::iterator it = g_proxy_conn_map.begin(); it != g_proxy_conn_map.end(); ) {
-		ConnMap_t::iterator it_old = it;
-		it++;
+    uint64_t cur_time = get_tick_count();
+    for (ConnMap_t::iterator it = g_proxy_conn_map.begin(); it != g_proxy_conn_map.end(); ) 
+    {
+        ConnMap_t::iterator it_old = it;
+        it++;
 
-		CProxyConn* pConn = (CProxyConn*)it_old->second;
-		pConn->OnTimer(cur_time);
-	}
+        CProxyConn* pConn = (CProxyConn*)it_old->second;
+        pConn->OnTimer(cur_time);
+    }
 }
 
 //
 void proxy_loop_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	CProxyConn::SendResponsePduList();
+    CProxyConn::SendResponsePduList();
 }
 
 /*
@@ -49,31 +50,32 @@ void proxy_loop_callback(void* callback_data, uint8_t msg, uint32_t handle, void
  */
 void exit_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	log("exit_callback...");
-	exit(0);
+    log("exit_callback...");
+    exit(0);
 }
 
 static void sig_handler(int sig_no)
 {
-	if (sig_no == SIGTERM) {
-		log("receive SIGTERM, prepare for exit");
+    if (sig_no == SIGTERM) 
+    {
+        log("receive SIGTERM, prepare for exit");
         CImPdu cPdu;
         IM::Server::IMStopReceivePacket msg;
         msg.set_result(0);
-        cPdu.SetPBMsg(&msg);
-        cPdu.SetServiceId(IM::BaseDefine::SID_OTHER);
-        cPdu.SetCommandId(IM::BaseDefine::CID_OTHER_STOP_RECV_PACKET);
-        for (ConnMap_t::iterator it = g_proxy_conn_map.begin(); it != g_proxy_conn_map.end(); it++) {
+        
+        for (ConnMap_t::iterator it = g_proxy_conn_map.begin(); it != g_proxy_conn_map.end(); it++) 
+        {
             CProxyConn* pConn = (CProxyConn*)it->second;
-            pConn->SendPdu(&cPdu);
+            pConn->SendPdu(SID_OTHER, CID_OTHER_STOP_RECV_PACKET, msg);
         }
+
         // Add By ZhangYuanhao
         // Before stop we need to stop the sync thread,otherwise maybe will not sync the internal data any more
         CSyncCenter::getInstance()->stopSync();
         
         // callback after 4 second to exit process;
-		netlib_register_timer(exit_callback, NULL, 4000);
-	}
+        netlib_register_timer(exit_callback, NULL, 4000);
+    }
 }
 
 int init_proxy_conn(uint32_t thread_num)
@@ -180,33 +182,32 @@ void CProxyConn::OnClose()
 
 void CProxyConn::OnTimer(uint64_t curr_tick)
 {
-	if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) {
-        
+    if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) 
+    {
         CImPdu cPdu;
-        IM::Other::IMHeartBeat msg;
-        cPdu.SetPBMsg(&msg);
-        cPdu.SetServiceId(IM::BaseDefine::SID_OTHER);
-        cPdu.SetCommandId(IM::BaseDefine::CID_OTHER_HEARTBEAT);
-		SendPdu(&cPdu);
-	}
+        SendPdu(IM::BaseDefine::SID_OTHER, IM::BaseDefine::CID_OTHER_HEARTBEAT, msg);
+    }
 
-	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("proxy connection timeout %s:%d", m_peer_ip.c_str(), m_peer_port);
-		Close();
-	}
+    if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) 
+    {
+        log("proxy connection timeout %s:%d", m_peer_ip.c_str(), m_peer_port);
+        Close();
+    }
 }
 
 void CProxyConn::HandlePduBuf(uchar_t* pdu_buf, uint32_t pdu_len)
 {
     CImPdu* pPdu = NULL;
     pPdu = CImPdu::ReadPdu(pdu_buf, pdu_len);
-    if (pPdu->GetCommandId() == IM::BaseDefine::CID_OTHER_HEARTBEAT) {
+    if (pPdu->GetCommandId() == IM::BaseDefine::CID_OTHER_HEARTBEAT) 
+    {
         return;
     }
     
     pdu_handler_t handler = s_handler_map->GetHandler(pPdu->GetCommandId());
     
-    if (handler) {
+    if (handler){
+        //每来个包都要新创新一个CTask对象来执行
         CTask* pTask = new CProxyTask(m_uuid, handler, pPdu);
         g_thread_pool.AddTask(pTask);
     } else {
@@ -222,39 +223,44 @@ void CProxyConn::HandlePduBuf(uchar_t* pdu_buf, uint32_t pdu_len)
  */
 void CProxyConn::AddResponsePdu(uint32_t conn_uuid, CImPdu* pPdu)
 {
-	ResponsePdu_t* pResp = new ResponsePdu_t;
-	pResp->conn_uuid = conn_uuid;
-	pResp->pPdu = pPdu;
+    ResponsePdu_t* pResp = new ResponsePdu_t;
+    pResp->conn_uuid = conn_uuid;
+    pResp->pPdu = pPdu;
 
-	s_list_lock.lock();
-	s_response_pdu_list.push_back(pResp);
-	s_list_lock.unlock();
+    s_list_lock.lock();
+    s_response_pdu_list.push_back(pResp);
+    s_list_lock.unlock();
 }
 
 void CProxyConn::SendResponsePduList()
 {
-	s_list_lock.lock();
-	while (!s_response_pdu_list.empty()) {
-		ResponsePdu_t* pResp = s_response_pdu_list.front();
-		s_response_pdu_list.pop_front();
-		s_list_lock.unlock();
+    s_list_lock.lock();
+    while (!s_response_pdu_list.empty()) 
+    {
+        ResponsePdu_t* pResp = s_response_pdu_list.front();
+        s_response_pdu_list.pop_front();
+        s_list_lock.unlock();
 
-		CProxyConn* pConn = get_proxy_conn_by_uuid(pResp->conn_uuid);
-		if (pConn) {
-			if (pResp->pPdu) {
-				pConn->SendPdu(pResp->pPdu);
-			} else {
-				log("close connection uuid=%d by parse pdu error\b", pResp->conn_uuid);
-				pConn->Close();
-			}
-		}
+        CProxyConn* pConn = get_proxy_conn_by_uuid(pResp->conn_uuid);
+        if (pConn) {
+            if (pResp->pPdu) 
+            {
+                pConn->SendPdu(pResp->pPdu);
+            } 
+            else 
+            {
+                log("close connection uuid=%d by parse pdu error\b", pResp->conn_uuid);
+                pConn->Close();
+            }
+        }
 
-		if (pResp->pPdu)
-			delete pResp->pPdu;
-		delete pResp;
+        if (pResp->pPdu)
+            delete pResp->pPdu;
 
-		s_list_lock.lock();
-	}
+        delete pResp;
 
-	s_list_lock.unlock();
+        s_list_lock.lock();
+    }
+
+    s_list_lock.unlock();
 }

@@ -22,54 +22,56 @@ CWorkerThread::~CWorkerThread()
 
 void* CWorkerThread::StartRoutine(void* arg)
 {
-	CWorkerThread* pThread = (CWorkerThread*)arg;
+    CWorkerThread* pThread = (CWorkerThread*)arg;
 
-	pThread->Execute();
+    pThread->Execute();
 
-	return NULL;
+    return NULL;
 }
 
 void CWorkerThread::Start()
 {
-	(void)pthread_create(&m_thread_id, NULL, StartRoutine, this);
+    (void)pthread_create(&m_thread_id, NULL, StartRoutine, this);
 }
 
 void CWorkerThread::Execute()
 {
-	while (true) {
-		m_thread_notify.Lock();
+    while (true) 
+    {
+        m_thread_notify.Lock();
 
-		// put wait in while cause there can be spurious wake up (due to signal/ENITR)
-		while (m_task_list.empty()) {
-			m_thread_notify.Wait();
-		}
+        // put wait in while cause there can be spurious wake up (due to signal/ENITR)
+        while (m_task_list.empty()) 
+        {
+            m_thread_notify.Wait();
+        }
 
-		CTask* pTask = m_task_list.front();
-		m_task_list.pop_front();
-		m_thread_notify.Unlock();
+        CTask* pTask = m_task_list.front();
+        m_task_list.pop_front();
+        m_thread_notify.Unlock();
 
-		pTask->run();
+        pTask->run();
 
-		delete pTask;
+        delete pTask;
 
-		m_task_cnt++;
-		//log("%d have the execute %d task\n", m_thread_idx, m_task_cnt);
-	}
+        m_task_cnt++;
+        //log("%d have the execute %d task\n", m_thread_idx, m_task_cnt);
+    }
 }
 
 void CWorkerThread::PushTask(CTask* pTask)
 {
-	m_thread_notify.Lock();
-	m_task_list.push_back(pTask);
-	m_thread_notify.Signal();
-	m_thread_notify.Unlock();
+    m_thread_notify.Lock();
+    m_task_list.push_back(pTask);
+    m_thread_notify.Signal();
+    m_thread_notify.Unlock();
 }
 
 //////////////
 CThreadPool::CThreadPool()
 {
-	m_worker_size = 0;
-	m_worker_list = NULL;
+    m_worker_size = 0;
+    m_worker_list = NULL;
 }
 
 CThreadPool::~CThreadPool()
@@ -109,4 +111,3 @@ void CThreadPool::AddTask(CTask* pTask)
     uint32_t thread_idx = random() % m_worker_size;
     m_worker_list[thread_idx].PushTask(pTask);
 }
-

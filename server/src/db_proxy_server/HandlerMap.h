@@ -20,19 +20,19 @@ typedef map<uint32_t, pdu_handler_t> HandlerMap_t;
 
 class CHandlerMap {
 public:
-	virtual ~CHandlerMap();
+    virtual ~CHandlerMap();
 
-	static CHandlerMap* getInstance();
+    static CHandlerMap* getInstance();
 
-	void Init();
-	pdu_handler_t GetHandler(uint32_t pdu_type);
+    void Init();
+    pdu_handler_t GetHandler(uint32_t pdu_type);
 private:
-	CHandlerMap();
+    CHandlerMap();
 
 private:
-	static  CHandlerMap* s_handler_instance;
+    static CHandlerMap* s_handler_instance;
 
-	HandlerMap_t 	m_handler_map;
+    HandlerMap_t    m_handler_map;
 };
 
 #endif /* HANDLERMAP_H_ */
