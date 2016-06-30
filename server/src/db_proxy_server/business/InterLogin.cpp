@@ -47,6 +47,8 @@ bool CInterLoginStrategy::doLogin(const std::string &strName, const std::string 
             char szMd5[33];
             CMd5::MD5_Calculate(strInPass.c_str(), strInPass.length(), szMd5);
             string strOutPass(szMd5);
+            log("login_checking, username: %s passwd(db): %s passwd(input): %s", strName, strResult, strOutPass);
+
             if(strOutPass == strResult)
             {
                 bRet = true;
