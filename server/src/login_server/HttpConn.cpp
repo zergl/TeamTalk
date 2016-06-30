@@ -238,9 +238,9 @@ void CHttpConn::_HandleMsgServRequest(string& url, string& post_data)
     map<uint32_t, msg_serv_info_t*>::iterator it_min_conn = g_msg_serv_info.end();
     map<uint32_t, msg_serv_info_t*>::iterator it;
     
-	log("g_msg_serv_info: %u", g_msg_serv_info.size());
+    log("g_msg_serv_info: %u", g_msg_serv_info.size());
 
-	if(g_msg_serv_info.size() <= 0)
+    if(g_msg_serv_info.size() <= 0)
     {
         Json::Value value;
         value["code"] = 1;
@@ -248,9 +248,9 @@ void CHttpConn::_HandleMsgServRequest(string& url, string& post_data)
         string strContent = value.toStyledString();
         char* szContent = new char[HTTP_RESPONSE_HTML_MAX];
         snprintf(szContent, HTTP_RESPONSE_HTML_MAX, 
-			HTTP_RESPONSE_HTML, 
-			strContent.length(), 
-			strContent.c_str());
+            HTTP_RESPONSE_HTML, 
+            strContent.length(), 
+            strContent.c_str());
         Send((void*)szContent, strlen(szContent));
         delete [] szContent;
         return ;

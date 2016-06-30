@@ -400,10 +400,10 @@ void  CHttpTask::OnDownload()
         }
         else
         {
-        	int nTotalLen = strlen(HTTP_RESPONSE_500);
-			char* pContent = new char[nTotalLen];
-			snprintf(pContent, nTotalLen, HTTP_RESPONSE_500);
-			CHttpConn::AddResponsePdu(m_ConnHandle, pContent, nTotalLen);
+            int nTotalLen = strlen(HTTP_RESPONSE_500);
+            char* pContent = new char[nTotalLen];
+            snprintf(pContent, nTotalLen, HTTP_RESPONSE_500);
+            CHttpConn::AddResponsePdu(m_ConnHandle, pContent, nTotalLen);
         }
 }
 
@@ -560,11 +560,11 @@ void CHttpConn::OnRead()
         CHttpTask* pTask = new CHttpTask(request);
         if(HTTP_GET == m_HttpParser.GetMethod())
         {
-        	g_GetThreadPool.AddTask(pTask);
+            g_GetThreadPool.AddTask(pTask);
         }
         else
         {
-        	g_PostThreadPool.AddTask(pTask);
+            g_PostThreadPool.AddTask(pTask);
         }
     }
 }

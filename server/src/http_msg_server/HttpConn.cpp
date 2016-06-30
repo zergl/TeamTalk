@@ -27,100 +27,100 @@ CHttpConn* FindHttpConnByHandle(uint32_t conn_handle)
 
 void httpconn_callback(void* callback_data, uint8_t msg, uint32_t handle, uint32_t uParam, void* pParam)
 {
-	NOTUSED_ARG(uParam);
-	NOTUSED_ARG(pParam);
+    NOTUSED_ARG(uParam);
+    NOTUSED_ARG(pParam);
 
-	// convert void* to uint32_t, oops
-	uint32_t conn_handle = *((uint32_t*)(&callback_data));
+    // convert void* to uint32_t, oops
+    uint32_t conn_handle = *((uint32_t*)(&callback_data));
     CHttpConn* pConn = FindHttpConnByHandle(conn_handle);
     if (!pConn) {
         return;
     }
 
-	switch (msg)
-	{
-	case NETLIB_MSG_READ:
-		pConn->OnRead();
-		break;
-	case NETLIB_MSG_WRITE:
-		pConn->OnWrite();
-		break;
-	case NETLIB_MSG_CLOSE:
-		pConn->OnClose();
-		break;
-	default:
-		log("!!!httpconn_callback error msg: %d ", msg);
-		break;
-	}
+    switch (msg)
+    {
+    case NETLIB_MSG_READ:
+        pConn->OnRead();
+        break;
+    case NETLIB_MSG_WRITE:
+        pConn->OnWrite();
+        break;
+    case NETLIB_MSG_CLOSE:
+        pConn->OnClose();
+        break;
+    default:
+        log("!!!httpconn_callback error msg: %d ", msg);
+        break;
+    }
 }
 
 void http_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	CHttpConn* pConn = NULL;
-	HttpConnMap_t::iterator it, it_old;
-	uint64_t cur_time = get_tick_count();
+    CHttpConn* pConn = NULL;
+    HttpConnMap_t::iterator it, it_old;
+    uint64_t cur_time = get_tick_count();
 
-	for (it = g_http_conn_map.begin(); it != g_http_conn_map.end(); ) {
-		it_old = it;
-		it++;
+    for (it = g_http_conn_map.begin(); it != g_http_conn_map.end(); ) {
+        it_old = it;
+        it++;
 
-		pConn = it_old->second;
-		pConn->OnTimer(cur_time);
-	}
+        pConn = it_old->second;
+        pConn->OnTimer(cur_time);
+    }
 }
 
 void init_http_conn()
 {
-	netlib_register_timer(http_conn_timer_callback, NULL, 1000);
+    netlib_register_timer(http_conn_timer_callback, NULL, 1000);
 }
 
 //////////////////////////
 CHttpConn::CHttpConn()
 {
-	m_busy = false;
-	m_sock_handle = NETLIB_INVALID_HANDLE;
+    m_busy = false;
+    m_sock_handle = NETLIB_INVALID_HANDLE;
     m_state = CONN_STATE_IDLE;
     
-	m_last_send_tick = m_last_recv_tick = get_tick_count();
-	m_conn_handle = ++g_conn_handle_generator;
-	if (m_conn_handle == 0) {
-		m_conn_handle = ++g_conn_handle_generator;
-	}
+    m_last_send_tick = m_last_recv_tick = get_tick_count();
+    m_conn_handle = ++g_conn_handle_generator;
+    if (m_conn_handle == 0) {
+        m_conn_handle = ++g_conn_handle_generator;
+    }
 
-	//log("CHttpConn, handle=%u ", m_conn_handle);
+    //log("CHttpConn, handle=%u ", m_conn_handle);
 }
 
 CHttpConn::~CHttpConn()
 {
-	//log("~CHttpConn, handle=%u ", m_conn_handle);
+    //log("~CHttpConn, handle=%u ", m_conn_handle);
 }
 
 int CHttpConn::Send(void* data, int len)
 {
-	m_last_send_tick = get_tick_count();
+    m_last_send_tick = get_tick_count();
 
-	if (m_busy)
-	{
-		m_out_buf.Write(data, len);
-		return len;
-	}
+    if (m_busy)
+    {
+        m_out_buf.Write(data, len);
+        return len;
+    }
 
-	int ret = netlib_send(m_sock_handle, data, len);
-	if (ret < 0)
-		ret = 0;
+    int ret = netlib_send(m_sock_handle, data, len);
+    if (ret < 0)
+        ret = 0;
 
-	if (ret < len)
-	{
-		m_out_buf.Write((char*)data + ret, len - ret);
-		m_busy = true;
-		//log("not send all, remain=%d ", m_out_buf.GetWriteOffset());
-	}
+    if (ret < len)
+    {
+        m_out_buf.Write((char*)data + ret, len - ret);
+        m_busy = true;
+        //log("not send all, remain=%d ", m_out_buf.GetWriteOffset());
+    }
     else
     {
         OnWriteCompelete();
     }
 
-	return len;
+    return len;
 }
 
 void CHttpConn::Close()
@@ -219,10 +219,10 @@ void CHttpConn::OnClose()
 
 void CHttpConn::OnTimer(uint64_t curr_tick)
 {
-	if (curr_tick > m_last_recv_tick + HTTP_CONN_TIMEOUT) {
-		log("HttpConn timeout, handle=%d ", m_conn_handle);
-		Close();
-	}
+    if (curr_tick > m_last_recv_tick + HTTP_CONN_TIMEOUT) {
+        log("HttpConn timeout, handle=%d ", m_conn_handle);
+        Close();
+    }
 }
 
 void CHttpConn::OnWriteCompelete()

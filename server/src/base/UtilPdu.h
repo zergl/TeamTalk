@@ -16,22 +16,22 @@
 using namespace std;
 
 #ifdef WIN32
-	#ifdef BUILD_PDU
-		#define DLL_MODIFIER __declspec(dllexport)
-	#else
-		#define DLL_MODIFIER __declspec(dllimport)
-	#endif
+    #ifdef BUILD_PDU
+#define DLL_MODIFIER __declspec(dllexport)
+    #else
+        #define DLL_MODIFIER __declspec(dllimport)
+    #endif
 #else
-	#define DLL_MODIFIER
+    #define DLL_MODIFIER
 #endif
 
 
 
 // exception code
-#define ERROR_CODE_PARSE_FAILED 		1
-#define ERROR_CODE_WRONG_SERVICE_ID		2
-#define ERROR_CODE_WRONG_COMMAND_ID		3
-#define ERROR_CODE_ALLOC_FAILED			4
+#define ERROR_CODE_PARSE_FAILED     1
+#define ERROR_CODE_WRONG_SERVICE_ID 2
+#define ERROR_CODE_WRONG_COMMAND_ID 3
+#define ERROR_CODE_ALLOC_FAILED     4
 
 class CPduException {
 public:
@@ -103,43 +103,43 @@ public:
         }
     }
 
-	static int16_t ReadInt16(uchar_t* buf);
-	static uint16_t ReadUint16(uchar_t* buf);
-	static int32_t ReadInt32(uchar_t* buf);
-	static uint32_t ReadUint32(uchar_t* buf);
-	static void WriteInt16(uchar_t* buf, int16_t data);
-	static void WriteUint16(uchar_t* buf, uint16_t data);
-	static void WriteInt32(uchar_t* buf, int32_t data);
-	static void WriteUint32(uchar_t* buf, uint32_t data);
+    static int16_t ReadInt16(uchar_t* buf);
+    static uint16_t ReadUint16(uchar_t* buf);
+    static int32_t ReadInt32(uchar_t* buf);
+    static uint32_t ReadUint32(uchar_t* buf);
+    static void WriteInt16(uchar_t* buf, int16_t data);
+    static void WriteUint16(uchar_t* buf, uint16_t data);
+    static void WriteInt32(uchar_t* buf, int32_t data);
+    static void WriteUint32(uchar_t* buf, uint32_t data);
 
-	void operator << (int8_t data);
-	void operator << (uint8_t data);
-	void operator << (int16_t data);
-	void operator << (uint16_t data);
-	void operator << (int32_t data);
-	void operator << (uint32_t data);
+    void operator << (int8_t data);
+    void operator << (uint8_t data);
+    void operator << (int16_t data);
+    void operator << (uint16_t data);
+    void operator << (int32_t data);
+    void operator << (uint32_t data);
 
-	void operator >> (int8_t& data);
-	void operator >> (uint8_t& data);
-	void operator >> (int16_t& data);
-	void operator >> (uint16_t& data);
-	void operator >> (int32_t& data);
-	void operator >> (uint32_t& data);
+    void operator >> (int8_t& data);
+    void operator >> (uint8_t& data);
+    void operator >> (int16_t& data);
+    void operator >> (uint16_t& data);
+    void operator >> (int32_t& data);
+    void operator >> (uint32_t& data);
 
-	void WriteString(const char* str);
-	void WriteString(const char* str, uint32_t len);
-	char* ReadString(uint32_t& len);
+    void WriteString(const char* str);
+    void WriteString(const char* str, uint32_t len);
+    char* ReadString(uint32_t& len);
 
-	void WriteData(uchar_t* data, uint32_t len);
-	uchar_t* ReadData(uint32_t& len);
+    void WriteData(uchar_t* data, uint32_t len);
+    uchar_t* ReadData(uint32_t& len);
 private:
-	void _WriteByte(void* buf, uint32_t len);
-	void _ReadByte(void* buf, uint32_t len);
+    void _WriteByte(void* buf, uint32_t len);
+    void _ReadByte(void* buf, uint32_t len);
 private:
-	CSimpleBuffer*	m_pSimpBuf;
-	uchar_t*		m_pBuf;
-	uint32_t		m_len;
-	uint32_t		m_pos;
+    CSimpleBuffer*    m_pSimpBuf;
+    uchar_t*        m_pBuf;
+    uint32_t        m_len;
+    uint32_t        m_pos;
 };
 
 char* idtourl(uint32_t id);
