@@ -6,7 +6,7 @@
  *   @       Email         :  bluefoxah@gmail.com
  *   @       Date           :  2014年7月29日
  *   @       Version     :   1.0
- *   @  Description	:
+ *   @  Description    :
  *
  ================================================================*/
 
@@ -91,10 +91,10 @@ void http_callback(void* callback_data, uint8_t msg, uint32_t handle,
 
 void doQuitJob()
 {
-	char fileCntBuf[20] = {0};
-	snprintf(fileCntBuf, 20, "%llu", g_fileManager->getFileCntCurr());
-    	config_file.SetConfigValue("FileCnt", fileCntBuf);
-	FileManager::destroyInstance();
+    char fileCntBuf[20] = {0};
+    snprintf(fileCntBuf, 20, "%llu", g_fileManager->getFileCntCurr());
+        config_file.SetConfigValue("FileCnt", fileCntBuf);
+    FileManager::destroyInstance();
 netlib_destroy();
     log("I'm ready quit...");
 }
@@ -160,12 +160,12 @@ int main(int argc, char* argv[])
     g_GetThreadPool.Init(nGetThreadCount);
 
     g_fileManager = FileManager::getInstance(listen_ip, base_dir, fileCnt, filesPerDir);
-	int ret = g_fileManager->initDir();
-	if (ret) {
-		printf("The BaseDir is set incorrectly :%s\n",base_dir);
-		return ret;
+    int ret = g_fileManager->initDir();
+    if (ret) {
+        printf("The BaseDir is set incorrectly :%s\n",base_dir);
+        return ret;
     }
-	ret = netlib_init();
+    ret = netlib_init();
     if (ret == NETLIB_ERROR)
         return ret;
 

@@ -91,24 +91,24 @@ int init_proxy_conn(uint32_t thread_num)
 
 CProxyConn* get_proxy_conn_by_uuid(uint32_t uuid)
 {
-	CProxyConn* pConn = NULL;
-	UserMap_t::iterator it = g_uuid_conn_map.find(uuid);
-	if (it != g_uuid_conn_map.end()) {
-		pConn = (CProxyConn *)it->second;
-	}
+    CProxyConn* pConn = NULL;
+    UserMap_t::iterator it = g_uuid_conn_map.find(uuid);
+    if (it != g_uuid_conn_map.end()) {
+        pConn = (CProxyConn *)it->second;
+    }
 
-	return pConn;
+    return pConn;
 }
 
 //////////////////////////
 CProxyConn::CProxyConn()
 {
-	m_uuid = ++CProxyConn::s_uuid_alloctor;
-	if (m_uuid == 0) {
-		m_uuid = ++CProxyConn::s_uuid_alloctor;
-	}
+    m_uuid = ++CProxyConn::s_uuid_alloctor;
+    if (m_uuid == 0) {
+        m_uuid = ++CProxyConn::s_uuid_alloctor;
+    }
 
-	g_uuid_conn_map.insert(make_pair(m_uuid, this));
+    g_uuid_conn_map.insert(make_pair(m_uuid, this));
 }
 
 CProxyConn::~CProxyConn()
@@ -118,28 +118,28 @@ CProxyConn::~CProxyConn()
 
 void CProxyConn::Close()
 {
-	if (m_handle != NETLIB_INVALID_HANDLE) {
-		netlib_close(m_handle);
-		g_proxy_conn_map.erase(m_handle);
+    if (m_handle != NETLIB_INVALID_HANDLE) {
+        netlib_close(m_handle);
+        g_proxy_conn_map.erase(m_handle);
 
-		g_uuid_conn_map.erase(m_uuid);
-	}
+        g_uuid_conn_map.erase(m_uuid);
+    }
 
-	ReleaseRef();
+    ReleaseRef();
 }
 
 void CProxyConn::OnConnect(net_handle_t handle)
 {
-	m_handle = handle;
+    m_handle = handle;
 
-	g_proxy_conn_map.insert(make_pair(handle, this));
+    g_proxy_conn_map.insert(make_pair(handle, this));
 
-	netlib_option(handle, NETLIB_OPT_SET_CALLBACK, (void*)imconn_callback);
-	netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, (void*)&g_proxy_conn_map);
-	netlib_option(handle, NETLIB_OPT_GET_REMOTE_IP, (void*)&m_peer_ip);
-	netlib_option(handle, NETLIB_OPT_GET_REMOTE_PORT, (void*)&m_peer_port);
+    netlib_option(handle, NETLIB_OPT_SET_CALLBACK, (void*)imconn_callback);
+    netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, (void*)&g_proxy_conn_map);
+    netlib_option(handle, NETLIB_OPT_GET_REMOTE_IP, (void*)&m_peer_ip);
+    netlib_option(handle, NETLIB_OPT_GET_REMOTE_PORT, (void*)&m_peer_port);
 
-	log("connect from %s:%d, handle=%d", m_peer_ip.c_str(), m_peer_port, m_handle);
+    log("connect from %s:%d, handle=%d", m_peer_ip.c_str(), m_peer_port, m_handle);
 }
 
 // 由于数据包是在另一个线程处理的，所以不能在主线程delete数据包，所以需要Override这个方法
