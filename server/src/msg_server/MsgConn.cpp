@@ -592,7 +592,7 @@ void CMsgConn::_HandleClientTimeRequest(CImPdu* pPdu)
 {
     IM::Message::IMClientTimeRsp msg;
     msg.set_server_time((uint32_t)time(NULL));
-	SendPdu(SID_MSG, CID_MSG_TIME_RESPONSE, msg);
+    SendPdu(SID_MSG, CID_MSG_TIME_RESPONSE, msg);
 }
 
 void CMsgConn::_HandleClientGetMsgListRequest(CImPdu *pPdu)
@@ -636,18 +636,18 @@ void CMsgConn::_HandleClientGetMsgByMsgIdRequest(CImPdu *pPdu)
 
 void CMsgConn::_HandleClientUnreadMsgCntRequest(CImPdu* pPdu)
 {
-	log("HandleClientUnreadMsgCntReq, from_id=%u ", GetUserId());
+    log("HandleClientUnreadMsgCntReq, from_id=%u ", GetUserId());
     IM::Message::IMUnreadMsgCntReq msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
     
-	CDBServConn* pDBConn = get_db_serv_conn_for_login();
-	if (pDBConn) {
-		CDbAttachData attach(ATTACH_TYPE_HANDLE, m_handle, 0);
+    CDBServConn* pDBConn = get_db_serv_conn_for_login();
+    if (pDBConn) {
+        CDbAttachData attach(ATTACH_TYPE_HANDLE, m_handle, 0);
         msg.set_user_id(GetUserId());
         msg.set_attach_data(attach.GetBuffer(), attach.GetLength());
         pPdu->SetPBMsg(&msg);
         pDBConn->SendPdu(pPdu);
-	}
+    }
 }
 
 void CMsgConn::_HandleClientMsgReadAck(CImPdu* pPdu)
@@ -659,12 +659,12 @@ void CMsgConn::_HandleClientMsgReadAck(CImPdu* pPdu)
     uint32_t msg_id = msg.msg_id();
     log("HandleClientMsgReadAck, user_id=%u, session_id=%u, msg_id=%u, session_type=%u. ", GetUserId(),session_id, msg_id, session_type);
     
-	CDBServConn* pDBConn = get_db_serv_conn();
-	if (pDBConn) {
+    CDBServConn* pDBConn = get_db_serv_conn();
+    if (pDBConn) {
         msg.set_user_id(GetUserId());
         pPdu->SetPBMsg(&msg);
-		pDBConn->SendPdu(pPdu);
-	}
+        pDBConn->SendPdu(pPdu);
+    }
     IM::Message::IMMsgDataReadNotify msg2;
     msg2.set_user_id(GetUserId());
     msg2.set_session_id(session_id);
@@ -674,13 +674,13 @@ void CMsgConn::_HandleClientMsgReadAck(CImPdu* pPdu)
     CImUser* pUser = CImUserManager::GetInstance()->GetImUserById(GetUserId());
     if (pUser)
     {
-		pUser->BroadcastPdu(SID_MSG, CID_MSG_READ_NOTIFY, msg2, this);
+        pUser->BroadcastPdu(SID_MSG, CID_MSG_READ_NOTIFY, msg2, this);
     }
 
     CRouteServConn* pRouteConn = get_route_serv_conn();
     if (pRouteConn)
-	{
-		pRouteConn->SendPdu(SID_MSG, CID_MSG_READ_NOTIFY, msg2);
+    {
+        pRouteConn->SendPdu(SID_MSG, CID_MSG_READ_NOTIFY, msg2);
     }
     
     if (session_type == IM::BaseDefine::SESSION_TYPE_SINGLE)
@@ -712,27 +712,27 @@ void CMsgConn::_HandleClientP2PCmdMsg(CImPdu* pPdu)
 {
     IM::SwitchService::IMP2PCmdMsg msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
-	string cmd_msg = msg.cmd_msg_data();
-	uint32_t from_user_id = msg.from_user_id();
-	uint32_t to_user_id = msg.to_user_id();
+    string cmd_msg = msg.cmd_msg_data();
+    uint32_t from_user_id = msg.from_user_id();
+    uint32_t to_user_id = msg.to_user_id();
 
-	log("HandleClientP2PCmdMsg, %u->%u, cmd_msg: %s ", from_user_id, to_user_id, cmd_msg.c_str());
+    log("HandleClientP2PCmdMsg, %u->%u, cmd_msg: %s ", from_user_id, to_user_id, cmd_msg.c_str());
 
     CImUser* pFromImUser = CImUserManager::GetInstance()->GetImUserById(GetUserId());
-	CImUser* pToImUser = CImUserManager::GetInstance()->GetImUserById(to_user_id);
+    CImUser* pToImUser = CImUserManager::GetInstance()->GetImUserById(to_user_id);
     
-	if (pFromImUser) {
-		pFromImUser->BroadcastPdu(pPdu, this);
-	}
+    if (pFromImUser) {
+        pFromImUser->BroadcastPdu(pPdu, this);
+    }
     
-	if (pToImUser) {
-		pToImUser->BroadcastPdu(pPdu, NULL);
-	}
+    if (pToImUser) {
+        pToImUser->BroadcastPdu(pPdu, NULL);
+    }
     
-	CRouteServConn* pRouteConn = get_route_serv_conn();
-	if (pRouteConn) {
-		pRouteConn->SendPdu(pPdu);
-	}
+    CRouteServConn* pRouteConn = get_route_serv_conn();
+    if (pRouteConn) {
+        pRouteConn->SendPdu(pPdu);
+    }
 }
 
 void CMsgConn::_HandleClientUserInfoRequest(CImPdu* pPdu)
@@ -740,15 +740,15 @@ void CMsgConn::_HandleClientUserInfoRequest(CImPdu* pPdu)
     IM::Buddy::IMUsersInfoReq msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
     uint32_t user_cnt = msg.user_id_list_size();
-	log("HandleClientUserInfoReq, req_id=%u, user_cnt=%u ", GetUserId(), user_cnt);
-	CDBServConn* pDBConn = get_db_serv_conn_for_login();
-	if (pDBConn) {
-		CDbAttachData attach(ATTACH_TYPE_HANDLE, m_handle, 0);
+    log("HandleClientUserInfoReq, req_id=%u, user_cnt=%u ", GetUserId(), user_cnt);
+    CDBServConn* pDBConn = get_db_serv_conn_for_login();
+    if (pDBConn) {
+        CDbAttachData attach(ATTACH_TYPE_HANDLE, m_handle, 0);
         msg.set_user_id(GetUserId());
         msg.set_attach_data(attach.GetBuffer(), attach.GetLength());
         pPdu->SetPBMsg(&msg);
-		pDBConn->SendPdu(pPdu);
-	}
+        pDBConn->SendPdu(pPdu);
+    }
 }
 
 void CMsgConn::_HandleClientRemoveSessionRequest(CImPdu* pPdu)
@@ -777,12 +777,12 @@ void CMsgConn::_HandleClientRemoveSessionRequest(CImPdu* pPdu)
 
         CImUser* pImUser = CImUserManager::GetInstance()->GetImUserById(GetUserId());
         if (pImUser) {
-			pImUser->BroadcastPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_REMOVE_SESSION_NOTIFY, msg2, this);
+            pImUser->BroadcastPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_REMOVE_SESSION_NOTIFY, msg2, this);
         }
 
         CRouteServConn* pRouteConn = get_route_serv_conn();
         if (pRouteConn) {
-			pRouteConn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_REMOVE_SESSION_NOTIFY, msg2);
+            pRouteConn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_REMOVE_SESSION_NOTIFY, msg2);
         }
     }
 }
@@ -821,8 +821,8 @@ void CMsgConn::_HandleClientUsersStatusRequest(CImPdu* pPdu)
 {
     IM::Buddy::IMUsersStatReq msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
-	uint32_t user_count = msg.user_id_list_size();
-	log("HandleClientUsersStatusReq, user_id=%u, query_count=%u.", GetUserId(), user_count);
+    uint32_t user_count = msg.user_id_list_size();
+    log("HandleClientUsersStatusReq, user_id=%u, query_count=%u.", GetUserId(), user_count);
     
     CRouteServConn* pRouteConn = get_route_serv_conn();
     if(pRouteConn)
@@ -893,14 +893,14 @@ void CMsgConn::AddToSendList(uint32_t msg_id, uint32_t from_id)
 
 void CMsgConn::DelFromSendList(uint32_t msg_id, uint32_t from_id)
 {
-	//log("DelSendMsg, seq_no=%u, from_id=%u ", seq_no, from_id);
-	for (list<msg_ack_t>::iterator it = m_send_msg_list.begin(); it != m_send_msg_list.end(); it++) {
-		msg_ack_t msg = *it;
-		if ( (msg.msg_id == msg_id) && (msg.from_id == from_id) ) {
-			m_send_msg_list.erase(it);
-			break;
-		}
-	}
+    //log("DelSendMsg, seq_no=%u, from_id=%u ", seq_no, from_id);
+    for (list<msg_ack_t>::iterator it = m_send_msg_list.begin(); it != m_send_msg_list.end(); it++) {
+        msg_ack_t msg = *it;
+        if ( (msg.msg_id == msg_id) && (msg.from_id == from_id) ) {
+            m_send_msg_list.erase(it);
+            break;
+        }
+    }
 }
 
 uint32_t CMsgConn::GetClientTypeFlag()

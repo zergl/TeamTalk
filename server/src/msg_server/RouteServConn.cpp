@@ -114,30 +114,30 @@ CRouteServConn* get_route_serv_conn()
 
 void update_master_route_serv_conn()
 {
-	uint64_t oldest_connect_time = (uint64_t)-1;
-	CRouteServConn* pOldestConn = NULL;
+    uint64_t oldest_connect_time = (uint64_t)-1;
+    CRouteServConn* pOldestConn = NULL;
 
-	CRouteServConn* pConn = NULL;
+    CRouteServConn* pConn = NULL;
 
-	for (uint32_t i = 0; i < g_route_server_count; i++) {
-		pConn = (CRouteServConn*)g_route_server_list[i].serv_conn;
-		if (pConn && pConn->IsOpen() && (pConn->GetConnectTime() < oldest_connect_time) ){
-			pOldestConn = pConn;
-			oldest_connect_time = pConn->GetConnectTime();
-		}
-	}
+    for (uint32_t i = 0; i < g_route_server_count; i++) {
+        pConn = (CRouteServConn*)g_route_server_list[i].serv_conn;
+        if (pConn && pConn->IsOpen() && (pConn->GetConnectTime() < oldest_connect_time) ){
+            pOldestConn = pConn;
+            oldest_connect_time = pConn->GetConnectTime();
+        }
+    }
 
-	g_master_rs_conn =  pOldestConn;
+    g_master_rs_conn =  pOldestConn;
 
-	if (g_master_rs_conn) {
+    if (g_master_rs_conn) {
         IM::Server::IMRoleSet msg;
         msg.set_master(1);
         CImPdu pdu;
         pdu.SetPBMsg(&msg);
         pdu.SetServiceId(SID_OTHER);
         pdu.SetCommandId(CID_OTHER_ROLE_SET);
-		g_master_rs_conn->SendPdu(&pdu);
-	}
+        g_master_rs_conn->SendPdu(&pdu);
+    }
 }
 
 
@@ -295,9 +295,9 @@ void CRouteServConn::_HandleStatusNotify(CImPdu* pPdu)
 
     IM::BaseDefine::UserStat user_stat = msg.user_stat();
 
-	log("HandleFriendStatusNotify, user_id=%u, status=%u ", user_stat.user_id(), user_stat.status());
+    log("HandleFriendStatusNotify, user_id=%u, status=%u ", user_stat.user_id(), user_stat.status());
 
-	// send friend online message to client
+    // send friend online message to client
     CImUserManager::GetInstance()->BroadcastPdu(pPdu, CLIENT_TYPE_FLAG_PC);
 }
 
@@ -312,7 +312,7 @@ void CRouteServConn::_HandleMsgData(CImPdu* pPdu)
     uint32_t from_user_id = msg.from_user_id();
     uint32_t to_user_id = msg.to_session_id();
     uint32_t msg_id = msg.msg_id();
-	log("HandleMsgData, %u->%u, msg_id=%u. ", from_user_id, to_user_id, msg_id);
+    log("HandleMsgData, %u->%u, msg_id=%u. ", from_user_id, to_user_id, msg_id);
     
     
     CImUser* pFromImUser = CImUserManager::GetInstance()->GetImUserById(from_user_id);
@@ -321,11 +321,11 @@ void CRouteServConn::_HandleMsgData(CImPdu* pPdu)
         pFromImUser->BroadcastClientMsgData(pPdu, msg_id, NULL, from_user_id);
     }
     
-	CImUser* pToImUser = CImUserManager::GetInstance()->GetImUserById(to_user_id);
-	if (pToImUser)
+    CImUser* pToImUser = CImUserManager::GetInstance()->GetImUserById(to_user_id);
+    if (pToImUser)
     {
-		pToImUser->BroadcastClientMsgData(pPdu, msg_id, NULL, from_user_id);
-	}
+        pToImUser->BroadcastClientMsgData(pPdu, msg_id, NULL, from_user_id);
+    }
 }
 
 void CRouteServConn::_HandleMsgReadNotify(CImPdu *pPdu)
@@ -351,21 +351,21 @@ void CRouteServConn::_HandleP2PMsg(CImPdu* pPdu)
     IM::SwitchService::IMP2PCmdMsg msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
 
-	uint32_t from_user_id = msg.from_user_id();
-	uint32_t to_user_id = msg.to_user_id();
+    uint32_t from_user_id = msg.from_user_id();
+    uint32_t to_user_id = msg.to_user_id();
 
-	log("HandleP2PMsg, %u->%u ", from_user_id, to_user_id);
+    log("HandleP2PMsg, %u->%u ", from_user_id, to_user_id);
     
     CImUser* pFromImUser = CImUserManager::GetInstance()->GetImUserById(from_user_id);
-	CImUser* pToImUser = CImUserManager::GetInstance()->GetImUserById(to_user_id);
+    CImUser* pToImUser = CImUserManager::GetInstance()->GetImUserById(to_user_id);
     
- 	if (pFromImUser) {
- 		pFromImUser->BroadcastPdu(pPdu);
-	}
+     if (pFromImUser) {
+         pFromImUser->BroadcastPdu(pPdu);
+    }
     
- 	if (pToImUser) {
- 		pToImUser->BroadcastPdu(pPdu);
-	}
+     if (pToImUser) {
+         pToImUser->BroadcastPdu(pPdu);
+    }
 }
 
 void CRouteServConn::_HandleUsersStatusResponse(CImPdu* pPdu)
@@ -373,9 +373,9 @@ void CRouteServConn::_HandleUsersStatusResponse(CImPdu* pPdu)
     IM::Buddy::IMUsersStatRsp msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
 
-	uint32_t user_id = msg.user_id();
-	uint32_t result_count = msg.user_stat_list_size();
-	log("HandleUsersStatusResp, user_id=%u, query_count=%u ", user_id, result_count);
+    uint32_t user_id = msg.user_id();
+    uint32_t result_count = msg.user_stat_list_size();
+    log("HandleUsersStatusResp, user_id=%u, query_count=%u ", user_id, result_count);
     
     CPduAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
     if (attach_data.GetType() == ATTACH_TYPE_HANDLE)

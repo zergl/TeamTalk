@@ -563,22 +563,22 @@ void CDBServConn::_HandleUnreadMsgCountResponse(CImPdu* pPdu)
     IM::Message::IMUnreadMsgCntRsp msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
 
-	uint32_t user_id = msg.user_id();
+    uint32_t user_id = msg.user_id();
     uint32_t total_cnt = msg.total_cnt();
-	uint32_t user_unread_cnt = msg.unreadinfo_list_size();
+    uint32_t user_unread_cnt = msg.unreadinfo_list_size();
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
-	uint32_t handle = attach_data.GetHandle();
-	
-	log("HandleUnreadMsgCntResp, userId=%u, total_cnt=%u, user_unread_cnt=%u.", user_id,
+    uint32_t handle = attach_data.GetHandle();
+    
+    log("HandleUnreadMsgCntResp, userId=%u, total_cnt=%u, user_unread_cnt=%u.", user_id,
         total_cnt, user_unread_cnt);
 
     CMsgConn* pMsgConn = CImUserManager::GetInstance()->GetMsgConnByHandle(user_id, handle);
 
-	if (pMsgConn && pMsgConn->IsOpen()) {
+    if (pMsgConn && pMsgConn->IsOpen()) {
         msg.clear_attach_data();
         pPdu->SetPBMsg(&msg);
         pMsgConn->SendPdu(pPdu);
-	}
+    }
 }
 
 void CDBServConn::_HandleUsersInfoResponse(CImPdu* pPdu)
@@ -589,7 +589,7 @@ void CDBServConn::_HandleUsersInfoResponse(CImPdu* pPdu)
     uint32_t user_id = msg.user_id();
     uint32_t user_cnt = msg.user_info_list_size();
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
-	uint32_t handle = attach_data.GetHandle();
+    uint32_t handle = attach_data.GetHandle();
     
     log("HandleUsersInfoResp, user_id=%u, user_cnt=%u.", user_id, user_cnt);
     
@@ -641,7 +641,7 @@ void CDBServConn::_HandleChangeAvatarResponse(CImPdu* pPdu)
     uint32_t user_id = msg.user_id();
     uint32_t result = msg.result_code();
     
-	log("HandleChangeAvatarResp, user_id=%u, result=%u.", user_id, result);
+    log("HandleChangeAvatarResp, user_id=%u, result=%u.", user_id, result);
     
     CImUser* pUser = CImUserManager::GetInstance()->GetImUserById(user_id);
     if (NULL != pUser) {
@@ -787,7 +787,7 @@ void CDBServConn::_HandleGetDeviceTokenResponse(CImPdu *pPdu)
             CRouteServConn* route_conn = get_route_serv_conn();
             if (route_conn)
             {
-				route_conn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_USERS_STATUS_REQUEST, msg5);
+                route_conn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_USERS_STATUS_REQUEST, msg5);
             }
         }
     }
@@ -796,7 +796,7 @@ void CDBServConn::_HandleGetDeviceTokenResponse(CImPdu *pPdu)
     {
         CPushServConn* PushConn = get_push_serv_conn();
         if (PushConn) 
-		{
+        {
             PushConn->SendPdu(SID_OTHER, CID_OTHER_PUSH_TO_USER_REQ, msg3);
         }
     }
@@ -817,27 +817,27 @@ void CDBServConn::_HandleChangeSignInfoResponse(CImPdu* pPdu) {
         CMsgConn* pMsgConn = CImUserManager::GetInstance()->GetMsgConnByHandle(user_id, handle);
     
         if (pMsgConn && pMsgConn->IsOpen()) 
-		{
-			msg.clear_attach_data();
-			pPdu->SetPBMsg(&msg);
-			pMsgConn->SendPdu(pPdu);
+        {
+            msg.clear_attach_data();
+            pPdu->SetPBMsg(&msg);
+            pMsgConn->SendPdu(pPdu);
         } else {
-			log("HandleChangeSignInfoResp: can't found msg_conn by user_id = %u, handle = %u", user_id, handle);
+            log("HandleChangeSignInfoResp: can't found msg_conn by user_id = %u, handle = %u", user_id, handle);
         }
     
         if (!result) {
-			CRouteServConn* route_conn = get_route_serv_conn();
+            CRouteServConn* route_conn = get_route_serv_conn();
             if (route_conn) 
-			{
-				IM::Buddy::IMSignInfoChangedNotify notify_msg;
-				notify_msg.set_changed_user_id(user_id);
-				notify_msg.set_sign_info(msg.sign_info());
-				
-				route_conn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_SIGN_INFO_CHANGED_NOTIFY, notify_msg);
+            {
+                IM::Buddy::IMSignInfoChangedNotify notify_msg;
+                notify_msg.set_changed_user_id(user_id);
+                notify_msg.set_sign_info(msg.sign_info());
+                
+                route_conn->SendPdu(SID_BUDDY_LIST, CID_BUDDY_LIST_SIGN_INFO_CHANGED_NOTIFY, notify_msg);
             } else {
-				log("HandleChangeSignInfoResp: can't found route_conn");
-			}
-		}
+                log("HandleChangeSignInfoResp: can't found route_conn");
+            }
+        }
     }
 
 

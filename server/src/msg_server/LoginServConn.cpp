@@ -160,7 +160,7 @@ void CLoginServConn::OnClose()
 void CLoginServConn::OnTimer(uint64_t curr_tick)
 {
     if (curr_tick > m_last_send_tick + SERVER_HEARTBEAT_INTERVAL) 
-	{
+    {
         IM::Other::IMHeartBeat msg;
         SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
     }

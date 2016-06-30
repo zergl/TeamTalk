@@ -4,7 +4,7 @@
  *  Created on: 2014年4月16日
  *      Author: ziteng
  *  Brief:
- *  	a map from user_id to userInfo and connection list
+ *      a map from user_id to userInfo and connection list
  */
 
 #include "ImUser.h"
