@@ -36,7 +36,7 @@ void imconn_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pP
     if (!pConn)
         return;
 
-    log("connect_msg: %d", msg);
+    log("new_connect_cb: %d|%d", handle, msg);
 
     switch (msg)
     {
