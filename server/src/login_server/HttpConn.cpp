@@ -203,7 +203,6 @@ void CHttpConn::OnWrite()
     int out_buf_size = (int)m_out_buf.GetWriteOffset();
 
     m_out_buf.Read(NULL, ret);
-
     if (ret < out_buf_size)
     {
         m_busy = true;

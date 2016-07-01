@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     char* str_http_port = config_file.GetConfigName("HttpPort");
     char* msg_server_listen_ip = config_file.GetConfigName("MsgServerListenIP");
     char* str_msg_server_port = config_file.GetConfigName("MsgServerPort");
-    char* str_msfs_url = config_file.GetConfigName("msfs");
+    char* str_msfs_url = config_file.GetConfigName("msfs"); //这个配置应该后台下发
     char* str_discovery = config_file.GetConfigName("discovery");
 
     if (!msg_server_listen_ip || !str_msg_server_port || !http_listen_ip

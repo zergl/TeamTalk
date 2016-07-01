@@ -109,7 +109,7 @@ void CLoginConn::OnTimer(uint64_t curr_tick)
 {
     if (m_conn_type == LOGIN_CONN_TYPE_CLIENT) 
     {
-		//客户端连接，超时则断开
+        //客户端连接，超时则断开
         if (curr_tick > m_last_recv_tick + CLIENT_TIMEOUT) 
         {
             Close();
@@ -122,7 +122,6 @@ void CLoginConn::OnTimer(uint64_t curr_tick)
         {
             IM::Other::IMHeartBeat msg;
             SendPdu(SID_OTHER, CID_OTHER_HEARTBEAT, msg);
-
         }
 
         if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) 
@@ -189,11 +188,10 @@ void CLoginConn::_HandleMsgServInfo(CImPdu* pPdu)
     pMsgServInfo->cur_conn_cnt = msg.cur_conn_cnt();
     pMsgServInfo->hostname = msg.host_name();
     g_msg_serv_info.insert(make_pair(m_handle, pMsgServInfo));
-	log("g_msg_serv_info: %u", g_msg_serv_info.size());
+    log("g_msg_serv_info: %u", g_msg_serv_info.size());
     g_total_online_user_cnt += pMsgServInfo->cur_conn_cnt;
 
-    log("MsgServInfo, ip_addr1=%s, ip_addr2=%s, port=%d, max_conn_cnt=%d, cur_conn_cnt=%d, "\
-        "hostname: %s. ",
+    log("MsgServInfo, ip_addr1=%s, ip_addr2=%s, port=%d, max_conn_cnt=%d, cur_conn_cnt=%d, hostname: %s. ",
         pMsgServInfo->ip_addr1.c_str(), pMsgServInfo->ip_addr2.c_str(), pMsgServInfo->port,pMsgServInfo->max_conn_cnt,
         pMsgServInfo->cur_conn_cnt, pMsgServInfo->hostname.c_str());
 }
@@ -201,66 +199,66 @@ void CLoginConn::_HandleMsgServInfo(CImPdu* pPdu)
 void CLoginConn::_HandleUserCntUpdate(CImPdu* pPdu)
 {
     map<uint32_t, msg_serv_info_t*>::iterator it = g_msg_serv_info.find(m_handle);
-	if (it == g_msg_serv_info.end())
-	{
-		//error log or alertmsg
-		log("socket %d not found.", m_handle);
-		return;
-	}
+    if (it == g_msg_serv_info.end())
+    {
+        //error log or alertmsg
+        log("socket %d not found.", m_handle);
+        return;
+    }
 
     IM::Server::IMUserCntUpdate msg;
-	if (!pPdu->Decode(msg))
-	{
-		//decode fail
-		log("decode fail.");
-		return;
-	}
+    if (!pPdu->Decode(msg))
+    {
+        //decode fail
+        log("decode fail.");
+        return;
+    }
 
-	msg_serv_info_t* pMsgServInfo = it->second;
-	//@zergl: 每个用户上线、下线都来个通知信息~ 这思路…打脸啪啪啪~~~
-	uint32_t incr_num = (msg.user_action() == USER_CNT_INC) ? 1 : -1;
-	pMsgServInfo->cur_conn_cnt += incr_num;
-	g_total_online_user_cnt += incr_num;
+    msg_serv_info_t* pMsgServInfo = it->second;
+    //@zergl: 每个用户上线、下线都来个通知信息~ 这思路…打脸啪啪啪~~~
+    uint32_t incr_num = (msg.user_action() == USER_CNT_INC) ? 1 : -1;
+    pMsgServInfo->cur_conn_cnt += incr_num;
+    g_total_online_user_cnt += incr_num;
 
     log("%s:%d, cur_cnt=%u, total_cnt=%u ", pMsgServInfo->hostname.c_str(),
-		pMsgServInfo->port, pMsgServInfo->cur_conn_cnt, g_total_online_user_cnt);
+        pMsgServInfo->port, pMsgServInfo->cur_conn_cnt, g_total_online_user_cnt);
 }
 
 //处理客户端来的请求信息，这个是TCP协议（HttpConn里同名接口处理的是http协议）
 void CLoginConn::_HandleMsgServRequest(CImPdu* pPdu)
 {
-	log("HandleMsgServReq. ");
+    log("HandleMsgServReq. ");
 
     IM::Login::IMMsgServReq msg;
-	if (!pPdu->Decode(msg))
-	{
-		log("decode failed.");
-		return;
-	}
+    if (!pPdu->Decode(msg))
+    {
+        log("decode failed.");
+        return;
+    }
 
-	//回包
-	IM::Login::IMMsgServRsp rsp_msg;
-	
-	if (g_msg_serv_info.size() == 0)
-	{
-		rsp_msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NO_MSG_SERVER);
-	}
-	else
-	{
-		// 找到负载最低的服务器
-		msg_serv_info_t* ms = _FindMinLoadMsgSever();
-		if (ms == NULL)
-		{
-			rsp_msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_MSG_SERVER_FULL);
-		} else {
-			rsp_msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NONE);
-			rsp_msg.set_prior_ip(ms->ip_addr1);
-			rsp_msg.set_backip_ip(ms->ip_addr2);
-			rsp_msg.set_port(ms->port);
-		}
-	}
+    //回包
+    IM::Login::IMMsgServRsp rsp_msg;
+    
+    if (g_msg_serv_info.size() == 0)
+    {
+        rsp_msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NO_MSG_SERVER);
+    }
+    else
+    {
+        // 找到负载最低的服务器
+        msg_serv_info_t* ms = _FindMinLoadMsgSever();
+        if (ms == NULL)
+        {
+            rsp_msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_MSG_SERVER_FULL);
+        } else {
+            rsp_msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_NONE);
+            rsp_msg.set_prior_ip(ms->ip_addr1);
+            rsp_msg.set_backip_ip(ms->ip_addr2);
+            rsp_msg.set_port(ms->port);
+        }
+    }
 
-	SendPdu(SID_OTHER, CID_LOGIN_RES_MSGSERVER, rsp_msg);
+    SendPdu(SID_OTHER, CID_LOGIN_RES_MSGSERVER, rsp_msg);
 
     Close();    // after send MsgServResponse, active close the connection
 }
