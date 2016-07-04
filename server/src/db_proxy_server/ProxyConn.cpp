@@ -16,7 +16,6 @@
 #include "SyncCenter.h"
 static ConnMap_t g_proxy_conn_map;
 static UserMap_t g_uuid_conn_map;
-static CHandlerMap* s_handler_map;
 
 uint32_t CProxyConn::s_uuid_alloctor = 0;
 CLock CProxyConn::s_list_lock;
@@ -79,7 +78,6 @@ static void sig_handler(int sig_no)
 
 int init_proxy_conn(uint32_t thread_num)
 {
-    s_handler_map = CHandlerMap::getInstance();
     g_thread_pool.Init(thread_num);
 
     netlib_add_loop(proxy_loop_callback, NULL);
@@ -118,7 +116,8 @@ CProxyConn::~CProxyConn()
 
 void CProxyConn::Close()
 {
-    if (m_handle != NETLIB_INVALID_HANDLE) {
+    if (m_handle != NETLIB_INVALID_HANDLE) 
+    {
         netlib_close(m_handle);
         g_proxy_conn_map.erase(m_handle);
 
@@ -203,7 +202,7 @@ void CProxyConn::HandlePduBuf(uchar_t* pdu_buf, uint32_t pdu_len)
         return;
     }
     
-    pdu_handler_t handler = s_handler_map->GetHandler(pPdu->GetCommandId());
+    pdu_handler_t handler = CHandlerMap::getInstance()->GetHandler(pPdu->GetCommandId());
     
     if (handler){
         //每来个包都要新创新一个CTask对象来执行

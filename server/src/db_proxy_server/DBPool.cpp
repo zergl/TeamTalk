@@ -494,7 +494,8 @@ void CDBManager::RelDBConn(CDBConn* pConn)
     }
 
     map<string, CDBPool*>::iterator it = m_dbpool_map.find(pConn->GetPoolName());
-    if (it != m_dbpool_map.end()) {
+    if (it != m_dbpool_map.end()) 
+    {
         it->second->RelDBConn(pConn);
     }
 }

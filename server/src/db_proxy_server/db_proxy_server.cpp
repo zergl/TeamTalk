@@ -28,44 +28,45 @@ string strAudioEnc;
 // this callback will be replaced by imconn_callback() in OnConnect()
 void proxy_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-	if (msg == NETLIB_MSG_CONNECT)
-	{
-		CProxyConn* pConn = new CProxyConn();
-		pConn->OnConnect(handle);
-	}
-	else
-	{
-		log("!!!error msg: %d", msg);
-	}
+    if (msg == NETLIB_MSG_CONNECT)
+    {
+        CProxyConn* pConn = new CProxyConn();
+        pConn->OnConnect(handle);
+    }
+    else
+    {
+        log("!!!error msg: %d", msg);
+    }
 }
 
 int main(int argc, char* argv[])
 {
-	if ((argc == 2) && (strcmp(argv[1], "-v") == 0)) {
-		printf("Server Version: DBProxyServer/%s\n", VERSION);
-		printf("Server Build: %s %s\n", __DATE__, __TIME__);
-		return 0;
-	}
+    if ((argc == 2) && (strcmp(argv[1], "-v") == 0)) {
+        printf("Server Version: DBProxyServer/%s\n", VERSION);
+        printf("Server Build: %s %s\n", __DATE__, __TIME__);
+        return 0;
+    }
 
-	signal(SIGPIPE, SIG_IGN);
-	srand(time(NULL));
+    signal(SIGPIPE, SIG_IGN);
+    srand(time(NULL));
 
-	CacheManager* pCacheManager = CacheManager::getInstance();
-	if (!pCacheManager) {
-		log("CacheManager init failed");
-		return -1;
-	}
+    CacheManager* pCacheManager = CacheManager::getInstance();
+    if (!pCacheManager) {
+        log("CacheManager init failed");
+        return -1;
+    }
 
-	CDBManager* pDBManager = CDBManager::getInstance();
-	if (!pDBManager) {
-		log("DBManager init failed");
-		return -1;
-	}
-puts("db init success");
-	// 主线程初始化单例，不然在工作线程可能会出现多次初始化
-	if (!CAudioModel::getInstance()) {
-		return -1;
-	}
+    CDBManager* pDBManager = CDBManager::getInstance();
+    if (!pDBManager) {
+        log("DBManager init failed");
+        return -1;
+    }
+
+    puts("db init success");
+    // 主线程初始化单例，不然在工作线程可能会出现多次初始化
+    if (!CAudioModel::getInstance()) {
+        return -1;
+    }
     
     if (!CGroupMessageModel::getInstance()) {
         return -1;
@@ -98,24 +99,25 @@ puts("db init success");
     }
 
 
-	CConfigFileReader config_file("dbproxyserver.conf");
+    CConfigFileReader config_file("dbproxyserver.conf");
 
-	char* listen_ip = config_file.GetConfigName("ListenIP");
-	char* str_listen_port = config_file.GetConfigName("ListenPort");
-	char* str_thread_num = config_file.GetConfigName("ThreadNum");
+    char* listen_ip = config_file.GetConfigName("ListenIP");
+    char* str_listen_port = config_file.GetConfigName("ListenPort");
+    char* str_thread_num = config_file.GetConfigName("ThreadNum");
     char* str_file_site = config_file.GetConfigName("MsfsSite");
     char* str_aes_key = config_file.GetConfigName("aesKey");
 
-	if (!listen_ip || !str_listen_port || !str_thread_num || !str_file_site || !str_aes_key) {
-		log("missing ListenIP/ListenPort/ThreadNum/MsfsSite/aesKey, exit...");
-		return -1;
-	}
+    if (!listen_ip || !str_listen_port || !str_thread_num || !str_file_site || !str_aes_key) {
+        log("missing ListenIP/ListenPort/ThreadNum/MsfsSite/aesKey, exit...");
+        return -1;
+    }
     
     if(strlen(str_aes_key) != 32)
     {
         log("aes key is invalied");
         return -2;
     }
+
     string strAesKey(str_aes_key, 32);
     CAes cAes = CAes(strAesKey);
     string strAudio = "[语音]";
@@ -128,16 +130,16 @@ puts("db init success");
         cAes.Free(pAudioEnc);
     }
 
-	uint16_t listen_port = atoi(str_listen_port);
-	uint32_t thread_num = atoi(str_thread_num);
+    uint16_t listen_port = atoi(str_listen_port);
+    uint32_t thread_num = atoi(str_thread_num);
     
-    string strFileSite(str_file_site);
+    string strFileSite(str_file_site); //音频下载地址
     CAudioModel::getInstance()->setUrl(strFileSite);
 
-	int ret = netlib_init();
+    int ret = netlib_init();
 
-	if (ret == NETLIB_ERROR)
-		return ret;
+    if (ret == NETLIB_ERROR)
+        return ret;
     
     /// yunfan add 2014.9.28
     // for 603 push
@@ -146,7 +148,7 @@ puts("db init success");
 
     init_proxy_conn(thread_num);
     CSyncCenter::getInstance()->init();
-    CSyncCenter::getInstance()->startSync();
+    CSyncCenter::getInstance()->startSync(); //新创建线程：doSyncGroupChat
 
     CStrExplode listen_ip_list(listen_ip, ';');
     for (uint32_t i = 0; i < listen_ip_list.GetItemCnt(); i++) {
@@ -160,7 +162,5 @@ puts("db init success");
     writePid();
     netlib_eventloop(10);
 
-	return 0;
+    return 0;
 }
-
-

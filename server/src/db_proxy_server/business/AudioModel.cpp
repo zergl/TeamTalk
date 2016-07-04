@@ -41,11 +41,11 @@ CAudioModel::~CAudioModel()
  */
 CAudioModel* CAudioModel::getInstance()
 {
-	if (!m_pInstance) {
-		m_pInstance = new CAudioModel();
-	}
+    if (!m_pInstance) {
+        m_pInstance = new CAudioModel();
+    }
 
-	return m_pInstance;
+    return m_pInstance;
 }
 
 /**
@@ -133,15 +133,15 @@ bool CAudioModel::readAudios(list<IM::BaseDefine::MsgInfo>& lsMsg)
  */
 int CAudioModel::saveAudioInfo(uint32_t nFromId, uint32_t nToId, uint32_t nCreateTime, const char* pAudioData, uint32_t nAudioLen)
 {
-	// parse audio data
-	uint32_t nCostTime = CByteStream::ReadUint32((uchar_t*)pAudioData);
-	uchar_t* pRealData = (uchar_t*)pAudioData + 4;
-	uint32_t nRealLen = nAudioLen - 4;
+    // parse audio data
+    uint32_t nCostTime = CByteStream::ReadUint32((uchar_t*)pAudioData);
+    uchar_t* pRealData = (uchar_t*)pAudioData + 4;
+    uint32_t nRealLen = nAudioLen - 4;
     int nAudioId = -1;
     
-	CHttpClient httpClient;
-	string strPath = httpClient.UploadByteFile(m_strFileSite, pRealData, nRealLen);
-	if (!strPath.empty())
+    CHttpClient httpClient;
+    string strPath = httpClient.UploadByteFile(m_strFileSite, pRealData, nRealLen);
+    if (!strPath.empty())
     {
         CDBManager* pDBManager = CDBManager::getInstance();
         CDBConn* pDBConn = pDBManager->GetDBConn("teamtalk_master");
@@ -170,12 +170,12 @@ int CAudioModel::saveAudioInfo(uint32_t nFromId, uint32_t nToId, uint32_t nCreat
         {
             log("no db connection for teamtalk_master");
         }
-	}
+    }
     else
     {
         log("upload file failed");
     }
-	return nAudioId;
+    return nAudioId;
 }
 
 /**
@@ -190,19 +190,19 @@ int CAudioModel::saveAudioInfo(uint32_t nFromId, uint32_t nToId, uint32_t nCreat
  */
 bool CAudioModel::readAudioContent(uint32_t nCostTime, uint32_t nSize, const string& strPath, IM::BaseDefine::MsgInfo& cMsg)
 {
-	if (strPath.empty() || nCostTime == 0 || nSize == 0) {
-		return false;
-	}
+    if (strPath.empty() || nCostTime == 0 || nSize == 0) {
+        return false;
+    }
 
-	// 分配内存，写入音频时长
+    // 分配内存，写入音频时长
     AudioMsgInfo cAudioMsg;
     uchar_t* pData = new uchar_t [4 + nSize];
-	cAudioMsg.data = pData;
-	CByteStream::WriteUint32(cAudioMsg.data, nCostTime);
+    cAudioMsg.data = pData;
+    CByteStream::WriteUint32(cAudioMsg.data, nCostTime);
     cAudioMsg.data_len = 4;
     cAudioMsg.fileSize = nSize;
 
-	// 获取音频数据，写入上面分配的内存
+    // 获取音频数据，写入上面分配的内存
     CHttpClient httpClient;
     if(!httpClient.DownloadByteFile(strPath, &cAudioMsg))
     {
