@@ -125,9 +125,6 @@ void CRouteConn::OnTimer(uint64_t curr_tick)
 void CRouteConn::HandlePdu(CImPdu* pPdu)
 {
     switch (pPdu->GetCommandId()) {
-        case CID_OTHER_HEARTBEAT:
-            // do not take any action, heart beat only update m_last_recv_tick
-            break;
         case CID_OTHER_ONLINE_USER_INFO:
             _HandleOnlineUserInfo( pPdu );
             break;

@@ -186,9 +186,6 @@ void CPushServConn::HandlePdu(CImPdu* pPdu)
 {
     switch (pPdu->GetCommandId()) 
     {
-        case CID_OTHER_HEARTBEAT:
-            //log("push server heart beat. ");
-            break;
         case CID_OTHER_PUSH_TO_USER_RSP:
             _HandlePushToUserResponse( pPdu );
             break;

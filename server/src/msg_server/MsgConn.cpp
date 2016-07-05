@@ -260,9 +260,6 @@ void CMsgConn::HandlePdu(CImPdu* pPdu)
     }
 
     switch (pPdu->GetCommandId()) {
-        case CID_OTHER_HEARTBEAT:
-            _HandleHeartBeat(pPdu);
-            break;
         case CID_LOGIN_REQ_USERLOGIN: //客户端上行登录请求包
             _HandleLoginRequest(pPdu);
             break;

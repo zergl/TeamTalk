@@ -197,8 +197,6 @@ void CDBServConn::OnTimer(uint64_t curr_tick)
 void CDBServConn::HandlePdu(CImPdu* pPdu)
 {
     switch (pPdu->GetCommandId()) {
-        case CID_OTHER_HEARTBEAT:
-            break;
         case CID_OTHER_VALIDATE_RSP:  //db_proxy_server相应帐号验证请求
             _HandleValidateResponse(pPdu );
             break;

@@ -137,9 +137,12 @@ void CImConn::OnRead()
         while ( ( pPdu = CImPdu::ReadPdu(m_in_buf.GetBuffer(), m_in_buf.GetWriteOffset()) ) )
         {
             uint32_t pdu_len = pPdu->GetLength();
+            if (pPdu->GetCommandId() == IM::BaseDefine::CID_OTHER_HEARTBEAT)
+                return;
+
             HandlePdu(pPdu);
 
-            m_in_buf.Read(NULL, pdu_len);
+            m_in_buf.Read(NULL, pdu_len); //这个又是干啥
             delete pPdu;
             pPdu = NULL;
             //++g_recv_pkt_cnt;

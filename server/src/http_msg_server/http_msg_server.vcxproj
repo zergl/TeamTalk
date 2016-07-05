@@ -78,6 +78,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AttachData.cpp" />
+    <ClCompile Include="DBServConn.cpp" />
+    <ClCompile Include="HttpConn.cpp" />
+    <ClCompile Include="HttpPdu.cpp" />
+    <ClCompile Include="HttpQuery.cpp" />
+    <ClCompile Include="http_msg_server.cpp" />
+    <ClCompile Include="RouteServConn.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AttachData.h" />
+    <ClInclude Include="DBServConn.h" />
+    <ClInclude Include="HttpConn.h" />
+    <ClInclude Include="HttpPdu.h" />
+    <ClInclude Include="HttpQuery.h" />
+    <ClInclude Include="RouteServConn.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="httpmsgserver.conf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -18,14 +18,14 @@
 class CPostDataParser
 {
 public:
-	CPostDataParser() {}
-	virtual ~CPostDataParser() {}
+    CPostDataParser() {}
+    virtual ~CPostDataParser() {}
 
-	bool Parse(const char* content);
+    bool Parse(const char* content);
 
-	char* GetValue(const char* key);
+    char* GetValue(const char* key);
 private:
-	std::map<std::string, std::string> m_post_map;
+    std::map<std::string, std::string> m_post_map;
 };
 
 char* PackSendResult(uint32_t error_code, const char* error_msg = "");

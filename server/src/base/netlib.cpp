@@ -85,13 +85,13 @@ int netlib_recv(net_handle_t handle, void* buf, int len)
 
 int netlib_close(net_handle_t handle)
 {
-	CBaseSocket* pSocket = FindBaseSocket(handle);
-	if (!pSocket)
-		return NETLIB_ERROR;
+    CBaseSocket* pSocket = FindBaseSocket(handle);
+    if (!pSocket)
+        return NETLIB_ERROR;
 
-	int ret = pSocket->Close();
-	pSocket->ReleaseRef();
-	return ret;
+    int ret = pSocket->Close();
+    pSocket->ReleaseRef();
+    return ret;
 }
 
 int netlib_option(net_handle_t handle, int opt, void* optval)

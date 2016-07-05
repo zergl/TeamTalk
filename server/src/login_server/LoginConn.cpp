@@ -135,8 +135,6 @@ void CLoginConn::OnTimer(uint64_t curr_tick)
 void CLoginConn::HandlePdu(CImPdu* pPdu)
 {
     switch (pPdu->GetCommandId()) {
-        case CID_OTHER_HEARTBEAT:
-            break;
         case CID_OTHER_MSG_SERV_INFO:
             _HandleMsgServInfo(pPdu);
             break;

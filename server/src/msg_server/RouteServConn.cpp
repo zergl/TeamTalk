@@ -230,8 +230,6 @@ void CRouteServConn::OnTimer(uint64_t curr_tick)
 void CRouteServConn::HandlePdu(CImPdu* pPdu)
 {
     switch (pPdu->GetCommandId()) {
-        case CID_OTHER_HEARTBEAT:
-            break;
         case CID_OTHER_SERVER_KICK_USER:
             _HandleKickUser( pPdu );
             break;

@@ -171,8 +171,6 @@ void CFileServConn::OnTimer(uint64_t curr_tick)
 void CFileServConn::HandlePdu(CImPdu* pPdu)
 {
     switch (pPdu->GetCommandId()) {
-        case CID_OTHER_HEARTBEAT:
-            break;
         case CID_OTHER_FILE_TRANSFER_RSP:
             _HandleFileMsgTransRsp(pPdu);
             break;
