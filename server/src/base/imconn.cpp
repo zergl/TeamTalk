@@ -5,6 +5,7 @@
  *      Author: ziteng@mogujie.com
  */
 
+#include "IM.BaseDefine.pb.h"
 #include "imconn.h"
 
 static CImConn* FindImConn(ConnMap_t* imconn_map, net_handle_t handle)
