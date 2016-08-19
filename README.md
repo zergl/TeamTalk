@@ -3,12 +3,13 @@
 
 - [0] 编译步骤
     
-    - [1] 建议安装gcc 4.9.3以上版本(请自行安装);
-    - [2] 安装protobuf工具(命令行执行protoc没问题就OK);
-    - [3] 下载代码到本地;
-    - [4] 生成协议文件：cd $PROJECT_DIR/proto && sh create.sh
-    - [5] 编译base模块：cd server/src/base && cmake . && make
-    - [6] 编译各个服务器模块：cd server/src/XXX && cmake . && make
+    - [1] 依赖工具链：
+      - gcc（建议4.9.3及以上版本）;
+      - protobuf（建议2.6.1及以上版本）;
+    - [2] 下载代码到本地;
+    - [3] 生成协议文件：cd $PROJECT_DIR/proto && sh create.sh
+    - [4] 编译base模块：cd server/src/base && cmake . && make
+    - [5] 编译各个服务器模块：cd server/src/XXX && cmake . && make
     
 - [1] Windows下编译通过;
 
