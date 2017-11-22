@@ -49,8 +49,8 @@
    - [ ] 代码走读
  
 - [5] 容器化
-   - [ ]编写Dockerfile
-   - [ ]编写docker-compose.yml
+   - [ ] 编写Dockerfile
+   - [ ] 编写docker-compose.yml
 
 ----------------------------------------------
 
