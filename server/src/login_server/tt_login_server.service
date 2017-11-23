@@ -1,0 +1,10 @@
+[Unit]
+Description=Configuring tt_login_server in container
+Before=tt_login_server.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/nohup /data/app/teamtalk/tt_login_server/tt_login_server >> /data/app/teamtalk/tt_login_server/tt_login_server.log 2&>1 &
+
+[Install]
+WantedBy=multi-user.target
