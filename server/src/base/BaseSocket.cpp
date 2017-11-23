@@ -61,7 +61,7 @@ int CBaseSocket::Listen(const char* server_ip, uint16_t port, callback_t callbac
     int ret = ::bind(m_socket, (sockaddr*)&serv_addr, sizeof(serv_addr));
     if (ret == SOCKET_ERROR)
     {
-        log("%s:%u bind failed, err_code=%d", _GetErrorCode());
+        log("%s:%u bind failed, err_code=%d", server_ip, port,_GetErrorCode());
         closesocket(m_socket);
         return NETLIB_ERROR;
     }
