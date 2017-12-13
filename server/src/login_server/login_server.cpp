@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 
     //todo:
     //ret = load_config();
-    CConfigFileReader config_file("loginserver.conf");
+    CConfigFileReader config_file("login_server.conf");
 
     char* http_listen_ip = config_file.GetConfigName("HttpListenIP");
     char* str_http_port = config_file.GetConfigName("HttpPort");
