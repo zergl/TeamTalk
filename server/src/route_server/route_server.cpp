@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     signal(SIGPIPE, SIG_IGN);
     srand(time(NULL));
 
-    CConfigFileReader config_file("routeserver.conf");
+    CConfigFileReader config_file("route_server.conf");
 
     char* listen_ip = config_file.GetConfigName("ListenIP");
     char* str_listen_msg_port = config_file.GetConfigName("ListenMsgPort");

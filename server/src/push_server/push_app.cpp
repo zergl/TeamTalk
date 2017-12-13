@@ -70,7 +70,7 @@ BOOL CPushApp::Start()
 {
     if (m_bInit)
     {
-        string file_name = "pushserver.conf";
+        string file_name = "push_server.conf";
         CConfigFileReader config_file(file_name.c_str());
         char* listen_ip = config_file.GetConfigName("ListenIP");
         char* str_listen_port = config_file.GetConfigName("ListenPort");
