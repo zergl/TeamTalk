@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
 
     signal(SIGPIPE, SIG_IGN);
 
-    CConfigFileReader config_file("fileserver.conf");
+    CConfigFileReader config_file("file_server.conf");
 
     char* str_client_listen_ip = config_file.GetConfigName("ClientListenIP");
     char* str_client_listen_port = config_file.GetConfigName("ClientListenPort");
