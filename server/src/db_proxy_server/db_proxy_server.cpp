@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
     }
 
 
-    CConfigFileReader config_file("dbproxyserver.conf");
+    CConfigFileReader config_file("db_proxy_server.conf");
 
     char* listen_ip = config_file.GetConfigName("ListenIP");
     char* str_listen_port = config_file.GetConfigName("ListenPort");

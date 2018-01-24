@@ -426,7 +426,7 @@ CDBManager* CDBManager::getInstance()
  */
 int CDBManager::Init()
 {
-    CConfigFileReader config_file("dbproxyserver.conf");
+    CConfigFileReader config_file("db_proxy_server.conf");
 
     char* db_instances = config_file.GetConfigName("DBInstances");
 
