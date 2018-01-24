@@ -674,7 +674,7 @@ CacheManager* CacheManager::getInstance()
 
 int CacheManager::Init()
 {
-    CConfigFileReader config_file("dbproxyserver.conf");
+    CConfigFileReader config_file("db_proxy_server.conf");
 
     char* cache_instances = config_file.GetConfigName("CacheInstances");
     if (!cache_instances) {
