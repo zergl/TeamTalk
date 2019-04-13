@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-# author : zergl <e3.gemini@qq.com>
-#   date : 2017/11/23
-#   desc : build all modules
-
+# AUTHOR : zergl <e3.gemini@qq.com>
+#   DESC : build all modules
+# CREATE : 2017/11/23
+# UPDATE : 2019/04/14 02:45
+#
 declare -A map=()
 
 function do_build_module()
@@ -20,7 +21,7 @@ function do_build_module()
 	cd "$bin_dir"
 	
 	prom="[BUILD] $bin_dir -- "
-	rm -rf CMakeFiles CMakeCache.txt && cmake . && make
+|---rm -rf CMakeFiles CMakeCache.txt && cmake . && make
 
 	if [ $? -eq 0 ];then
 		map["'$bin_name'"]="SUCC"
@@ -37,6 +38,10 @@ function do_build_module()
 
 function do_main()
 {
+    #yum install dependency libraries
+    yum install -y apr-devel apr-util-devel libuuid-devel
+
+    ########
 	base_dir=$(cd "$(dirname "$0")"; pwd)
 	svr_dir="${base_dir}/src"
 	echo "src_dir: $svr_dir"
@@ -56,11 +61,15 @@ function do_main()
 	done
 
 	echo ""
-	echo "---------------------"
+	echo "--------------------------------"
 	for key in ${!map[@]}
 	do
-		echo "   BUILD $key : ${map[$key]}"
+        printf "  Build [%+17s] %s\n" $key ${map[$key]}
 	done
+
+    echo ""
+    echo "  Build finished!"
+    echo ""
 }
 
 do_main $?
