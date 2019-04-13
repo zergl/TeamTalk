@@ -21,7 +21,7 @@ function do_build_module()
 	cd "$bin_dir"
 	
 	prom="[BUILD] $bin_dir -- "
-|---rm -rf CMakeFiles CMakeCache.txt && cmake . && make
+    rm -rf CMakeFiles CMakeCache.txt && cmake . && make
 
 	if [ $? -eq 0 ];then
 		map["'$bin_name'"]="SUCC"
