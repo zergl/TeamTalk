@@ -39,7 +39,7 @@ function do_build_module()
 function do_main()
 {
     #yum install dependency libraries
-    yum install -y apr-devel apr-util-devel libuuid-devel
+	yum install -y cmake gcc-c++ curl-devel apr-devel apr-util-devel libuuid-devel
 
     ########
 	base_dir=$(cd "$(dirname "$0")"; pwd)
